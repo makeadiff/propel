@@ -1,0 +1,109 @@
+.centered
+{
+
+    text-align: center;
+
+}
+
+@media (max-width: 500px) {
+    h1.title
+    {
+        font-family: 'Oswald',sans-serif;
+        color:#ffffff;
+        text-transform: uppercase;
+        font-size: 300%;
+    }
+}
+
+@media (min-width: 500px) {
+    h1.title
+    {
+        font-family: 'Oswald',sans-serif;
+        color:#ffffff;
+        text-transform: uppercase;
+        font-size: 400%;
+    }
+}
+
+
+h2.sub-title
+{
+    font-family: 'Oswald',sans-serif;
+    color:#ffffff;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 300%;
+}
+
+h3.sub-title,h4.sub-title,h5.sub-title
+{
+    font-family: 'Oswald',sans-serif;
+    color:#ffffff;
+    display: inline-block;
+
+
+}
+
+.white
+{
+    color:white;
+}
+
+p.success
+{
+    font-family: sans-serif;
+    color:#ffffff;
+    font-size : 120%;
+}
+
+
+
+.transparent
+{
+    background-color: Transparent;
+}
+
+.form-control
+{
+
+
+}
+
+
+
+
+
+div.pin
+{
+   /* background-color:rgba(255,255,255,0.1);*/
+
+    padding:20px;
+
+    /*margin-left: 50px;
+    margin-right: 50px;*/
+}
+
+label
+{
+    color: #ffffff;
+}
+
+div.board
+{
+    margin:30px;
+}
+
+
+body.blue-red
+{
+    background: #3f4591; /* Old browsers */
+    background: -moz-linear-gradient(-45deg,  #3f4591 0%, #a5607f 69%, #db766a 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#3f4591), color-stop(69%,#a5607f), color-stop(100%,#db766a)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg,  #3f4591 0%,#a5607f 69%,#db766a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg,  #3f4591 0%,#a5607f 69%,#db766a 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg,  #3f4591 0%,#a5607f 69%,#db766a 100%); /* IE10+ */
+    background: linear-gradient(135deg,  #3f4591 0%,#a5607f 69%,#db766a 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f4591', endColorstr='#db766a',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
+}

@@ -6,23 +6,23 @@ class CalendarEvent extends Eloquent
 
     public function student()
     {
-        return $this->belongsTo('Student')->withTimestamps();
+        return $this->belongsTo('Student');
     }
 
     public function volunteerTime()
     {
-        return $this->hasOne('VolunteerTime')->withTimestamps();
+        return $this->hasOne('VolunteerTime');
 
     }
 
     public function wingmanTime()
     {
-        return $this->hasOne('WingmanTime')->withTimestamps();
+        return $this->hasOne('WingmanTime');
     }
 
     public function cancelledCalendarEvent()
     {
-        return $this->hasOne('CancelledCalendarEvent')->withTimestamps();
+        return $this->hasOne('CancelledCalendarEvent');
     }
 
 

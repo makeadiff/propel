@@ -9,6 +9,11 @@ class Subject extends Eloquent
         return $this->belongsToMany('City','propel_city_subject')->withTimestamps();
     }
 
+    public function volunteerTime()
+    {
+        return $this->hasMany('VolunteerTime');
+    }
+
 
 
 }

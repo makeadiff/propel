@@ -6,12 +6,17 @@ class WingmanTime extends Eloquent
 
     public function calendarEvent()
     {
-        return $this->belongsTo('CalendarEvent')->withTimestamps();
+        return $this->belongsTo('CalendarEvent');
     }
 
     public function wingmanModule()
     {
-        return $this->belongsTo('WingmanModule')->withTimestamps();
+        return $this->belongsTo('WingmanModule');
+    }
+
+    public function wingman()
+    {
+        return $this->belongsTo('Wingman');
     }
 
 

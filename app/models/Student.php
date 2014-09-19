@@ -11,8 +11,13 @@ class Student extends Eloquent
 
     public function calendarEvent()
     {
-        return $this->hasMany('CalendarEvent')->withTimestamps();
+        return $this->hasMany('CalendarEvent');
 
+    }
+
+    public function wingmanJournal()
+    {
+        return $this->hasMany('WingmanJournal');
     }
 
 

@@ -11,8 +11,20 @@ class Wingman extends Eloquent
 
     public function student()
     {
-        return $this->hasMany('Student','propel_student_wingman')->withTimestamps();
+        return $this->belongsToMany('Student','propel_student_wingman')->withTimestamps();
     }
+
+    public function wingmanTime()
+    {
+        return $this->hasMany('WingmanTime');
+    }
+
+    public function wingmanJournal()
+    {
+        return $this->hasMany('WingmanJournal');
+    }
+
+
 
 
 

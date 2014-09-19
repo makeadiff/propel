@@ -9,6 +9,17 @@ class WingmanJournal extends Eloquent
         return $this->belongsToMany('user','prism_reviewer_user')->withTimestamps();
     }
 
+    public function wingman()
+    {
+        return $this->belongsTo('Wingman');
+
+    }
+
+    public function student()
+    {
+        return $this->belongsTo('Student');
+    }
+
 
 
 }

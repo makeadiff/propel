@@ -12,7 +12,7 @@ class CreateStudentWingman extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('propel_wingman_student', function(Blueprint $table)
+		Schema::create('propel_student_wingman', function(Blueprint $table)
 		{
 			$table->increments('id');
             $table->integer('student_id')->unsigned();
@@ -28,7 +28,7 @@ class CreateStudentWingman extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('propel_wingman_student');
+		Schema::drop('propel_student_wingman');
 	}
 
 }

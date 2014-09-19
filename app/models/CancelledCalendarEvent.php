@@ -6,7 +6,7 @@ class CancelledCalendarEvent extends Eloquent
 
     public function calendarEvent()
     {
-        return $this->belongsTo('CalendarEvent')->withTimestamps();
+        return $this->belongsTo('CalendarEvent');
     }
 
 

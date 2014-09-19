@@ -6,7 +6,7 @@ class WingmanModule extends Eloquent
 
     public function wingmanTime()
     {
-        return $this->hasMany('WingmanTime')->withTimestamps();
+        return $this->hasMany('WingmanTime');
     }
 
 

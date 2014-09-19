@@ -7,7 +7,17 @@ class VolunteerTime extends Eloquent
 
     public function calendarEvent()
     {
-        return $this->belongsTo('CalendarEvent')->withTimestamps();
+        return $this->belongsTo('CalendarEvent');
+    }
+
+    public function volunteer()
+    {
+        return $this->belongsTo('Volunteer');
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo('Subject');
     }
 
 
