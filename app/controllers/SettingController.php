@@ -60,32 +60,37 @@ class SettingController extends BaseController
     }
 
 
-    // public function selectStudents()
-    // {
-    //     $user_id = $_SESSION['user_id'];
-    //     $city_id = Volunteer::find($user_id)->city_id;
+    public function selectStudents()
+    {
+        $user_id = $_SESSION['user_id'];
+        $city_id = Volunteer::find($user_id)->city_id;
 
-    //     $selected_wingmen = Fellow::find($user_id)->wingman()->get();
+        $selected_student = Wingman::find($user_id)->student()->get();
 
-    //     $selected_wingmen_id = array();
-    //     foreach($selected_wingmen as $sub)
-    //         $selected_wingmen_id[] = $sub->id;
+        $selected_student_id = array();
 
-    //     $all_wingmen = City::find($city_id)->wingman()->get();
+        foreach($selected_student as $student)
+            $selected_student_id[] = $student->id;
 
-    //     return View::make('settings/select-wingmen')->with('selected_wingmen_id',$selected_wingmen_id)->with('all_wingmen',$all_wingmen);
-    // }
+        $all_centers = City::find($city_id)->center()->get();
+        $all_students = array();
+        foreach($all_centers as $center) {
+            $students = $center->student()->lists('name', 'id');
+            foreach ($students as $key => $value) $all_students[$key] = $value;
+        }
 
-    // public function saveWingmen() {
-    //     $user_id = $_SESSION['user_id'];
-    //     $fellow = Fellow::find($user_id);
+        return View::make('settings/select-students')->with('selected_student_id',$selected_student_id)->with('all_students',$all_students);
+    }
 
-    //     $selected_wingmen = Input::get("wingmen");
+    public function saveStudents() {
+        $user_id = $_SESSION['user_id'];
+        $wingmen = Wingman::find($user_id);
 
-    //     $fellow->wingman()->sync($selected_wingmen);
+        $selected_students = Input::get("students");
+
+        $wingmen->student()->sync($selected_students);
         
-    //     return Redirect::to(URL::to('/') . "/settings/wingmen")->with('success', 'Wingmen Set.');
-    // }
-
-
+        return Redirect::to(URL::to('/') . "/settings/students")->with('success', 'Students Set');
+    }
 }
+// dd(DB::getQueryLog());

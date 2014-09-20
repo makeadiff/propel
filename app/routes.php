@@ -28,7 +28,8 @@ Route::group(array('before'=>'login_check'),function()
     Route::post('/settings/subjects','SettingController@saveSubjects');
     Route::get('/settings/wingmen','SettingController@selectWingmen');
     Route::post('/settings/wingmen','SettingController@saveWingmen');
-
+    Route::get('/settings/students','SettingController@selectStudents');
+    Route::post('/settings/students','SettingController@saveStudents');
 
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
 

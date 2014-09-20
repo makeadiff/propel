@@ -9,12 +9,19 @@ class City extends Eloquent
         return $this->belongsToMany('Subject','propel_city_subject')->withTimestamps();
     }
 
-    public function wingman() {
+    public function wingman() 
+    {
     	return $this->hasMany("Wingman");
     }
 
-    public function volunteer() {
+    public function volunteer() 
+    {
     	return $this->hasMany("Volunteer");
+    }
+
+    public function center() 
+    {
+        return $this->hasMany("Center");
     }
 
 }
