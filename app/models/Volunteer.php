@@ -10,6 +10,10 @@ class Volunteer extends Eloquent
         return $this->hasMany('VolunteerTime');
     }
 
+    public function city()
+    {
+        return $this->belongsTo('City');
+    }
 
 
 }

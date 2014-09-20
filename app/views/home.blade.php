@@ -14,6 +14,11 @@
             <a href='wingman-journal/{{{$user_id}}}' class='btn btn-primary btn-lg transparent'>Wingman Journal</a>
         </div>
         <br>
+        <div class="row">
+            <a href='calendar/{{{$user_id}}}' class='btn btn-primary btn-lg transparent'>Calendar</a>
+        </div>
+
+        <br>
 
         <br>
     </div>

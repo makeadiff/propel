@@ -21,7 +21,9 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/','HomeController@showHome');
     Route::get('/success','CommonController@showSuccess');
     Route::get('/error','CommonController@showError');
-    Route::get('/wingman-journal/{user_id}','WingmanJournalController@showList');
+    Route::get('/wingman-journal/{wingman_id}','WingmanJournalController@showList');
+    Route::get('/calendar/{wingman_id}','CalendarController@showStudents');
+    Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
 
 });

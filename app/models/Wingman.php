@@ -24,6 +24,11 @@ class Wingman extends Eloquent
         return $this->hasMany('WingmanJournal');
     }
 
+    public function city()
+    {
+        return $this->belongsTo('City');
+    }
+
 
 
 

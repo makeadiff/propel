@@ -1,0 +1,60 @@
+.travel {
+    height:100px;
+    width:100%;
+    /*border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;*/
+}
+.start {
+    /*border:1px solid #ccc;*/
+}
+.end {
+    /*border:1px solid #ccc;*/
+}
+
+
+table.calendar {
+    width:100%;
+    border:1px solid #ffffff;
+    padding:0;
+    background-image:none;
+}
+.calendar th {
+    /*background: #565;*/
+    color: #FFFFFF;
+    margin: 3px;
+    padding: 2px 5px;
+    border-bottom:1px solid #ffffff;
+}
+.calendar th a {
+    color: #fff;
+}
+.calendar td {
+    /*background: #eee;*/
+    padding: 2px;
+    margin:0;
+    width:13%;
+    height:70px;
+    vertical-align:top;
+    border-left:1px solid #ffffff;
+    border-bottom:1px solid #ffffff;
+}
+.calendar tr.weekday-names td {
+    height:20px;
+    text-align:center;
+    color:#fff;
+    /*background-color: #aaa;*/
+}
+.calendar tr.odd-row td {
+    /*background-color:#ddd;*/
+}
+.calendar .date-number {
+    text-align: center;
+    font-weight:bold;
+    font-size: 120%;
+    color:#FFFFFF;
+}
+.calendar td.overflow-days {
+    /*background-color: #999;*/
+}
+
+

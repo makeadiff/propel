@@ -12,16 +12,16 @@
 
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
-            <table class="table table-bordered table-responsive white">
+            <table class="table table-bordered table-responsive white footable">
                 <thead>
                 <tr>
                     <th>
                         Title
                     </th>
-                    <th>
+                    <th data-sort-ignore="true">
                         Date
                     </th>
-                    <th>
+                    <th data-sort-ignore="true">
                         Actions
                     </th>
                 </tr>
