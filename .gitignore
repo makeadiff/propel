@@ -2,6 +2,7 @@
 app/config/database.php
 app/config/app.php
 /bootstrap/compiled.php
+/bootstrap/start.php
 /vendor
 composer.phar
 composer.lock

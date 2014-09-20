@@ -9,8 +9,4 @@ class City extends Eloquent
         return $this->belongsToMany('Subject','propel_city_subject')->withTimestamps();
     }
 
-
-
 }
-
-?>
