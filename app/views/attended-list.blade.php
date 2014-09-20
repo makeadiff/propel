@@ -8,9 +8,6 @@
 
         <h2 class="sub-title">Attendence</h2>
         <br>
-        @if(Session::has('success'))
-            <div class="center-block alert alert-success" role="alert" style="width:20%;">{{{ Session::get('success') }}}</div>
-        @endif
 
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
