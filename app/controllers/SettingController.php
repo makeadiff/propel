@@ -28,50 +28,63 @@ class SettingController extends BaseController
 
         $city->subject()->sync($selected_subjects);
         
-        return Redirect::to(URL::to('/') . "/settings/subjects")->with('success', 'Sujects Set.');
+        return Redirect::to(URL::to('/') . "/settings/subjects")->with('success', 'Subjects Set.');
     }
 
 
-    public function selectWingman()
+    public function selectWingmen()
     {
         $user_id = $_SESSION['user_id'];
         $city_id = Volunteer::find($user_id)->city_id;
 
-        $selected_wingmen = City::find($city_id)->wingman()->get();
+        $selected_wingmen = Fellow::find($user_id)->wingman()->get();
 
         $selected_wingmen_id = array();
         foreach($selected_wingmen as $sub)
             $selected_wingmen_id[] = $sub->id;
 
-        $all_wingmen = Wingmen::all();
+        $all_wingmen = City::find($city_id)->wingman()->get();
 
-        return View::make('settings/select-subjects')->with('selected_wingmen_id',$selected_wingmen_id)->with('all_subjects',$all_subjects);
+        return View::make('settings/select-wingmen')->with('selected_wingmen_id',$selected_wingmen_id)->with('all_wingmen',$all_wingmen);
     }
 
-    public function saveWingman() {
+    public function saveWingmen() {
         $user_id = $_SESSION['user_id'];
-        $city_id = Volunteer::find($user_id)->city_id;
-        $city = City::find($city_id);
+        $fellow = Fellow::find($user_id);
 
-        $selected_subjects = Input::get("subjects");
+        $selected_wingmen = Input::get("wingmen");
 
-        $city->subject()->sync($selected_subjects);
+        $fellow->wingman()->sync($selected_wingmen);
         
-        return Redirect::to(URL::to('/') . "/settings/subjects")->with('success', 'Sujects Set.');
+        return Redirect::to(URL::to('/') . "/settings/wingmen")->with('success', 'Wingmen Set.');
     }
 
-    // public function save($user_id) 
+
+    // public function selectStudents()
     // {
-    //     $attendance_data = Input::get('attended');
-    //     $calender_data = Input::get('calender_entry');
+    //     $user_id = $_SESSION['user_id'];
+    //     $city_id = Volunteer::find($user_id)->city_id;
 
-    //     foreach ($calender_data as $id => $value) {
-    //         $calender_event = CalendarEvent::find($id);
-    //         $calender_event->status = isset($attendance_data[$id]) ? 'attended' : 'approved';
-    //         $calender_event->save();
-    //     }
+    //     $selected_wingmen = Fellow::find($user_id)->wingman()->get();
 
-    //     return Redirect::to(URL::to('/') . "/attendance/" . $user_id)->with('success', 'Attendence Saved.');
+    //     $selected_wingmen_id = array();
+    //     foreach($selected_wingmen as $sub)
+    //         $selected_wingmen_id[] = $sub->id;
+
+    //     $all_wingmen = City::find($city_id)->wingman()->get();
+
+    //     return View::make('settings/select-wingmen')->with('selected_wingmen_id',$selected_wingmen_id)->with('all_wingmen',$all_wingmen);
+    // }
+
+    // public function saveWingmen() {
+    //     $user_id = $_SESSION['user_id'];
+    //     $fellow = Fellow::find($user_id);
+
+    //     $selected_wingmen = Input::get("wingmen");
+
+    //     $fellow->wingman()->sync($selected_wingmen);
+        
+    //     return Redirect::to(URL::to('/') . "/settings/wingmen")->with('success', 'Wingmen Set.');
     // }
 
 
