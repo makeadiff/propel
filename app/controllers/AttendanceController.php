@@ -7,7 +7,7 @@ class AttendanceController extends BaseController
     {
     	$wingmans_kids = Wingman::find($user_id)->student()->get();
 
-        if(empty($wingmans_kids))
+        if(empty($wingmans_kids->id))
             return View::make('attendance.attendance-list');
 
     	$student_ids = array();
