@@ -21,8 +21,6 @@
         });
     </script>
 
-
-
     @yield('head')
 </head>
 
@@ -52,6 +50,12 @@
 
     </div>
 </nav>
+
+
+@if(Session::has('success'))
+    <div class="center-block alert alert-success" role="alert" style="width:20%;">{{{ Session::get('success') }}}</div>
+@endif
+
 @yield('body')
 
 </body>

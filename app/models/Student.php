@@ -4,7 +4,7 @@ class Student extends Eloquent
 {
     protected $table = 'Student';
 
-    public function user()
+    public function wingman()
     {
         return $this->belongsToMany('Wingman','propel_student_wingman')->withTimestamps();
     }
@@ -12,7 +12,6 @@ class Student extends Eloquent
     public function calendarEvent()
     {
         return $this->hasMany('CalendarEvent');
-
     }
 
     public function wingmanJournal()
@@ -20,8 +19,9 @@ class Student extends Eloquent
         return $this->hasMany('WingmanJournal');
     }
 
-
+    public function center()
+    {
+        return $this->belongsTo('Center');
+    }
 
 }
-
-?>

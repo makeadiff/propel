@@ -29,10 +29,4 @@ class Wingman extends Eloquent
         return $this->belongsTo('City');
     }
 
-
-
-
-
 }
-
-?>
