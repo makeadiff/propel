@@ -28,7 +28,7 @@
                         <td>{{{ ucwords(str_replace('_',' ',$entry->type)) }}}</td>
                         @if($entry->type == "volunteer_time")
                         <td>{{{$entry->volunteerTime()->first()->volunteer()->first()->name}}}</td>
-                        @else
+                        @elseif($entry->type == "wingman_time")
                         <td>{{{$entry->wingmanTime()->first()->wingman()->first()->name}}}</td>
                         @endif
 
