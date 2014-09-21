@@ -39,13 +39,13 @@
         @show
     </div>
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
-        <ul class="nav navbar-nav">
-            <!--@section('navbar-links')
-            <li><a href="{{{URL::to('/')}}}/calendar">Calendar</a></li>
+        <ul class="nav navbar-nav navbar-right">
+            @section('navbar-links')
+            <!--<li><a href="{{{URL::to('/')}}}/calendar">Calendar</a></li>
             <li><a href="{{{URL::to('/')}}}/attendance">Attendance</a></li>
-            <li><a href="{{{URL::to('/')}}}/wingman-journal">Wingman Journal</a></li>
-
-            @show-->
+            <li><a href="{{{URL::to('/')}}}/wingman-journal">Wingman Journal</a></li>-->
+            <li class=""><a href="{{{URL::to('/')}}}/../../../madapp/index.php/auth/logout">Logout</a></li>
+            @show
         </ul>
 
     </div>
