@@ -43,6 +43,18 @@ h3.sub-title,h4.sub-title,h5.sub-title
 
 
 }
+.btn-dash
+{
+    height: 120px;
+    width : 120px;
+    padding:5px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 30px;
+    background-color: Transparent;
+    border : none;
+
+}
 
 .white
 {
@@ -52,6 +64,11 @@ h3.sub-title,h4.sub-title,h5.sub-title
 .grey
 {
     color:grey;
+}
+
+.twenty-five
+{
+    width : 25%
 }
 
 p.success

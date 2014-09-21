@@ -16,13 +16,24 @@ Route::filter('login_check',function()
 
 });
 
-Route::group(array('before'=>'login_check'),function()
+Route::filter('propel_check',function(){
+
+    if(!HomeController::checkPropel())
+        return Redirect::to('error')->with('message','Only Propel Fellows and Propel Wingmen can access the Propel App');
+
+});
+
+Route::get('/error','CommonController@showError');
+
+Route::group(array('before'=>'login_check|propel_check'),function()
 {
     Route::get('/','HomeController@showHome');
     Route::get('/success','CommonController@showSuccess');
-    Route::get('/error','CommonController@showError');
-    
+
+    Route::get('/wingman-journal/select-wingman','WingmanJournalController@selectWingman');
     Route::get('/wingman-journal/{wingman_id}','WingmanJournalController@showList');
+
+    Route::get('/calendar/select-wingman','CalendarController@selectWingman');
     Route::get('/calendar/{wingman_id}','CalendarController@showStudents');
     Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
     Route::post('/calendar/createEdit','CalendarController@createEdit');
@@ -30,12 +41,15 @@ Route::group(array('before'=>'login_check'),function()
     Route::post('/calendar/approve','CalendarController@approveEvents');
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
 
+    Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
     Route::get('/attendance/{user_id}','AttendanceController@show');
     Route::post('/attendance/{user_id}','AttendanceController@save');
+
     Route::get('/settings/subjects','SettingController@selectSubjects');
     Route::post('/settings/subjects','SettingController@saveSubjects');
     Route::get('/settings/wingmen','SettingController@selectWingmen');
     Route::post('/settings/wingmen','SettingController@saveWingmen');
+
     Route::get('/settings/students','SettingController@selectStudents');
     Route::post('/settings/students','SettingController@saveStudents');
 

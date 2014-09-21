@@ -12,6 +12,9 @@ class CalendarController extends BaseController
 
     public function showCalendar($wingman_id,$student_id)
     {
+
+        $this->setGroup();
+
         $cal = new CalendarLib("daily");
 
         $city = Wingman::find($wingman_id)->city()->first();
@@ -27,6 +30,10 @@ class CalendarController extends BaseController
 
     public function createEdit()
     {
+
+        if(Input::get('type') == "")
+            return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
+
         $on_date = Input::get('on_date');
         $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
         if(!empty($existing_ce)) {
@@ -84,7 +91,8 @@ class CalendarController extends BaseController
 
     }
 
-    public function approveEvents() {
+    public function approveEvents()
+    {
         $wingman_id = $_SESSION['user_id'];
         $student_id = Input::get('student_id');
         $month = Input::get('month');
@@ -99,5 +107,39 @@ class CalendarController extends BaseController
 
         list($year, $only_month) = explode('-', $month);
         return Redirect::to(URL::to('/calendar/' . $wingman_id . '/' . $student_id . '?year=' . $year . '&month=' . $only_month))->with('success', 'All Events Approved.');
+    }
+
+    public function selectWingman()
+    {
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+
+        $wingmen = $fellow->wingman()->get();
+
+        return View::make('calendar.select-wingman')->with('wingmen',$wingmen);
+    }
+
+    public static function setGroup()
+    {
+        $user_id = $_SESSION['user_id'];
+
+        $user = Volunteer::find($user_id);
+
+        $groups = $user->group()->get();
+
+        $fellow = false;
+        $wingman = false;
+
+        foreach($groups as $group) {
+            if($group->name == 'Propel Fellow')
+                $fellow = true;
+            elseif($group->name == 'Propel Wingman')
+                $wingman = true;
+        }
+
+        if($fellow == true)
+            View::share('user_group','Propel Fellow');
+        elseif($wingman == true)
+            View::share('user_group','Propel Wingman');
     }
 }

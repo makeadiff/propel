@@ -10,5 +10,15 @@ class WingmanJournalController extends BaseController
         return View::make('wingman-journal')->with('entries',$entries);
     }
 
+    public function selectWingman()
+    {
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+
+        $wingmen = $fellow->wingman()->get();
+
+        return View::make('select-wingman')->with('wingmen',$wingmen);
+    }
+
 
 }

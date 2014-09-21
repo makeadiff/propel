@@ -13,7 +13,7 @@ class AttendanceController extends BaseController
 
         $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('status','approved')->orWhere('status','attended')->get();
 
-        return View::make('attended-list')->with('attended',$attended);
+        return View::make('attendance.attended-list')->with('attended',$attended);
     }
 
     public function save($user_id) 
@@ -28,6 +28,16 @@ class AttendanceController extends BaseController
         }
 
         return Redirect::to(URL::to('/') . "/attendance/" . $user_id)->with('success', 'Attendence Saved.');
+    }
+
+    public function selectWingman()
+    {
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+
+        $wingmen = $fellow->wingman()->get();
+
+        return View::make('attendance.select-wingman')->with('wingmen',$wingmen);
     }
 
 

@@ -14,4 +14,9 @@ class Volunteer extends Eloquent
     {
         return $this->belongsTo('City');
     }
+
+    public function group()
+    {
+        return $this->belongsToMany('Group','UserGroup','user_id','group_id');
+    }
 }

@@ -6,7 +6,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Attendence</h2>
+        <h2 class="sub-title">Attendance</h2>
         <br>
 
         <div class="row">
@@ -17,7 +17,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Type</th>
-                    <th>Volunteer</th>
+                    <th>Volunteer/Wingman</th>
                     <th>Attended</th>
                 </tr>
                 </thead>
@@ -39,9 +39,10 @@
                         </tr>
                     @endforeach
 
-                    <tr><td colspan="3"></td><td><input type="submit" value="Save" name="action" class="btn btn-success" /></td></tr>
+
                 </tbody>
             </table>
+                <input type="submit" value="Save" name="action" class="btn btn-primary" />
             </form>
         </div>
         <br>

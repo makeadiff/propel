@@ -26,8 +26,8 @@
                     </div>
 
                     <h4 class="sub-title">Type : </h4>
-                    <div class="form-group">
-                        <label><input name="type" type="radio" id="formal" value="formal">Formal</label>&nbsp; &nbsp;
+                    <div class="form-group white">
+                        <label><input name="type" type="radio" id="formal" checked="checked" value="formal">Formal</label>&nbsp; &nbsp;
                         <label><input name="type" type="radio" id="informal" value="informal">Informal</label>
                     </div>
 

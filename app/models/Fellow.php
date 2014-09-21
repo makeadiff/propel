@@ -9,6 +9,11 @@ class Fellow extends Eloquent
         return $this->belongsToMany('Wingman','propel_fellow_wingman')->withTimestamps();
     }
 
+    public function group()
+    {
+        return $this->belongsToMany('Group','UserGroup','user_id','group_id');
+    }
+
 
 
 }

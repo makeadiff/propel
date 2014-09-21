@@ -87,12 +87,16 @@
                 }
 
                 ?>
-            </div
->            <form action="{{URL::to('/calendar/approve')}}" method="post">
-            <input type="hidden" name="student_id" value="{{{$student_id}}}" />
-            <input type="hidden" name="month" value="{{{ (isset($_REQUEST['year']) ? $_REQUEST['year'] : date('Y')) . "-" . (isset($_REQUEST['month']) ? $_REQUEST['month'] : date('m'))}}}" />
-            <input type="submit" name="action" value="Approve All" class="btn btn-md btn-success" />
-            </form>
+            <br>
+            @if($user_group == "Propel Fellow")
+               <form action="{{URL::to('/calendar/approve')}}" method="post">
+                    <input type="hidden" name="student_id" value="{{{$student_id}}}" />
+                    <input type="hidden" name="month" value="{{{ (isset($_REQUEST['year']) ? $_REQUEST['year'] : date('Y')) . "-" . (isset($_REQUEST['month']) ? $_REQUEST['month'] : date('m'))}}}" />
+                    <input type="submit" name="action" value="Approve All" class="btn btn-md btn-success" />
+                </form>
+            @endif
+
+            </div>
         </div>
     </div>
 </div>

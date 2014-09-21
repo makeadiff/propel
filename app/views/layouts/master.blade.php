@@ -40,12 +40,12 @@
     </div>
     <div class="collapse navbar-collapse" id="navbar-collapse-1">
         <ul class="nav navbar-nav">
-            @section('navbar-links')
+            <!--@section('navbar-links')
             <li><a href="{{{URL::to('/')}}}/calendar">Calendar</a></li>
             <li><a href="{{{URL::to('/')}}}/attendance">Attendance</a></li>
             <li><a href="{{{URL::to('/')}}}/wingman-journal">Wingman Journal</a></li>
 
-            @show
+            @show-->
         </ul>
 
     </div>
