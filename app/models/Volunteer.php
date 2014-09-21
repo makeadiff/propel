@@ -14,7 +14,4 @@ class Volunteer extends Eloquent
     {
         return $this->belongsTo('City');
     }
-
-
-
 }
