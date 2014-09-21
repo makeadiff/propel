@@ -27,6 +27,7 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
     Route::post('/calendar/createEdit','CalendarController@createEdit');
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
+    Route::post('/calendar/approve','CalendarController@approveEvents');
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
 
     Route::get('/attendance/{user_id}','AttendanceController@show');

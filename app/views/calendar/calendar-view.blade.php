@@ -84,13 +84,15 @@
 
                     }
 
-
-
-
                 }
 
                 ?>
             </div>
+            <form action="{{URL::to('/calendar/approve')}}" method="post">
+            <input type="hidden" name="student_id" value="{{{$student_id}}}" />
+            <input type="hidden" name="month" value="{{{ (isset($_REQUEST['year']) ? $_REQUEST['year'] : date('Y')) . "-" . (isset($_REQUEST['month']) ? $_REQUEST['month'] : date('m'))}}}" />
+            <input type="submit" name="action" value="Approve All" class="btn btn-md btn-success" />
+            </form>
         </div>
     </div>
 </div>
@@ -179,9 +181,8 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Cancel Class</h4>
             </div>
+            <form method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/cancelEvent')}}}">
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/cancelEvent')}}}">
-
                     <div class="form-group">
                         <label for="type" class="control-label">Reason : </label>
                         <select class="form-control" id="type" name="reason">
@@ -190,27 +191,21 @@
                         </select>
                     </div>
 
-
-
-
                     <div class="form-group">
                         <label for="comment" class="control-label">Comment : </label>
                         <textarea class="form-control" id="comment" name="comment"></textarea>
                     </div>
 
-
-
                     <input type="hidden" id="cancel_on_date" name="cancel_on_date">
                     <input type="hidden" name="student_id" value="{{{$student_id}}}">
                     <input type="hidden" name="wingman_id" value="{{{$wingman_id}}}">
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
-                </form>
+                
             </div>
+            </form>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

@@ -84,7 +84,20 @@ class CalendarController extends BaseController
 
     }
 
+    public function approveEvents() {
+        $wingman_id = $_SESSION['user_id'];
+        $student_id = Input::get('student_id');
+        $month = Input::get('month');
 
+        $student_events = CalendarEvent::whereRaw("DATE_FORMAT(start_time, '%Y-%m') = '$month'")->where('student_id','=',$student_id)->get();
+        $changed_count = 0;
+        foreach($student_events as $event) {
+            $event->status = 'approved';
+            $event->save();
+            $changed_count ++;
+        }
 
-
+        list($year, $only_month) = explode('-', $month);
+        return Redirect::to(URL::to('/calendar/' . $wingman_id . '/' . $student_id . '?year=' . $year . '&month=' . $only_month))->with('success', 'All Events Approved.');
+    }
 }

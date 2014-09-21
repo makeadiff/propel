@@ -20,8 +20,4 @@ class VolunteerTime extends Eloquent
         return $this->belongsTo('Subject');
     }
 
-
-
 }
-
-?>
