@@ -23,9 +23,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'Project_Madapp',
+			'database'  => 'makeadiff_madapp',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'sanjay314',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
