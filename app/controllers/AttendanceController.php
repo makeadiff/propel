@@ -14,7 +14,7 @@ class AttendanceController extends BaseController
     	foreach($wingmans_kids as $wk) 
     		$student_ids[] = $wk->id;
 
-        $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('status','approved')->orWhere('status','attended')->where('type','<>','child_busy')->get();
+        $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where('status','approved')->orWhere('status','attended')->get();
 
         return View::make('attendance.attended-list')->with('attended',$attended);
     }
