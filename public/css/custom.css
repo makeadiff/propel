@@ -49,6 +49,11 @@ h3.sub-title,h4.sub-title,h5.sub-title
     color:white;
 }
 
+.grey
+{
+    color:grey;
+}
+
 p.success
 {
     font-family: sans-serif;
@@ -83,10 +88,6 @@ div.pin
     margin-right: 50px;*/
 }
 
-label
-{
-    color: #ffffff;
-}
 
 div.board
 {

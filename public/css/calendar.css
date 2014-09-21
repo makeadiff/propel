@@ -30,13 +30,14 @@ table.calendar {
 }
 .calendar td {
     /*background: #eee;*/
-    padding: 2px;
+    padding: 3px;
     margin:0;
     width:13%;
     height:70px;
     vertical-align:top;
     border-left:1px solid #ffffff;
     border-bottom:1px solid #ffffff;
+    text-align: center;
 }
 .calendar tr.weekday-names td {
     height:20px;

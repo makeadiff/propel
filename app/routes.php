@@ -24,6 +24,8 @@ Route::group(array('before'=>'login_check'),function()
     Route::get('/wingman-journal/{wingman_id}','WingmanJournalController@showList');
     Route::get('/calendar/{wingman_id}','CalendarController@showStudents');
     Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
+    Route::post('/calendar/createEdit','CalendarController@createEdit');
+    Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
 
 });
