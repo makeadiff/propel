@@ -31,8 +31,8 @@
                         <tr>
                         <td><a class="white" href="../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
                         <td>{{{date_format(date_create($entry->on_date),'l, jS F Y')}}}</td>
-                        <td><a href="{{{URL::to('/journal-entry/' . $entry->id . '/edit')}}}" ><span class="glyphicon glyphicon-edit"></span> </a>&nbsp; &nbsp;
-                            <a href="javascript:checkDelete({{{$entry->id}}})"><span class="glyphicon glyphicon-remove"></span></a>
+                        <td><a href="{{{URL::to('/journal-entry/' . $entry->id . '/edit')}}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
+                            <a href="javascript:checkDelete({{{$entry->id}}})"><span class="glyphicon glyphicon-remove white"></span></a>
                         </td>
                         </tr>
                     @endforeach

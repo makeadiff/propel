@@ -38,6 +38,9 @@
                     if(!empty($event[0])){
 
                         $calendar_event = CalendarEvent::find($event[0]->id);
+                        $start_time = date_format(date_create($calendar_event->start_time),'h:i A');
+                        $end_time = date_format(date_create($calendar_event->end_time),'h:i A');
+
                         if($calendar_event->type == 'wingman_time'){
 
                             $wingman = $calendar_event->wingmanTime()->first()->wingman()->first();
@@ -45,8 +48,8 @@
                             echo "<a class=\"list_popover white\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"
                                  data-content=\"<strong>Wingman :</strong> $wingman->name <br>
                                                 <strong>Wingman Module :</strong> $wingman_module->name<br>
-                                                <strong>Start Time : </strong>$calendar_event->start_time<br>
-                                                <strong>End Time : </strong>$calendar_event->end_time
+                                                <strong>Start Time : </strong>$start_time<br>
+                                                <strong>End Time : </strong>$end_time
                                                 \">Wingman Time";
                             if(!empty($calendar_event->cancelledCalendarEvent()->first()))
                                 echo "(Cancelled)</a>";
@@ -60,8 +63,8 @@
                             echo "<a class=\"list_popover white\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"
                                  data-content=\"<strong>Volunteer :</strong> $volunteer->name <br>
                                                 <strong>Subject :</strong> $subject->name<br>
-                                                <strong>Start Time : </strong>$calendar_event->start_time<br>
-                                                <strong>End Time : </strong>$calendar_event->end_time
+                                                <strong>Start Time : </strong>$start_time<br>
+                                                <strong>End Time : </strong>$end_time
                                                 \">Volunteer Time";
 
                             if(!empty($calendar_event->cancelledCalendarEvent()->first()))

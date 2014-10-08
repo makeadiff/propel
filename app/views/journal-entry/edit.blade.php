@@ -27,7 +27,7 @@
                     </div>
 
                     <h4 class="sub-title">Type : </h4>
-                    <div class="form-group">
+                    <div class="form-group white">
                         <label><input name="type" type="radio" id="formal" value="formal"  {{{$journal_entry->type ==  'formal' ? 'checked="checked"' : '' }}} >Formal</label>&nbsp; &nbsp;
                         <label><input name="type" type="radio" id="informal" value="informal" {{{$journal_entry->type ==  'informal' ? 'checked="checked"' : '' }}} >Informal</label>
                     </div>

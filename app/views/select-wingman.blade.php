@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-offset-2 col-md-8 text-center">
                     @foreach($wingmen as $wingman)
-                        <a class="btn btn-primary" href="{{{URL::to('/wingman-journal/'. $wingman->id)}}}">{{{$wingman->name}}}</a><br><br>
+                        <a class="btn btn-default" href="{{{URL::to('/wingman-journal/'. $wingman->id)}}}">{{{$wingman->name}}}</a><br><br>
                     @endforeach
                 </div>
             </div>

@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
                 @foreach($students as $student)
-                    <a class="btn btn-primary" href="{{{URL::to('/calendar/'. $wingman_id . '/' . $student->id)}}}">{{{$student->name}}}</a><br><br>
+                    <a class="btn btn-default" href="{{{URL::to('/calendar/'. $wingman_id . '/' . $student->id)}}}">{{{$student->name}}}</a><br><br>
                 @endforeach
             </div>
         </div>
