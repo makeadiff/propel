@@ -53,5 +53,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/settings/students','SettingController@selectStudents');
     Route::post('/settings/students','SettingController@saveStudents');
 
+    Route::get('/reports/class-status/select-city','ReportController@showCities');
+    Route::get('/reports','ReportController@showReports');
+
 
 });

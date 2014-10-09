@@ -48,8 +48,8 @@
 
         @if($user_group == "Propel Fellow")
 
-            <!--<div class="col-md-4 col-sm-6 text-center">
-                <a href='settings/wingmen' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Reports</a>
+          <!--  <div class="col-md-4 col-sm-6 text-center">
+                <a href='reports' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Reports</a>
             </div>-->
 
             <div class="col-md-4 col-sm-6 text-center">

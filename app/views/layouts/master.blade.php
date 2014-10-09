@@ -11,6 +11,7 @@
     <script src="{{{URL::to('/')}}}/js/footable.filter.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/footable.paginate.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/footable.sort.min.js"></script>
+    <script src="{{{URL::to('/')}}}/js/uservoice.js"></script>
     <script type="text/javascript">
         $(function () {
             $('.footable').footable({
