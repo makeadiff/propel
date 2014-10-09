@@ -43,7 +43,25 @@ class SettingController extends BaseController
         foreach($selected_wingmen as $sub)
             $selected_wingmen_id[] = $sub->id;
 
-        $all_wingmen = City::find($city_id)->wingman()->get();
+        $all_wingmen = City::find($city_id)->wingman()->where('status','=',1)->where('user_type','=','volunteer')->orderBy('name')->get();
+
+
+        foreach($all_wingmen as $key => $wingman) {
+            $groups = $wingman->group()->get();
+            $flag = false;
+            foreach($groups as $group) {
+                if($group->name == 'Propel Wingman') {
+                   $flag=true;
+                }
+
+            }
+
+            if($flag == false) {
+                unset($all_wingmen[$key]);
+            }
+
+        }
+
 
         return View::make('settings/select-wingmen')->with('selected_wingmen_id',$selected_wingmen_id)->with('all_wingmen',$all_wingmen);
     }
