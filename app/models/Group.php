@@ -7,16 +7,16 @@ class Group extends Eloquent
 
     public function volunteer()
     {
-        return $this->belongsToMany('Volunteer','UserGroup','user_id','group_id');
+        return $this->belongsToMany('Volunteer','UserGroup','group_id','user_id');
     }
 
     public function wingman()
     {
-        return $this->belongsToMany('Wingman','UserGroup','user_id','group_id');
+        return $this->belongsToMany('Wingman','UserGroup','group_id','user_id');
     }
 
     public function fellow()
     {
-        return $this->belongsToMany('Fellow','UserGroup','user_id','group_id');
+        return $this->belongsToMany('Fellow','UserGroup','group_id','user_id');
     }
 }

@@ -48,9 +48,7 @@
 
         @if($user_group == "Propel Fellow")
 
-          <!--  <div class="col-md-4 col-sm-6 text-center">
-                <a href='reports' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Reports</a>
-            </div>-->
+
 
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='settings/wingmen' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/wingman.png')}}}"><br>Assign<br>Wingmen</a>
@@ -62,6 +60,13 @@
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='settings/students' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/students.png')}}}"><br>Assign<br>Students</a>
+            </div>
+        @endif
+
+
+        @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='reports' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Reports</a>
             </div>
         @endif
 

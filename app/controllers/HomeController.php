@@ -10,17 +10,17 @@ class HomeController extends BaseController
 
         $groups = $user->group()->get();
 
-        $fellow = false;
-        $wingman = false;
+        $flag = false;
+
 
         foreach($groups as $group) {
-            if($group->name == 'Propel Fellow')
-                $fellow = true;
-            elseif($group->name == 'Propel Wingman')
-                $wingman = true;
+            if($group->name == 'Propel Fellow' || $group->name == 'Propel Wingman' || $group->name == 'Propel Strat' || $group->name == 'Program Director, Propel') {
+                $flag = true;
+            }
+
         }
 
-        if($fellow == true || $wingman == true)
+        if($flag == true)
             return true;
         else
             return false;
@@ -36,15 +36,24 @@ class HomeController extends BaseController
 
         $fellow = false;
         $wingman = false;
+        $strat = false;
+        $director = false;
 
         foreach($groups as $group) {
             if($group->name == 'Propel Fellow')
                 $fellow = true;
             elseif($group->name == 'Propel Wingman')
                 $wingman = true;
+            elseif($group->name == 'Propel Strat')
+                $strat = true;
+            elseif($group->name == 'Program Director, Propel')
+                $director = true;
         }
-
-        if($fellow == true)
+        if($director == true)
+            View::share('user_group','Program Director, Propel');
+        elseif($strat == true)
+            View::share('user_group','Propel Strat');
+        elseif($fellow == true)
             View::share('user_group','Propel Fellow');
         elseif($wingman == true)
             View::share('user_group','Propel Wingman');

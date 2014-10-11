@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
 
-                <a class="btn btn-primary" href="class-status/select-city">Class Status</a>
+                <a class="btn btn-primary" href="reports/class-status/select-city">Class Status</a>
 
             </div>
             <br>
