@@ -48,7 +48,9 @@
 
         @if($user_group == "Propel Fellow")
 
-
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='http://makeadiff.in/madapp/index.php/kids/manageaddkids' target='_blank' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/kids.png')}}}"><br>Students</a>
+            </div>
 
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='settings/wingmen' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/wingman.png')}}}"><br>Assign<br>Wingmen</a>
