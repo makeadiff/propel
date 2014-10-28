@@ -57,6 +57,10 @@
     <div class="center-block alert alert-success" role="alert" style="width:20%;">{{{ Session::get('success') }}}</div>
 @endif
 
+@if(Session::has('error'))
+<div class="center-block alert alert-danger" role="alert" style="width:20%;">{{{ Session::get('error') }}}</div>
+@endif
+
 @yield('body')
 
 </body>

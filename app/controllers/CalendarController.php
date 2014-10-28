@@ -34,6 +34,9 @@ class CalendarController extends BaseController
         if(Input::get('type') == "")
             return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
 
+        if(Input::get('subject') == "" && Input::get('type')  == 'volunteer_time')
+            return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')))->with('error', 'Subject not selected.');
+
         $on_date = Input::get('on_date');
         $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
         if(!empty($existing_ce)) {
