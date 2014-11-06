@@ -66,6 +66,12 @@
         @endif
 
 
+        @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel" || $user_group == "Propel Fellow")
+            <div class="col-md-4 col-sm-6 text-center">
+                <a target="_blank" href='http://makeadiff.in/madapp/index.php/event/event' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/events.png')}}}"><br>Events</a>
+            </div>
+        @endif
+
         @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='reports' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Reports</a>
