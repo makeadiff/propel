@@ -80,17 +80,29 @@ class CalendarController extends BaseController
     public function cancelEvent()
     {
         $on_date = Input::get('cancel_on_date');
-        $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
-        $existing_ce->status = 'cancelled';
-        $existing_ce->save();
 
-        $cancelled_event = new CancelledCalendarEvent();
-        $cancelled_event->calendar_event_id = $existing_ce->id;
-        $cancelled_event->reason = Input::get('reason');
-        $cancelled_event->comment = Input::get('comment');
-        $cancelled_event->save();
+        if(Input::get('reason') == 'mistaken_entry') {
+            $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
+            $existing_ce->delete();
+            return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
+        }else {
+            $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
+            $existing_ce->status = 'cancelled';
+            $existing_ce->save();
 
-        return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
+            $cancelled_event = new CancelledCalendarEvent();
+            $cancelled_event->calendar_event_id = $existing_ce->id;
+            $cancelled_event->reason = Input::get('reason');
+            $cancelled_event->comment = Input::get('comment');
+            $cancelled_event->save();
+
+            return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
+        }
+
+
+
+
+
 
     }
 

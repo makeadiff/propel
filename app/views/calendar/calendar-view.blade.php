@@ -76,7 +76,7 @@
                             echo "<a data-date=\"$date_string\" class='btn btn-default btn-sm trigger_cancel'>Cancel</a></div>";
                         }elseif($calendar_event->type == 'child_busy'){
                             echo "<span class='white'>Child Busy</span>";echo "<div class='text-center'><a  data-date=\"$date_string\" class='btn btn-primary btn-sm trigger_create_edit' style='display:inline-block'>Create/Edit</a>&nbsp;&nbsp;";
-
+                            echo "<a data-date=\"$date_string\" class='btn btn-default btn-sm trigger_cancel'>Cancel</a></div>";
                         }
 
 
@@ -195,6 +195,7 @@
                         <select class="form-control" id="type" name="reason">
                             <option value="student_not_available">Student Not Available</option>
                             <option value="volunteer_not_available">Volunteer Not Available</option>
+                            <option value="mistaken_entry">Mistaken Entry</option>
                         </select>
                     </div>
 
