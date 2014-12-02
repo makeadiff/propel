@@ -41,7 +41,7 @@ class CalendarLib extends BaseController{
         // Set the limit to which the calendar can go.
         $this->limit = array(
             'from'	=> array('year'=>2014, 'month'=>1),
-            'to'	=> array('year'=>2014, 'month'=>12)	//This makes sure that future dates are not shown.
+            'to'	=> array('year'=>2015, 'month'=>12)	//This makes sure that future dates are not shown.
         );
 
         //Validations
@@ -277,7 +277,7 @@ class CalendarLib extends BaseController{
                 $d = $this->_each_day();
             }
             print "</tr>\n";
-            if($d >= $this->_month_days[$this->month-1]) break;
+            if($d > $this->_month_days[$this->month-1]) break;
         }
     }
 
