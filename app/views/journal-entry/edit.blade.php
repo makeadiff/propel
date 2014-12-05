@@ -37,10 +37,10 @@
                     </div>
 
                     <div class="form-group" >
-                        <input type="text" class="form-control" name="title" id="title" value="{{{$journal_entry->title}}}" placeholder="Title">
+                        <input type="text" class="form-control" name="title" id="title" value="{{{$journal_entry->title}}}" placeholder="Title" required>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" name="mom" placeholder="Minutes of Meeting" rows="10">{{{$journal_entry->mom}}}</textarea>
+                        <textarea class="form-control" name="mom" placeholder="Minutes of Meeting" rows="10" required>{{{$journal_entry->mom}}}</textarea>
                     </div>
                     <div class="centered">
                         <button type="submit" class="btn btn-primary text-center">Save</button>
