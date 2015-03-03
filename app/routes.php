@@ -56,6 +56,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/reports/class-status/select-city','ReportController@showCities');
     Route::get('/reports','ReportController@showReports');
     Route::get('/reports/class-status/city/{city_id}','ReportController@showClassStatus');
+    Route::get('/reports/wingman-journal-report','ReportController@showWingmanJournalReport');
+    Route::get('/reports/attendance-report','ReportController@showAttendanceReport');
 
 
 });
