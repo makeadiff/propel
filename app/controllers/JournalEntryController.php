@@ -10,7 +10,7 @@ class JournalEntryController extends \BaseController {
 	 */
 	public function create()
 	{
-        $_user_id = $_SESSION['user_id'];
+         $_user_id = $_SESSION['user_id'];
         $students = Wingman::find($_user_id)->student()->get();
 		return View::make('journal-entry.create')->with('students',$students);
 	}

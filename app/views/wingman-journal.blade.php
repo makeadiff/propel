@@ -37,6 +37,16 @@
                         </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <div class="text-center">
+                            <ul class="pagination pagination-centered hide-if-no-paging"></ul>
+                        </div>
+                    </td>
+                </tr>
+                </tfoot>
+
             </table>
             <br>
             <a href="../journal-entry/create" class="btn btn-primary">New Journal Entry</a>
