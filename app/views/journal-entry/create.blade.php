@@ -25,22 +25,27 @@
                         </select>
                     </div>
 
-                    <h4 class="sub-title">Type : </h4>
+                    <!--<h4 class="sub-title">Type : </h4>
                     <div class="form-group white">
                         <label><input name="type" type="radio" id="formal" checked="checked" value="formal">Formal</label>&nbsp; &nbsp;
                         <label><input name="type" type="radio" id="informal" value="informal">Informal</label>
-                    </div>
+                    </div>-->
 
                     <div class="form-group">
                         <input type="text" id='pickdate' name="pickdate" class="form-control" style="width: 25%" placeholder="Date" required>
                     </div>
 
-                    <div class="form-group" >
+                    <!--<div class="form-group" >
                         <input type="text" class="form-control" name="title" id="title" value="" placeholder="Title" required>
-                    </div>
+                    </div>-->
                     <div class="form-group">
-                        <textarea class="form-control" name="mom" placeholder="Minutes of Meeting" rows="10" required></textarea>
+                        <textarea class="form-control" name="moduleFeedback" placeholder="Module Feedback Entry" rows="10" required></textarea>
                     </div>
+
+                    <div class="form-group">
+                        <textarea class="form-control" name="childFeedback" placeholder="Child Feedback Entry" rows="10" required></textarea>
+                    </div>
+
                     <div class="centered">
                         <button type="submit" class="btn btn-primary text-center">Save</button>
                     </div>
