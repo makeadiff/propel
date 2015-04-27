@@ -10,9 +10,11 @@ class JournalEntryController extends \BaseController {
 	 */
 	public function create()
 	{
-         $_user_id = $_SESSION['user_id'];
+        $_user_id = $_SESSION['user_id'];
         $students = Wingman::find($_user_id)->student()->get();
-		return View::make('journal-entry.create')->with('students',$students);
+        $moduleList = WingmanModule::all();
+
+		return View::make('journal-entry.create',['students'=>$students,'modules'=> $moduleList]);
 	}
 
 
@@ -25,13 +27,58 @@ class JournalEntryController extends \BaseController {
 	{
         $user_id = $_SESSION['user_id'];
         $je = new WingmanJournal();
-        $je->type = Input::get('type');
-        $je->title = Input::get('title');
-        $je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
-        $je->mom = Input::get('mom');
+        $moduleId = Input::get('module');
+        $moduleName = WingmanModule::where('id','=',$moduleId)->get();
+        if(!empty(Input::get('moduleFeedback')) && !empty(Input::get('childFeedback'))){
+        	$je = new WingmanJournal();
+            $je->type = 'module_feedback';
+        	$je->title = $moduleName[0]->name;
+        	$je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
+        	$je->module_id=Input::get('module');
+        	$je->mom = Input::get('moduleFeedback');
+        	$je->wingman_id = $user_id;
+	        $je->student_id = Input::get('student');
+	        $je->save();
+
+	        $je = new WingmanJournal();
+        	$je->type = 'child_feedback';
+        	$je->title = Input::get('title');
+        	$je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
+        	$je->mom = Input::get('childFeedback');
+        	$je->wingman_id = $user_id;
+	        $je->student_id = Input::get('student');
+	        $je->save();
+        }
+        else if(!empty(Input::get('moduleFeedback'))){
+        	$je = new WingmanJournal();
+        	$je->type = 'module_feedback';
+        	$je->title = $moduleName[0]->name;
+        	$je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
+        	$je->module_id=Input::get('module');
+        	$je->mom = Input::get('moduleFeedback');
+        	$je->wingman_id = $user_id;
+	        $je->student_id = Input::get('student');
+	        $je->save();
+        }
+        else if(!empty(Input::get('childFeedback'))){
+        	$je = new WingmanJournal();
+        	$je->type = 'childFeedback';
+        	$je->title = Input::get('title');
+        	$je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
+        	$je->module_id=Input::get('module');
+        	$je->mom = Input::get('childFeedback');
+        	$je->wingman_id = $user_id;
+	        $je->student_id = Input::get('student');
+	        $je->save();
+        }
+        //$je->title = Input::get('title');
+        /*$je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
+        $je->mom = Input::get('moduleFeedback');
+        $je->childFeedback = Input::get('childFeedback');
+        
         $je->wingman_id = $user_id;
         $je->student_id = Input::get('student');
-        $je->save();
+        $je->save();*/
 
         return Redirect::to(URL::to('/') . "/wingman-journal/" . $user_id);
 	}
