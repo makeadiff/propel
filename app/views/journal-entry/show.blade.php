@@ -15,16 +15,28 @@
         <div class="col-md-6 col-md-offset-3 white">
 
             <h2 class = "sub-title centered">{{{$journal_entry->title}}}</h2><br>
-            <h4 class="sub-title">Type : </h4>&nbsp;{{{$journal_entry->type}}}<br>
+            <h4 class="sub-title">Type: 
+            <?php
+                if($journal_entry->type=="child_feedback"){
+                    echo "Child Feedback";
+                }
+                else if($journal_entry->type=="module_feedback"){
+                    echo "Module Feedback";
+                }
+                else{
+                    echo "Other";
+                }
+            ?>
+            </h4><br/>
 
 
-            <h4 class="sub-title">Student : </h4>&nbsp;{{{$journal_entry->student()->first()->name}}}<br>
+            <h4 class="sub-title">Student: {{{$journal_entry->student()->first()->name}}}</h4><br>
 
-            <h4 class="sub-title">Date : </h4>&nbsp;{{{$journal_entry->on_date}}}<br><br>
+            <h4 class="sub-title">Date: {{{$journal_entry->on_date}}}</h4><br><br>
 
-            <h4 class="sub-title">Minutes of Meeting :</h4><br>
+            <h4 class="sub-title">Minutes of Meeting</h4><br>
 
-            {{{$journal_entry->mom}}}
+            <span class="data">{{{$journal_entry->mom}}}</span>
 
             <div class="centered">
                 <a href="{{{URL::to('')}}}" class="btn btn-primary text-center">Back</a>

@@ -62,8 +62,8 @@ class JournalEntryController extends \BaseController {
         }
         else if(!empty(Input::get('childFeedback'))){
         	$je = new WingmanJournal();
-        	$je->type = 'childFeedback';
-        	$je->title = Input::get('title');
+        	$je->type = 'child_feedback';
+            $je->title = Input::get('title');
         	$je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
         	$je->module_id=Input::get('module');
         	$je->mom = Input::get('childFeedback');
@@ -109,8 +109,9 @@ class JournalEntryController extends \BaseController {
 		$journal_entry = WingmanJournal::find($id);
         $wingman_id = $journal_entry->wingman_id;
         $students = Wingman::find($wingman_id)->student()->get();
+        $moduleList = WingmanModule::all();
 
-        return View::make('journal-entry.edit')->with('journal_entry',$journal_entry)->with('students',$students);
+        return View::make('journal-entry.edit')->with('journal_entry',$journal_entry)->with('students',$students)->with('modules',$moduleList);
 	}
 
 
@@ -126,7 +127,15 @@ class JournalEntryController extends \BaseController {
         $wingman_id = $je->wingman_id;
 
         $je->type = Input::get('type');
-        $je->title = Input::get('title');
+        $type=Input::get('type');
+        if($type=="module_feedback"){
+            $moduleName = WingmanModule::where('id','=',Input::get('title'))->get();
+        
+            $je->title = $moduleName[0]->name;
+        }
+        else{
+            $je->title = Input::get('title');
+        }
         $je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
         $je->mom = Input::get('mom');
         $je->student_id = Input::get('student');
