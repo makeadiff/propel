@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <input type="text" id='pickdate' name="pickdate" class="form-control" style="width: 25%" placeholder="Date" required>
                     </div>
-
+                    <br/>
                     <h4 class="sub-title">Module Feedback</h4>
                     <div class="form-group">
                         <select id="student" class="form-control" placeholder="Module" name="module" style="width: 25%">
@@ -47,6 +47,7 @@
                     <div class="form-group">
                         <textarea class="form-control" name="moduleFeedback" id="moduleFeedback" placeholder="Module Feedback Entry" rows="10"></textarea>
                     </div>
+                    <br/>
                     <h4 class="sub-title">Child Feedback</h4>
                     <div class="form-group" >
                         <input type="text" class="form-control" name="title" id="title" value="" placeholder="Title for Child Feedback">
