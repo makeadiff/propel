@@ -6,6 +6,8 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <script src="{{{URL::to('/')}}}/js/jquery-1.9.0.js"></script>
+    <script src="{{{URL::to('/')}}}/js/jquery-ui.min.js"></script>
+    <script src="{{{URL::to('/')}}}/js/jquery.timepicker.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/bootstrap.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/footable.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/footable.filter.min.js"></script>
@@ -13,6 +15,7 @@
     <script src="{{{URL::to('/')}}}/js/footable.sort.min.js"></script>
     <script src="{{{URL::to('/')}}}/js/uservoice.js"></script>
     <script src="{{{URL::to('/')}}}/js/propel_script.js"></script>
+    
     <script type="text/javascript">
         $(function () {
             $('.footable').footable({

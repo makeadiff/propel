@@ -5,9 +5,97 @@
 <link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.date.css" id="theme_date">
 <link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.time.css" id="theme_date">
 <link rel="stylesheet" href="{{{URL::to('/')}}}/css/calendar.css" id="theme_date">
+<link href='{{{URL::to("/")}}}/css/fullcalendar.css' rel='stylesheet' />
+<link href='{{{URL::to("/")}}}/css/fullcalendar.print.css' rel='stylesheet' media='print' />
+
+<style>
+
+    #calendar {
+        max-width: 900px;
+        margin: 0 auto;
+        margin-bottom:50px;
+    }
+
+</style>
+
+<script src='{{{URL::to("/")}}}/js/lib/moment.min.js'></script>
+<script src='{{{URL::to("/")}}}/js/fullcalendar.js'></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+            
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                //defaultDate: '2015-02-12',
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end) {
+                    var cur_date = $.datepicker.formatDate('yy-mm-dd',new Date(start));
+                    $("#on_date").val(cur_date);
+                    var start_time = timeFormat(start);
+                    var end_time = timeFormat(end);
+                    $("#createEditModal").modal('show');
+                    $('#start_time').val(start_time);
+                    $('#end_time').val(end_time);
+                    var eventData;
+                    if (title) {
+                        eventData = {
+                            id:id,
+                            title: title,
+                            start: start,
+                            end: end
+                        };
+                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                    }
+                    $('#calendar').fullCalendar('unselect');
+                },
+                editable: false,
+                eventLimit: false, // allow "more" link when too many events
+                
+                events: <?php echo $calendarEvents ?>
+            });
+        
+            $('.fc-content').click(function(){
+                $("#cancelModal").modal('show');
+                
+            })
+        });
+        
+        function timeFormat(time){
+            var time_value = new Date(time);
+            var hours = time_value.getUTCHours();
+            var minutes = time_value.getUTCMinutes();
+            var sec = time_value.getUTCSeconds();
+            var dd = 'AM';
+            var h = hours;
+            if(h>=12){
+                h = hours-12;
+                dd = 'PM';
+            }
+            if(h == 0){
+                h = 12;
+            }
+            //Converting to 2 Digit Format.
+            minutes = minutes<10?"0"+minutes:minutes;
+            sec = sec<10?"0"+sec:sec;
+            h = h<10?"0"+h:h;
+            /*var pattern = new RegExp("0?"+hours+":"+minutes+":"+sec);
+            var replacement = h+":"+minutes;
+            replacement += " "+dd;*/    
+            var time_new = h+':'+minutes+' '+dd;
+            return(time_new);           
+        }
+
+    </script>
 @stop
 
 @section('body')
+
+
+
 
 <div class="container-fluid">
     <div class="centered">
@@ -15,90 +103,9 @@
 
         <h2 class="sub-title">Calendar</h2>
         <br>
-
-
         <div class="row">
             <div class="col-md-12">
-                <?php
-
-                $cal->display();
-
-                function daily($year, $month, $day, $weekday) {
-
-                    $date = new DateTime("$day-$month-$year");
-
-                    $date_string = $date->format('Y-m-d');
-
-
-                    $event = DB::select('SELECT propel_calendarEvents.id FROM propel_calendarEvents
-                                            WHERE DATE(propel_calendarEvents.start_time) = ?
-                                            AND propel_calendarEvents.student_id = ?
-                                            ',array($date,$GLOBALS['student_id']));
-
-                    if(!empty($event[0])){
-
-                        $calendar_event = CalendarEvent::find($event[0]->id);
-                        $start_time = date_format(date_create($calendar_event->start_time),'h:i A');
-                        $end_time = date_format(date_create($calendar_event->end_time),'h:i A');
-
-                        if($calendar_event->type == 'wingman_time'){
-
-                            $wingman = $calendar_event->wingmanTime()->first()->wingman()->first();
-                            $wingman_module = $calendar_event->wingmanTime()->first()->wingmanModule()->first();
-                            echo "<a class=\"list_popover white\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"
-                                 data-content=\"<strong>Wingman :</strong> $wingman->name <br>
-                                                <strong>Wingman Module :</strong> $wingman_module->name<br>
-                                                <strong>Start Time : </strong>$start_time<br>
-                                                <strong>End Time : </strong>$end_time
-                                                \">Wingman Time";
-                            if(!empty($calendar_event->cancelledCalendarEvent()->first()))
-                                echo "(Cancelled)</a>";
-                            else
-                                echo "</a>";
-                            echo "<div class='text-center'><a  data-date=\"$date_string\" class='btn btn-primary btn-sm trigger_create_edit' style='display:inline-block'>Create/Edit</a>&nbsp;&nbsp;";
-                            echo "<a data-date=\"$date_string\" class='btn btn-default btn-sm trigger_cancel'>Cancel</a></div>";
-                        }elseif($calendar_event->type == 'volunteer_time'){
-                            $volunteer = $calendar_event->volunteerTime()->first()->volunteer()->first();
-                            $subject = $calendar_event->volunteerTime()->first()->subject()->first();
-                            echo "<a class=\"list_popover white\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\"
-                                 data-content=\"<strong>Volunteer :</strong> $volunteer->name <br>
-                                                <strong>Subject :</strong> $subject->name<br>
-                                                <strong>Start Time : </strong>$start_time<br>
-                                                <strong>End Time : </strong>$end_time
-                                                \">Volunteer Time";
-
-                            if(!empty($calendar_event->cancelledCalendarEvent()->first()))
-                                echo "(Cancelled)</a>";
-                            else
-                                echo "</a>";
-
-                            echo "<div class='text-center'><a  data-date=\"$date_string\" class='btn btn-primary btn-sm trigger_create_edit' style='display:inline-block'>Create/Edit</a>&nbsp;&nbsp;";
-                            echo "<a data-date=\"$date_string\" class='btn btn-default btn-sm trigger_cancel'>Cancel</a></div>";
-                        }elseif($calendar_event->type == 'child_busy'){
-                            echo "<span class='white'>Child Busy</span>";echo "<div class='text-center'><a  data-date=\"$date_string\" class='btn btn-primary btn-sm trigger_create_edit' style='display:inline-block'>Create/Edit</a>&nbsp;&nbsp;";
-                            echo "<a data-date=\"$date_string\" class='btn btn-default btn-sm trigger_cancel'>Cancel</a></div>";
-                        }
-
-
-                    }
-                    else{
-                        echo "<span class='grey text-center'>Not Marked</span>";
-                        echo "<div class='text-center'><a  data-date=\"$date_string\" class='btn btn-primary btn-sm trigger_create_edit' style='display:inline-block'>Create/Edit</a>&nbsp;&nbsp;";
-
-                    }
-
-                }
-
-                ?>
-            <br>
-            @if($user_group == "Propel Fellow")
-               <form action="{{URL::to('/calendar/approve')}}" method="post">
-                    <input type="hidden" name="student_id" value="{{{$student_id}}}" />
-                    <input type="hidden" name="month" value="{{{ (isset($_REQUEST['year']) ? $_REQUEST['year'] : date('Y')) . "-" . (isset($_REQUEST['month']) ? $_REQUEST['month'] : date('m'))}}}" />
-                    <input type="submit" name="action" value="Approve All" class="btn btn-md btn-success" />
-                </form>
-            @endif
-
+                <div id='calendar'></div>
             </div>
         </div>
     </div>
@@ -110,12 +117,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Create/Edit</h4>
+                <h4 class="modal-title">Create Event</h4>
             </div>
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/createEdit')}}}">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/createEdit')}}}">
                     <div class="form-group">
-                        <label for="type" class="control-label">Type : </label>
+                        <label for="type" class="control-label">Type</label>
                         <select class="form-control" id="type" name="type">
                             <option value=""></option>
                             <option value="child_busy">Child Busy</option>
@@ -126,7 +133,7 @@
 
 
                     <div class="form-group optional volunteer-time" style="display:none">
-                        <label for="volunteer" class="control-label">Volunteer : </label>
+                        <label for="volunteer" class="control-label">Volunteer</label>
                         <select class="form-control" id="volunteer" name="volunteer">
                             @foreach($volunteers as $volunteer)
                                 <option value="{{{$volunteer->id}}}">{{{$volunteer->name}}}</option>
@@ -135,7 +142,7 @@
                     </div>
 
                     <div class="form-group optional volunteer-time" style="display:none">
-                        <label for="subject" class="control-label">Subject : </label>
+                        <label for="subject" class="control-label">Subject</label>
                         <select class="form-control" id="subject" name="subject">
                             @foreach($subjects as $subject)
                                 <option value="{{{$subject->id}}}">{{{$subject->name}}}</option>

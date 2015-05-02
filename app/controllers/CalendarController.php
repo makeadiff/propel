@@ -22,10 +22,25 @@ class CalendarController extends BaseController
         $subjects = Wingman::find($wingman_id)->city()->first()->subject()->get();
         $wingman_modules = WingmanModule::all();
 
-        $GLOBALS['student_id'] = $student_id;
+        $calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
+        foreach ($calendarEvents as $calendarEvent) {
+            /*if($calendarEvent->title == 'wingman_time'){
+                $calendarEvent->title = 'Wigman Time';
+            }
+            elseif ($calendarEvent->title == 'child_busy') {
+                $calendarEvent->title = 'Child Busy';
+            }
+            elseif ($calendarEvent->title == 'volunteer_time') {
+                $calendarEvent->title = 'Volunteer Time';
+            }*/
+            $calendarEvent->title = str_replace('_', ' ',$calendarEvent->title);
+            $calendarEvent->title = ucwords($calendarEvent->title);
+        }
+        $calendarEvents = json_encode($calendarEvents);
 
+        $GLOBALS['student_id'] = $student_id;
         return View::make('calendar.calendar-view')->with('cal',$cal)->with('volunteers',$volunteers)->with('subjects',$subjects)
-                        ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id) ;
+                        ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id)->with('calendarEvents',$calendarEvents) ;
     }
 
     public function createEdit()
