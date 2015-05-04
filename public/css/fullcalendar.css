@@ -515,6 +515,17 @@ temporary rendered events).
 	color:#FFF;
 }
 
+.cancelled{
+	position: relative; /* for resize handle and other inner positioning */
+	display: block; /* make the <a> tag block */
+	font-size: .85em;
+	line-height: 1.3;
+	border-radius: 3px;
+	border: 1px solid #C00; /* default BORDER color */
+	background-color: #C00; /* default BACKGROUND color */
+	font-weight: normal; /* undo jqui's ui-widget-header bold */
+	color:#FFF;	
+}
 /* overpower some of bootstrap's and jqui's styles on <a> tags */
 .fc-event,
 .fc-event:hover,

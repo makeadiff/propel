@@ -22,7 +22,9 @@ class CalendarController extends BaseController
         $subjects = Wingman::find($wingman_id)->city()->first()->subject()->get();
         $wingman_modules = WingmanModule::all();
 
-        $calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
+        /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
+        */
+        $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')->select('P.id','P.type as title','P.start_time as start','P.end_time as end','P.status','Q.reason as reason','Q.comment as comment','U.name as wingman_name','T.name as volunteer_name')->where('student_id','=',$student_id)->get();
         foreach ($calendarEvents as $calendarEvent) {
             /*if($calendarEvent->title == 'wingman_time'){
                 $calendarEvent->title = 'Wigman Time';
@@ -35,9 +37,13 @@ class CalendarController extends BaseController
             }*/
             $calendarEvent->title = str_replace('_', ' ',$calendarEvent->title);
             $calendarEvent->title = ucwords($calendarEvent->title);
+            $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
+            $calendarEvent->reason = ucwords($calendarEvent->reason);
+
         }
         $calendarEvents = json_encode($calendarEvents);
-
+        //return $calendarEvents;
+        
         $GLOBALS['student_id'] = $student_id;
         return View::make('calendar.calendar-view')->with('cal',$cal)->with('volunteers',$volunteers)->with('subjects',$subjects)
                         ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id)->with('calendarEvents',$calendarEvents) ;
@@ -52,20 +58,20 @@ class CalendarController extends BaseController
         if(Input::get('subject') == "" && Input::get('type')  == 'volunteer_time')
             return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')))->with('error', 'Subject not selected.');
 
-        $on_date = Input::get('on_date');
+        /*$on_date = Input::get('on_date');
         $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
         if(!empty($existing_ce)) {
             WingmanTime::where('calendar_event_id','=',$existing_ce->id)->delete();
             VolunteerTime::where('calendar_event_id','=',$existing_ce->id)->delete();
             CancelledCalendarEvent::where('calendar_event_id','=',$existing_ce->id)->delete();
             $existing_ce->delete();
-        }
+        }*/
 
 
         $ce = new CalendarEvent;
         $ce->type = Input::get('type');
         $ce->start_time = new DateTime(Input::get('on_date') . ' ' . Input::get('start_time'));
-        $ce->end_time = new DateTime(Input::get('on_date') . ' ' . Input::get('end_time'));
+        $ce->end_time = new DateTime(Input::get('end_date') . ' ' . Input::get('end_time'));
         $ce->student_id = Input::get('student_id');
         $ce->status = 'created';
         $ce->save();
@@ -94,14 +100,14 @@ class CalendarController extends BaseController
 
     public function cancelEvent()
     {
-        $on_date = Input::get('cancel_on_date');
+        //$on_date = Input::get('cancel_on_date');
 
         if(Input::get('reason') == 'mistaken_entry') {
-            $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
+            $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
             $existing_ce->delete();
             return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
         }else {
-            $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
+            $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
             $existing_ce->status = 'cancelled';
             $existing_ce->save();
 

@@ -21,6 +21,7 @@
 <script src='{{{URL::to("/")}}}/js/lib/moment.min.js'></script>
 <script src='{{{URL::to("/")}}}/js/fullcalendar.js'></script>
 <script type="text/javascript">
+
     $(document).ready(function() {
             
             $('#calendar').fullCalendar({
@@ -34,7 +35,9 @@
                 selectHelper: true,
                 select: function(start, end) {
                     var cur_date = $.datepicker.formatDate('yy-mm-dd',new Date(start));
+                    var end_date = $.datepicker.formatDate('yy-mm-dd',new Date(end));
                     $("#on_date").val(cur_date);
+                    $("#end_date").val(end_date);
                     var start_time = timeFormat(start);
                     var end_time = timeFormat(end);
                     $("#createEditModal").modal('show');
@@ -58,7 +61,9 @@
                 events: <?php echo $calendarEvents ?>
             });
         
-            $('.fc-content').click(function(){
+            $('.fc-event').click(function(){
+                var id = this.id;
+                $('#calendar_event_id').val(id);
                 $("#cancelModal").modal('show');
                 
             })
@@ -174,6 +179,7 @@
                     </div>
 
                     <input type="hidden" id="on_date" name="on_date">
+                    <input type="hidden" id="end_date" name="end_date">
                     <input type="hidden" name="student_id" value="{{{$student_id}}}">
                     <input type="hidden" name="wingman_id" value="{{{$wingman_id}}}">
 
@@ -210,7 +216,7 @@
                         <label for="comment" class="control-label">Comment : </label>
                         <textarea class="form-control" id="comment" name="comment"></textarea>
                     </div>
-
+                    <input type="hidden" id="calendar_event_id" name="calendar_event_id">
                     <input type="hidden" id="cancel_on_date" name="cancel_on_date">
                     <input type="hidden" name="student_id" value="{{{$student_id}}}">
                     <input type="hidden" name="wingman_id" value="{{{$wingman_id}}}">
@@ -241,17 +247,6 @@
 
 <script>
     $(function(){
-        $(".trigger_create_edit").click(function(){
-            $("#on_date").val($(this).attr("data-date"));
-            $("#createEditModal").modal('show');
-        })
-
-        $(".trigger_cancel").click(function(){
-            $("#cancel_on_date").val($(this).attr("data-date"));
-            $("#cancelModal").modal('show');
-        })
-
-
         $("#type").change(function () {
             // hide all optional elements
             $('.optional').css('display','none');
@@ -264,7 +259,14 @@
                 }
             });
         });
-    })
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    });
 </script>
 
 

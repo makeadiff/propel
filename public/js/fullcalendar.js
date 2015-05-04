@@ -4,6 +4,35 @@
  * (c) 2015 Adam Shaw
  */
 
+$(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+});
+
+function timeFormat(time){
+            var time_value = new Date(time);
+            var hours = time_value.getUTCHours();
+            var minutes = time_value.getUTCMinutes();
+            var sec = time_value.getUTCSeconds();
+            var dd = 'AM';
+            var h = hours;
+            if(h>=12){
+                h = hours-12;
+                dd = 'PM';
+            }
+            if(h == 0){
+                h = 12;
+            }
+            //Converting to 2 Digit Format.
+            minutes = minutes<10?"0"+minutes:minutes;
+            sec = sec<10?"0"+sec:sec;
+            h = h<10?"0"+h:h;
+            /*var pattern = new RegExp("0?"+hours+":"+minutes+":"+sec);
+            var replacement = h+":"+minutes;
+            replacement += " "+dd;*/    
+            var time_new = h+':'+minutes+' '+dd;
+            return(time_new);           
+}
+
 (function(factory) {
 	if (typeof define === 'function' && define.amd) {
 		define([ 'jquery', 'moment' ], factory);
@@ -5039,6 +5068,7 @@ DayGrid.mixin({
 		var skinCss = cssToStr(this.getEventSkinCss(event));
 		var timeHtml = '';
 		var timeText;
+		var timeEnd;
 		var titleHtml;
 
 		classes.unshift('fc-day-grid-event', 'fc-h-event');
@@ -5051,12 +5081,32 @@ DayGrid.mixin({
 			}
 		}
 
+		if(seg.isEnd || seg.isStart){
+			var timeS = $.datepicker.formatDate('mm-dd-yy',new Date(event.start))+' '+timeFormat(event.start);
+			var timeE = $.datepicker.formatDate('mm-dd-yy',new Date(event.end))+' '+timeFormat(event.end);
+		}
+
 		titleHtml =
-			'<span class="fc-title" id="'+htmlEscape(event.id)+'">' +
+			'<span class="fc-title">' +
 				(htmlEscape(event.title || '') || '&nbsp;') + // we always want one line of height
 			'</span>';
 		
-		return '<a class="' + classes.join(' ') + '"' +
+		return '<a data-toggle="tooltip" data-placement="left" title="('+
+				(event.status.toUpperCase())+') '+
+				(event.title? event.title:'')+' '
+				+(event.comment? event.comment:'')
+				+(event.start?' ('+htmlEscape(timeS)+' - '+htmlEscape(timeE)+') ':'')
+				+(event.volunteer_name?
+					'Volunteer Name: '+htmlEscape(event.volunteer_name)+'"':
+					''
+				)
+				+(event.wingman_name?
+					'Wingman Name: '+htmlEscape(event.wingman_name)+'"':
+					''
+				)
+				+'" class="' + classes.join(' ') 
+				+' '+htmlEscape(event.status)
+				+ '" id="'+htmlEscape(event.id)+'"' +
 				(event.url ?
 					' href="' + htmlEscape(event.url) + '"' :
 					''
@@ -5065,6 +5115,22 @@ DayGrid.mixin({
 					' style="' + skinCss + '"' :
 					''
 					) +
+				(event.volunteer_name?
+					'volunteer_name="'+event.volunteer_name+'"':
+					''
+					)+
+				(event.wingman_name?
+					'wingman_name="'+event.wingman_name+'"':
+					''
+					)+
+				(event.start?
+					'start="'+event.start+'"':
+					''
+					)+
+				(event.end?
+					'end="'+event.end+'"':
+					''
+					)+
 			'>' +
 				'<div class="fc-content">' +
 					(this.isRTL ?
@@ -5533,7 +5599,7 @@ DayGrid.mixin({
 				'<span class="fc-close ' +
 					(isTheme ? 'ui-icon ui-icon-closethick' : 'fc-icon fc-icon-x') +
 				'"></span>' +
-				'<span class="fc-title" id="'+htmlEscape(id)+'">' +
+				'<span class="fc-title '+htmlEscape(status)+'" id="'+htmlEscape(id)+'">' +
 					htmlEscape(title) +
 				'</span>' +
 				'<div class="fc-clear"/>' +
@@ -6257,9 +6323,10 @@ TimeGrid.mixin({
 			timeText = this.getEventTimeText(event);
 			fullTimeText = this.getEventTimeText(event, 'LT');
 			startTimeText = this.getEventTimeText(event, null, false); // displayEnd=false
+			var status = event.status;
 		}
 
-		return '<a class="' + classes.join(' ') + '"' +
+		return '<a class="' + classes.join(' ') +' '+htmlEscape(event.status)+ '" id="'+htmlEscape(event.id)+'"' +
 			(event.url ?
 				' href="' + htmlEscape(event.url) + '"' :
 				''
@@ -6284,7 +6351,32 @@ TimeGrid.mixin({
 							htmlEscape(event.title) +
 						'</div>' :
 						''
-						) +
+						)+
+					(event.volunteer_name?
+						'<div class="fc-title">' +
+							htmlEscape(event.volunteer_name) +
+						'</div>' :
+						''
+						)+
+					(event.wingman_name?
+						'<div class="fc-title"><strong>' +
+							htmlEscape(event.wingman_name) +
+						'</strong></div>' :
+						''
+						)+
+					(event.status?
+						'<div class="fc-title" id="'+htmlEscape(event.id)+'" style="font-weight:bold;"  >'+
+							status.toUpperCase()+
+						'</div>' :
+						''
+						)+
+					(event.reason?
+						'<div class="fc-title">' +
+							htmlEscape(event.comment) +
+						'</div>' :
+						''
+						)
+					+
 				'</div>' +
 				'<div class="fc-bg"/>' +
 				/* TODO: write CSS for this
