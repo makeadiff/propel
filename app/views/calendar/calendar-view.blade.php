@@ -143,9 +143,10 @@
         
         <div class="row">
             <div class="col-md-12">
-                <div class="form-group" style="width:310px; margin:auto">
-                    <span class="fc-event" style="width:150px; float:right; margin-left:10px;">Created/Approved Event</span>
-                    <span class="fc-event cancelled" style="width:150px; float:right;">Cancelled Event</span>
+                <div class="form-group" style="max-width:900px; margin:auto">
+                    <span class="fc-event legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px;">Not Approved Event</span>
+                    <span class="fc-event cancelled legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px">Cancelled Event</span>
+                    <span class="fc-event approved legend" style="min-width:50px; padding:0 5px; float:right;">Approved Event</span>
                     <br/><br/>
                 </div>
                 <div id='calendar'>
