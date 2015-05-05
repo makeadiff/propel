@@ -4,6 +4,15 @@
  * (c) 2015 Adam Shaw
  */
 
+/*$(document).ready(function(){
+	$('.fc-event').click(function(){
+	                var id = this.id;
+	                $('#calendar_event_id').val(id);
+	                $("#cancelModal").modal('show');
+	                
+	});
+});*/
+
 $(function () {
       $('[data-toggle="tooltip"]').tooltip()
 });
@@ -5082,8 +5091,8 @@ DayGrid.mixin({
 		}
 
 		if(seg.isEnd || seg.isStart){
-			var timeS = $.datepicker.formatDate('mm-dd-yy',new Date(event.start))+' '+timeFormat(event.start);
-			var timeE = $.datepicker.formatDate('mm-dd-yy',new Date(event.end))+' '+timeFormat(event.end);
+			var timeS = $.datepicker.formatDate('M dd',new Date(event.start))+' '+timeFormat(event.start);
+			var timeE = $.datepicker.formatDate('M dd',new Date(event.end))+' '+timeFormat(event.end);
 		}
 
 		titleHtml =
@@ -5097,11 +5106,11 @@ DayGrid.mixin({
 				+(event.comment? event.comment:'')
 				+(event.start?' ('+htmlEscape(timeS)+' - '+htmlEscape(timeE)+') ':'')
 				+(event.volunteer_name?
-					'Volunteer Name: '+htmlEscape(event.volunteer_name)+'"':
+					'Volunteer Name: '+htmlEscape(event.volunteer_name)+' Subject: '+htmlEscape(event.subject_name)+'':
 					''
 				)
 				+(event.wingman_name?
-					'Wingman Name: '+htmlEscape(event.wingman_name)+'"':
+					'Wingman Name: '+htmlEscape(event.wingman_name)+' Module Name:'+ htmlEscape(event.module_name)+'':
 					''
 				)
 				+'" class="' + classes.join(' ') 
@@ -5116,21 +5125,22 @@ DayGrid.mixin({
 					''
 					) +
 				(event.volunteer_name?
-					'volunteer_name="'+event.volunteer_name+'"':
+					'volunteer_name="'+event.volunteer_name+'" volunteer_id="'+event.volunteer_id+'" subject_id="'+event.subject_id+'" subject_name="'+event.subject_name+'"':
 					''
 					)+
 				(event.wingman_name?
-					'wingman_name="'+event.wingman_name+'"':
+					'wingman_name="'+event.wingman_name+'" wingman_id="'+event.wingman_id+'" module_id="'+event.module_id+'" module_name="'+event.module_name+'"':
 					''
 					)+
 				(event.start?
-					'start="'+event.start+'"':
+					'start="'+timeS+'" end="'+timeE+'"':
 					''
 					)+
-				(event.end?
-					'end="'+event.end+'"':
+				(event.title?
+					'name="'+event.title+'"':
 					''
 					)+
+				'status="'+event.status+'"'+
 			'>' +
 				'<div class="fc-content">' +
 					(this.isRTL ?
@@ -6326,7 +6336,12 @@ TimeGrid.mixin({
 			var status = event.status;
 		}
 
-		return '<a class="' + classes.join(' ') +' '+htmlEscape(event.status)+ '" id="'+htmlEscape(event.id)+'"' +
+		if(seg.isEnd || seg.isStart){
+			var timeS = $.datepicker.formatDate('M dd',new Date(event.start))+' '+timeFormat(event.start);
+			var timeE = $.datepicker.formatDate('M dd',new Date(event.end))+' '+timeFormat(event.end);
+		}
+
+		return '<a data-placement="bottom" class="' + classes.join(' ') +' '+htmlEscape(event.status)+ '" id="'+htmlEscape(event.id)+'"' +
 			(event.url ?
 				' href="' + htmlEscape(event.url) + '"' :
 				''
@@ -6334,7 +6349,38 @@ TimeGrid.mixin({
 			(skinCss ?
 				' style="' + skinCss + '"' :
 				''
-				) +
+				) +	
+				'title="('+
+				(htmlEscape(event.status).toUpperCase())+') '+
+				(event.title? event.title:'')+' '
+				+(event.comment? event.comment:'')
+				+(event.start?' ('+htmlEscape(timeS)+' - '+htmlEscape(timeE)+') ':'')
+				+(event.volunteer_name?
+					'Volunteer Name: '+htmlEscape(event.volunteer_name)+' Subject: '+htmlEscape(event.subject_name)+'':
+					''
+				)+
+				(event.wingman_name?
+					'Wingman Name: '+htmlEscape(event.wingman_name)+' Module Name:'+ htmlEscape(event.module_name)+'':
+					''
+					)+
+				'"'+
+				(event.volunteer_name?
+					'volunteer_name="'+event.volunteer_name+'" volunteer_id="'+event.volunteer_id+'" subject_id="'+event.subject_id+'" subject_name="'+event.subject_name+'"':
+					''
+					)+
+				(event.wingman_name?
+					'wingman_name="'+event.wingman_name+'" wingman_id="'+event.wingman_id+'" module_id="'+event.module_id+'" module_name="'+event.module_name+'"':
+					''
+					)+
+				(event.start?
+					'start="'+timeS+'" end="'+timeE+'"':
+					''
+					)+
+				(event.title?
+					'name="'+event.title+'"':
+					''
+					)+
+				'status="'+htmlEscape(event.status)+'"'+
 			'>' +
 				'<div class="fc-content">' +
 					(timeText ?

@@ -17,7 +17,17 @@
     }
 
 </style>
-
+<script type="text/javascript">
+    event_type;
+    volunteer_id;
+    module_id;
+    subject_id;
+    start_time;
+    end_time;
+    start_date;
+    end_date;
+    event_id;
+</script>
 <script src='{{{URL::to("/")}}}/js/lib/moment.min.js'></script>
 <script src='{{{URL::to("/")}}}/js/fullcalendar.js'></script>
 <script type="text/javascript">
@@ -34,13 +44,14 @@
                 selectable: true,
                 selectHelper: true,
                 select: function(start, end) {
+                    var title=' ';
                     var cur_date = $.datepicker.formatDate('yy-mm-dd',new Date(start));
                     var end_date = $.datepicker.formatDate('yy-mm-dd',new Date(end));
                     $("#on_date").val(cur_date);
                     $("#end_date").val(end_date);
                     var start_time = timeFormat(start);
                     var end_time = timeFormat(end);
-                    $("#createEditModal").modal('show');
+                    $("#createModal").modal('show');
                     $('#start_time').val(start_time);
                     $('#end_time').val(end_time);
                     var eventData;
@@ -58,15 +69,36 @@
                 editable: false,
                 eventLimit: false, // allow "more" link when too many events
                 
-                events: <?php echo $calendarEvents ?>
+                events: <?php echo $calendarEvents ?>,
+
+                eventClick: function(calEvent, jsEvent, view) {
+                    var id = this.id;
+                    var data = document.getElementById(id.toString());
+                    $('#calendar_event_id').val(id);
+                    var string = '<strong>'+ data.name + '</strong>'
+                                    + '<br/>' + data.getAttribute('start')
+                                    + ' - ' + data.getAttribute('end')
+                                    + (data.getAttribute('volunteer_name')?'<br/>Volunteer Name: <strong>'+data.getAttribute('volunteer_name')+'</strong><br/>Subject Name: <strong>'+data.getAttribute('subject_name')+'</strong>':'')
+                                    + (data.getAttribute('wingman_name')?'<br/>Wingman Name: <strong>'+data.getAttribute('wingman_name')+'</strong> <br/>Module Name: <strong>'+ data.getAttribute('module_name')+'</strong>':'')
+                                    + '<br/><strong>(' + data.getAttribute('status').toUpperCase() + ')</strong>';
+                    $('#event_detail').html(string);
+                    $("#dialogModal").modal('show');
+                    event_id = id;
+                    start_time = data.getAttribute('start');
+                    end_time = data.getAttribute('end');
+                    volunteer_id = (data.getAttribute('volunteer_id')?data.getAttribute('volunteer_id'):'');
+                    event_type = data.name;
+                    module_id = (data.getAttribute('module_id')?data.getAttribute('module_id'):'');
+                    subject_id = (data.getAttribute('subject_id')?data.getAttribute('subject_id'):'');
+                },
+                eventRender: function(event, element) {
+                    $(element).tooltip();
+                }
             });
         
-            $('.fc-event').click(function(){
-                var id = this.id;
-                $('#calendar_event_id').val(id);
-                $("#cancelModal").modal('show');
-                
-            })
+            $('#calendar.cancelled').click(function(e) {
+                e.preventDefault() ;
+            }) ;
         });
         
         function timeFormat(time){
@@ -108,16 +140,23 @@
 
         <h2 class="sub-title">Calendar</h2>
         <br>
+        
         <div class="row">
             <div class="col-md-12">
-                <div id='calendar'></div>
+                <div class="form-group" style="width:310px; margin:auto">
+                    <span class="fc-event" style="width:150px; float:right; margin-left:10px;">Created/Approved Event</span>
+                    <span class="fc-event cancelled" style="width:150px; float:right;">Cancelled Event</span>
+                    <br/><br/>
+                </div>
+                <div id='calendar'>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="modal fade" id="createEditModal" tabindex="-1" role="dialog" aria-labelledby="createEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -194,6 +233,89 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Edit Event</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/editEvent')}}}">
+                    <div class="form-group">
+                        <label for="type" class="control-label">Type</label>
+                        <select class="form-control" id="edit_type" name="edit_type">
+                            <option value=""></option>
+                            <option value="child_busy">Child Busy</option>
+                            <option value="volunteer_time">Volunteer Time</option>
+                            <option value="wingman_time">Wingman Time</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group optional volunteer-time" style="display:none">
+                        <label for="volunteer" class="control-label">Volunteer</label>
+                        <select class="form-control" id="edit_volunteer" name="edit_volunteer">
+                            @foreach($volunteers as $volunteer)
+                                <option value="{{{$volunteer->id}}}">{{{$volunteer->name}}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group optional volunteer-time" style="display:none">
+                        <label for="subject" class="control-label">Subject</label>
+                        <select class="form-control" id="edit_subject" name="edit_subject">
+                            @foreach($subjects as $subject)
+                                <option value="{{{$subject->id}}}">{{{$subject->name}}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group optional wingman-time" style="display:none">
+                        <label for="wingman_module" class="control-label">Wingman Module : </label>
+                        <select class="form-control" id="edit_wingman_module" name="edit_wingman_module">
+                            @foreach($wingman_modules as $wingman_module)
+                                <option value="{{{$wingman_module->id}}}">{{{$wingman_module->name}}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start_time" class="control-label">Start Time : </label>
+                        <div class="form-group">
+                            <input type="text" id='edit_start_date' name="edit_start_date" class="form-control" style="width: 25%" placeholder="Start Date">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id='edit_start_time' name="edit_start_time" class="form-control" style="width: 25%" placeholder="Start Time">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end_time" class="control-label">End Time : </label>
+                        <div class="form-group">
+                            <input type="text" id='edit_end_date' name="edit_end_date" class="form-control" style="width: 25%" placeholder="End Date">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id='edit_end_time' name="edit_end_time" class="form-control" style="width: 25%" placeholder="End Time">
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="on_date" name="on_date">
+                    <input type="hidden" id="end_date" name="end_date">
+                    <input type="hidden" name="edit_student_id" value="{{{$student_id}}}">
+                    <input type="hidden" name="edit_wingman_id" value="{{{$wingman_id}}}">
+                    <input type="hidden" id="calendar_id" name="calendar_id">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Update changes</button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -232,13 +354,65 @@
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="dialogModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Select Option</h4>
+            </div>
+            <div class="modal-body" id="event_detail">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="cancelEvent">Cancel Event</button>
+                <button type="button" class="btn btn-primary" id="editEvent">Edit Event</button>
+                
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <script>
     $(document).ready(function(){
         $('#start_time').pickatime();
         $('#end_time').pickatime();
+        $('#edit_start_time').pickatime();
+        $('#edit_start_date').pickadate();
+        $('#edit_end_time').pickatime();
+        $('#edit_end_date').pickadate();
         $('.list_popover').popover({'html' : true});
 
     });
+
+    $('#cancelEvent').click(function(){
+        $('#dialogModal').modal('hide');
+        $('#cancelModal').modal('show');
+    });
+
+    $('#editEvent').click(function(){
+        $('#dialogModal').modal('hide');
+        $('.optional').css('display','none');
+        if(event_type == "Volunteer Time") {
+            $('.volunteer-time').css('display','block');
+            $('#edit_type').val('volunteer_time');
+            $('#edit_volunteer').val(volunteer_id);
+            $('#edit_subject').val(subject_id);
+        } else if(event_type == "Wingman Time") {
+            $('.wingman-time').css('display','block');
+            $('#edit_type').val('wingman_time');
+            $('#edit_wingman_module').val(module_id);
+        }
+        else{
+            $('#edit_type').val('child_busy');
+        }
+        $('#calendar_id').val(event_id);
+        $('#edit_volunteer').val(volunteer_id);
+        $('#editModal').modal('show');
+    });
+
 </script>
 
 <script src="{{{URL::to('/')}}}/js/picker.js"></script>
@@ -259,15 +433,21 @@
                 }
             });
         });
+
+        $("#edit_type").change(function () {
+            // hide all optional elements
+            $('.optional').css('display','none');
+
+            $("#edit_type option:selected").each(function () {
+                if($(this).val() == "volunteer_time") {
+                    $('.volunteer-time').css('display','block');
+                } else if($(this).val() == "wingman_time") {
+                    $('.wingman-time').css('display','block');
+                }
+            });
+        });
     });
 
 </script>
-
-<script type="text/javascript">
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    });
-</script>
-
 
 @stop

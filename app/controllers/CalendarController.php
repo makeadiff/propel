@@ -24,7 +24,7 @@ class CalendarController extends BaseController
 
         /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
         */
-        $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')->select('P.id','P.type as title','P.start_time as start','P.end_time as end','P.status','Q.reason as reason','Q.comment as comment','U.name as wingman_name','T.name as volunteer_name')->where('student_id','=',$student_id)->get();
+        $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')->leftJoin('propel_wingmanModules as V','V.id','=','R.wingman_module_id')->leftJoin('propel_subjects as W','W.id','=','S.subject_id')->select('P.id','P.type as title','P.start_time as start','P.end_time as end','P.status','Q.reason as reason','Q.comment as comment','U.name as wingman_name','T.name as volunteer_name','S.volunteer_id as volunteer_id','R.wingman_id as wingman_id','V.id as module_id','W.id as subject_id','V.name as module_name','W.name as subject_name')->where('student_id','=',$student_id)->get();
         foreach ($calendarEvents as $calendarEvent) {
             /*if($calendarEvent->title == 'wingman_time'){
                 $calendarEvent->title = 'Wigman Time';
@@ -98,6 +98,54 @@ class CalendarController extends BaseController
 
     }
 
+    public function editEvent(){
+
+        //return Input::get('edit_type');
+        if(Input::get('edit_type') == "")
+            return Redirect::to(URL::to('/calendar/' . Input::get('edit_wingman_id') . '/' . Input::get('edit_student_id')));
+
+        if(Input::get('edit_subject') == "" && Input::get('edit_type')  == 'volunteer_time')
+            return Redirect::to(URL::to('/calendar/' . Input::get('edit_wingman_id') . '/' . Input::get('edit_student_id')))->with('error', 'Subject not selected.');
+
+        $id = Input::get('calendar_id');
+        //return $id;
+        $existing_ce = CalendarEvent::where('id','=',$id)->first();
+        if(!empty($existing_ce)) {
+            WingmanTime::where('calendar_event_id','=',$existing_ce->id)->delete();
+            VolunteerTime::where('calendar_event_id','=',$existing_ce->id)->delete();
+            CancelledCalendarEvent::where('calendar_event_id','=',$existing_ce->id)->delete();
+        }
+        //return Input::get('edit_start_date');
+        $existing_ce->type = Input::get('edit_type');
+        $existing_ce->start_time = new DateTime(Input::get('edit_start_date') . ' ' . Input::get('edit_start_time'));
+        $existing_ce->end_time = new DateTime(Input::get('end_end_date') . ' ' . Input::get('edit_end_time'));
+        $existing_ce->student_id = Input::get('edit_student_id');
+        $existing_ce->status = 'created';
+        $existing_ce->save();
+
+        switch($existing_ce->type) {
+            case 'wingman_time' :
+                $wt = new WingmanTime;
+                $wt->wingman_id = Input::get('edit_wingman_id');
+                $wt->wingman_module_id = Input::get('edit_wingman_module');
+                $wt->calendar_event_id = $existing_ce->id;
+                $wt->save();
+                break;
+
+            case 'volunteer_time' :
+                $vt = new VolunteerTime;
+                $vt->volunteer_id = Input::get('edit_volunteer');
+                $vt->subject_id = Input::get('edit_subject');
+                $vt->calendar_event_id = $existing_ce->id;
+                $vt->save();
+                break;
+        }
+
+        return Redirect::to(URL::to('/calendar/' . Input::get('edit_wingman_id') . '/' . Input::get('edit_student_id')));
+
+
+    }
+
     public function cancelEvent()
     {
         //$on_date = Input::get('cancel_on_date');
@@ -110,7 +158,10 @@ class CalendarController extends BaseController
             $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
             $existing_ce->status = 'cancelled';
             $existing_ce->save();
-
+            $existing_cancelled_ce = CancelledCalendarEvent::where('calendar_event_id','=',Input::get('calendar_event_id'))->first();
+            if(!empty($existing_cancelled_ce)){
+                $existing_cancelled_ce->delete();
+            }
             $cancelled_event = new CancelledCalendarEvent();
             $cancelled_event->calendar_event_id = $existing_ce->id;
             $cancelled_event->reason = Input::get('reason');

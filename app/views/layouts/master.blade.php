@@ -3,6 +3,7 @@
     <link href="{{{URL::to('/')}}}/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{{URL::to('/')}}}/css/footable.core.css" rel="stylesheet " type="text/css">
     <link href="{{{URL::to('/')}}}/css/custom.css" rel="stylesheet">
+    <link href='{{{URL::to('/')}}}/img/favicon.png' rel='icon'>
     <link href='http://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <script src="{{{URL::to('/')}}}/js/jquery-1.9.0.js"></script>
