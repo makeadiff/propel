@@ -20,3 +20,22 @@ function validate_data(){
 	
 }
 
+function validate_calendar_approval(){
+	var checkboxes = document.getElementsByClassName('check_calendar');
+	var count = 0;
+	for (var i=0;i<checkboxes.length;i++){
+		if(checkboxes.item(i).checked)
+			count++
+	}
+	if(count==0){
+		$('#errorMessageApproval').html('<strong>Error</strong>: EMPTY Selection');
+		$('#errorMessageApproval').fadeIn('slow');
+		$('html,body').animate({ scrollTop: 0 },1000);
+		return false;
+	}
+	else{
+		$('#errorMessageApproval').html('');
+		$('#errorMessageApproval').fadeOut('slow');
+		return true;
+	}
+}

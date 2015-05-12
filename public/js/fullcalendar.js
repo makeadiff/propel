@@ -13,10 +13,6 @@
 	});
 });*/
 
-$(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-});
-
 function timeFormat(time){
             var time_value = new Date(time);
             var hours = time_value.getUTCHours();
@@ -5110,7 +5106,7 @@ DayGrid.mixin({
 					''
 				)
 				+(event.wingman_name?
-					'Wingman Name: '+htmlEscape(event.wingman_name)+' Module Name:'+ htmlEscape(event.module_name)+'':
+					'Wingman Name: '+htmlEscape(event.wingman_name)+' Module Name: '+ htmlEscape(event.module_name)+'':
 					''
 				)
 				+'" class="' + classes.join(' ') 

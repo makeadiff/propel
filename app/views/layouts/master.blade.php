@@ -52,16 +52,20 @@
                 <li><a href="{{{URL::to('/')}}}/attendance">Attendance</a></li>
                 <li><a href="{{{URL::to('/')}}}/wingman-journal">Wingman Journal</a></li>-->
                 <li class=""><a>
-                  <?php
-                $id = $_SESSION['user_id'];
-                $name = DB::table('User')->select('name')->where('id',$id)->first();
-                echo $name->name.' (';  
-                $groups = DB::table('UserGroup')->join('Group','Group.id','=','UserGroup.group_id')->select('Group.name')->where('user_id',$id)->get();
-                foreach ($groups as $group){
-                  echo $group->name.',';
-                }
-                echo ')';
-                      ?></a>
+                <?php
+                    $i = 0;
+                    $id = $_SESSION['user_id'];
+                    $name = DB::table('User')->select('name')->where('id',$id)->first();
+                    echo $name->name.' (';  
+                    $groups = DB::table('UserGroup')->join('Group','Group.id','=','UserGroup.group_id')->select('Group.name')->where('user_id',$id)->get();
+                    $result = array(); 
+                    foreach ($groups as $group){
+                        $result[$i]=$group->name;
+                        $i++;
+                    }
+                    $value = join(',',$result);
+                    echo $value.')';
+                ?></a>
                 </li>
                 <li class=""><a href="{{{URL::to('/')}}}/../../../madapp/index.php/auth/logout">Logout</a></li>
                 @show

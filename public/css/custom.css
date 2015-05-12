@@ -35,6 +35,18 @@ h2.sub-title
     font-size: 300%;
 }
 
+a,a.visited{
+    color:#FFF;
+    text-decoration: none;  
+    cursor: pointer;
+}
+
+a:hover{
+    color:#0CF;
+    text-decoration: none;  
+}
+
+
 h3.sub-title,h4.sub-title,h5.sub-title
 {
     font-family: 'Oswald',sans-serif;

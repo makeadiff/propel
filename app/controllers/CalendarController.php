@@ -170,30 +170,6 @@ class CalendarController extends BaseController
 
             return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
         }
-
-
-
-
-
-
-    }
-
-    public function approveEvents()
-    {
-        $wingman_id = $_SESSION['user_id'];
-        $student_id = Input::get('student_id');
-        $month = Input::get('month');
-
-        $student_events = CalendarEvent::whereRaw("DATE_FORMAT(start_time, '%Y-%m') = '$month'")->where('student_id','=',$student_id)->get();
-        $changed_count = 0;
-        foreach($student_events as $event) {
-            $event->status = 'approved';
-            $event->save();
-            $changed_count ++;
-        }
-
-        list($year, $only_month) = explode('-', $month);
-        return Redirect::to(URL::to('/calendar/' . $wingman_id . '/' . $student_id . '?year=' . $year . '&month=' . $only_month))->with('success', 'All Events Approved.');
     }
 
     public function selectWingman()
@@ -228,5 +204,71 @@ class CalendarController extends BaseController
             View::share('user_group','Propel Fellow');
         elseif($wingman == true)
             View::share('user_group','Propel Wingman');
+    }
+
+    public function approveView(){
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+        $wingmen = $fellow->wingman()->get();
+        //$current_date = new DateTime()
+        $current_month = date('c', strtotime("+1 month"));
+        $i=0;
+        $datalist = DB::table('User as A')->join('propel_fellow_wingman as B','A.id','=','B.fellow_id')->join('propel_student_wingman as C','C.wingman_id','=','B.wingman_id')->join('User as D','D.id','=','B.wingman_id')->join('Student as E','E.id','=','C.student_id')->join('propel_calendarEvents as F','F.student_id','=','C.student_id')->select('B.wingman_id as wingman_id','A.name as fellow_name','D.id as wingman_id','D.name as wingman_name','E.id as student_id','E.name as student_name','F.start_time as month')->where('A.id','=',$user_id)->where('F.status','!=','approved')->orderBy('student_id')->orderBy('month')->where('F.start_time','<=',$current_month)->get();
+        /*foreach ($wingmen as $wingman) {
+            $students[$i] = $wingman->student()->get();
+            $i++;
+        }*/
+
+        //strftime('%Y-%m'
+        //return $students;
+        return View::make('calendar.approve-calendar')->with('datalist',$datalist);
+    }
+
+    public function approve($student_id,$month,$year){
+        $calendar_event = CalendarEvent::where('student_id','=',$student_id)->get();
+        $wingman_id = DB::table('propel_student_wingman')->select('wingman_id')->where('student_id','=',$student_id)->first();
+        //return $calendar_event;
+        foreach ($calendar_event as $event) {
+            $monthCurr = date('n',strtotime($event->start_time));
+            $yearCurr = date('Y',strtotime($event->start_time));
+            $status = $event->status;
+            if($monthCurr==$month && $yearCurr==$year && $status!= 'cancelled'){
+                $event->status = 'approved';
+                $event->save();
+            }
+        }
+        $prev_url = $_SERVER['HTTP_REFERER'];
+        if(strpos($prev_url,"approve-calendar") !== false){
+            return Redirect::to(URL::to('/calendar/approve-calendar/'));
+        }
+        else{
+            return Redirect::to(URL::to('/calendar/' .$wingman_id->wingman_id. '/' . $student_id ));
+        }
+    }
+
+    public function approveSelected()
+    {
+        $wingman_id = $_SESSION['user_id'];
+        $data = Input::get('submit_value');
+        if(is_array($data)){
+            foreach ($data as $datapoint) {
+                $fragments = explode('/', $datapoint);
+                $student_id = $fragments[0];
+                $month = $fragments[1];
+                $year = $fragments[2];
+                $calendar_event = CalendarEvent::where('student_id','=',$student_id)->get();
+                $wingman_id = DB::table('propel_student_wingman')->select('wingman_id')->where('student_id','=',$student_id)->first();
+                foreach ($calendar_event as $event) {
+                    $monthCurr = date('n',strtotime($event->start_time));
+                    $yearCurr = date('Y',strtotime($event->start_time));
+                    $status = $event->status;
+                    if($monthCurr==$month && $yearCurr==$year && $status!= 'cancelled'){
+                        $event->status = 'approved';
+                        $event->save();
+                    }
+                }
+            }
+        }
+        return Redirect::to(URL::to('/calendar/approve-calendar/'));
     }
 }

@@ -40,7 +40,11 @@
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay'
                 },
-                //defaultDate: '2015-02-12',
+                <?php
+                    if(isset($_GET['date'])){
+                        echo 'defaultDate: \''.$_GET['date'].'\',';
+                    }
+                ?>
                 selectable: true,
                 selectHelper: true,
                 select: function(start, end) {
@@ -73,6 +77,7 @@
 
                 eventClick: function(calEvent, jsEvent, view) {
                     var id = this.id;
+                    var user_group = "<?php echo $user_group; ?>";
                     var data = document.getElementById(id.toString());
                     $('#calendar_event_id').val(id);
                     var string = '<strong>'+ data.name + '</strong>'
@@ -82,7 +87,13 @@
                                     + (data.getAttribute('wingman_name')?'<br/>Wingman Name: <strong>'+data.getAttribute('wingman_name')+'</strong> <br/>Module Name: <strong>'+ data.getAttribute('module_name')+'</strong>':'')
                                     + '<br/><strong>(' + data.getAttribute('status').toUpperCase() + ')</strong>';
                     $('#event_detail').html(string);
-                    $("#dialogModal").modal('show');
+                    if(data.getAttribute('status')== 'approved' && user_group!="Propel Wingman"){
+                        $("#dialogModal").modal('show');
+                    }
+                    else if(data.getAttribute('status')!= 'approved'){
+                        $("#dialogModal").modal('show');   
+                    }
+                    
                     event_id = id;
                     start_time = data.getAttribute('start');
                     end_time = data.getAttribute('end');
@@ -152,6 +163,12 @@
                 <div id='calendar'>
                 </div>
             </div>
+            <div class="col-md-12">
+                @if($user_group!='Propel Wingman')
+                    <button type="submit" class="btn btn-default" onclick="getMonthCal()">Approve Calendar</button>
+                    <br/><br/>
+                @endif
+            </div>
         </div>
     </div>
 </div>
@@ -181,7 +198,7 @@
                         <label for="volunteer" class="control-label">Volunteer</label>
                         <select class="form-control" id="volunteer" name="volunteer">
                             @foreach($volunteers as $volunteer)
-                                <option value="{{{$volunteer->id}}}">{{{$volunteer->name}}}</option>
+                                <option value="{{{$volunteer->id}}}">{{ucwords(strtolower($volunteer->name))}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -258,7 +275,7 @@
                         <label for="volunteer" class="control-label">Volunteer</label>
                         <select class="form-control" id="edit_volunteer" name="edit_volunteer">
                             @foreach($volunteers as $volunteer)
-                                <option value="{{{$volunteer->id}}}">{{{$volunteer->name}}}</option>
+                                <option value="{{{$volunteer->id}}}">{{ucwords(strtolower($volunteer->name))}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -419,7 +436,6 @@
 <script src="{{{URL::to('/')}}}/js/picker.js"></script>
 <script src="{{{URL::to('/')}}}/js/picker.date.js"></script>
 <script src="{{{URL::to('/')}}}/js/picker.time.js"></script>
-
 <script>
     $(function(){
         $("#type").change(function () {
@@ -448,6 +464,17 @@
             });
         });
     });
+
+    function getMonthCal(){
+      var date = $("#calendar").fullCalendar('getDate');
+      var month = Date.parse(date);
+      var date = new Date (month);
+      var monthValue = parseInt(date.getMonth())+1;
+      var yearValue = parseInt(date.getFullYear());
+      var student_id = {{{$student_id}}};
+      var href = '/calendar/approve/' + student_id + '/' + monthValue + '/' + yearValue;
+      window.location.assign(href);
+    }
 
 </script>
 

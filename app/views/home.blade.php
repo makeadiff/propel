@@ -31,6 +31,11 @@
             </div>
         @endif
 
+        @if($user_group == "Propel Fellow")
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='calendar/approve-calendar' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/approve.png')}}}"><br>Pending<br>Approvals</a>
+            </div>
+        @endif
 
         @if($user_group == "Propel Fellow")
             <div class="col-md-4 col-sm-6 text-center">
