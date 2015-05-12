@@ -13,13 +13,13 @@
 
         <div class="col-md-offset-2 col-md-8">
             <div class="alert alert-danger" id="errorMessageApproval" style="display:none;" role="alert"></div>
-                
+            <p class="white"><input type="checkbox" onclick="select_all()" id="select_all">&nbsp;Select All<br/></p>
             <form id="approve-calendar" role="form" method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/bulk-approve/')}}}" onsubmit="return validate_calendar_approval()">
             <table class="table table-bordered table-responsive white footable">
                 <thead>
                 <tr>
-                    <th width="5%" data-sort-ignore="true">
-                        Select
+                    <th width ="5%" data-sort-ignore="true">
+                    
                     </th>
                     <th width="30%" >
                         Wingman Name

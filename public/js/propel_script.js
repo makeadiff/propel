@@ -39,3 +39,18 @@ function validate_calendar_approval(){
 		return true;
 	}
 }
+
+function select_all(){
+	var all = document.getElementById('select_all');
+	var checkboxes = document.getElementsByClassName('check_calendar');
+	if(all.checked){
+		for (var i=0;i<checkboxes.length;i++){
+			checkboxes.item(i).checked=true;
+		}
+	}	
+	else{
+		for (var i=0;i<checkboxes.length;i++){
+			checkboxes.item(i).checked=false;
+		}
+	}	
+}
