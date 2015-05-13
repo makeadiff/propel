@@ -70,6 +70,7 @@ class CalendarController extends BaseController
 
         $ce = new CalendarEvent;
         $ce->type = Input::get('type');
+        //return Input::get('on_date').' '.Input::get('start_time');
         $ce->start_time = new DateTime(Input::get('on_date') . ' ' . Input::get('start_time'));
         $ce->end_time = new DateTime(Input::get('end_date') . ' ' . Input::get('end_time'));
         $ce->student_id = Input::get('student_id');
@@ -117,6 +118,7 @@ class CalendarController extends BaseController
         }
         //return Input::get('edit_start_date');
         $existing_ce->type = Input::get('edit_type');
+        //return Input::get('edit_start_date').' '.Input::get('edit_start_time');
         $existing_ce->start_time = new DateTime(Input::get('edit_start_date') . ' ' . Input::get('edit_start_time'));
         $existing_ce->end_time = new DateTime(Input::get('end_end_date') . ' ' . Input::get('edit_end_time'));
         $existing_ce->student_id = Input::get('edit_student_id');

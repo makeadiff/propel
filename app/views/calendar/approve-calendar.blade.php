@@ -54,7 +54,7 @@
                                 .'<a class="white" href="'.URL::to('/calendar/'.$data->wingman_id).'">'.ucwords(strtolower($data->wingman_name)).'</a>'
                                 .'</td>'
                                 .'<td>'.ucwords(strtolower($data->student_name)).'</td>'
-                                .'<td><a href="'.URL::to('calendar/'.$data->wingman_id.'/'.$data->student_id).'?date='.date("Y",strtotime($data->month)).'-'.date("m",strtotime($data->month)).'-'.date("d",strtotime($data->month)).'">'.date("M",strtotime($data->month)).', '.date("Y",strtotime($data->month)).'</a></td>'
+                                .'<td><a target="_blank" href="'.URL::to('calendar/'.$data->wingman_id.'/'.$data->student_id).'?date='.date("Y",strtotime($data->month)).'-'.date("m",strtotime($data->month)).'-'.date("d",strtotime($data->month)).'">'.date("M",strtotime($data->month)).', '.date("Y",strtotime($data->month)).'</a></td>'
                                 .'<td>'
                                 .'<a class="btn btn-default" href="'.URL::to('/calendar/approve/'.$data->student_id.'/'.$month.'/'.$year).'">Approve</a>'
                                 .'</td>'
