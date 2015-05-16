@@ -71,7 +71,7 @@
                     echo $value.')';
                 ?></a>
                 </li>
-                <li class=""><a href="{{{URL::to('/')}}}/../../../madapp/index.php/auth/logout">Logout</a></li>
+                <li class=""><a href="makeadiff.in/madapp/index.php/auth/logout">Logout</a></li>
                 @show
             </ul>
 
