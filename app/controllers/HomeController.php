@@ -46,11 +46,15 @@ class HomeController extends BaseController
                 $wingman = true;
             elseif($group->name == 'Propel Strat')
                 $strat = true;
-            elseif($group->name == 'Program Director, Propel')
+            elseif($group->name == 'Program Director, Propel'){
                 $director = true;
+                $_SESSION['original_id'] = $_SESSION['user_id'];
+            }
+
         }
-        if($director == true)
+        if($director == true){
             View::share('user_group','Program Director, Propel');
+        }
         elseif($strat == true)
             View::share('user_group','Propel Strat');
         elseif($fellow == true)

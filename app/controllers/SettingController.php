@@ -31,6 +31,18 @@ class SettingController extends BaseController
         return Redirect::to(URL::to('/') . "/settings/subjects")->with('success', 'Subjects Set.');
     }
 
+    //Fellow select Wingman whose students are to be assigned
+
+    public function selectWingman()
+    {
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+
+        $wingmen = $fellow->wingman()->get();
+
+        return View::make('settings/select-wingman')->with('wingmen',$wingmen);
+    }
+
 
     public function selectWingmen()
     {
@@ -100,6 +112,30 @@ class SettingController extends BaseController
         return View::make('settings/select-students')->with('selected_student_id',$selected_student_id)->with('all_students',$all_students);
     }
 
+    //Fellow selects Wingman's students
+
+    public function selectWingmanStudents($wingman_id)
+    {
+        $user_id = $wingman_id;
+        $city_id = Volunteer::find($user_id)->city_id;
+
+        $selected_student = Wingman::find($user_id)->student()->get();
+
+        $selected_student_id = array();
+
+        foreach($selected_student as $student)
+            $selected_student_id[] = $student->id;
+
+        $all_centers = City::find($city_id)->center()->get();
+        $all_students = array();
+        foreach($all_centers as $center) {
+            $students = $center->student()->lists('name', 'id');
+            foreach ($students as $key => $value) $all_students[$key] = $value;
+        }
+
+        return View::make('settings/select-students')->with('selected_student_id',$selected_student_id)->with('all_students',$all_students);
+    }
+
     public function saveStudents() {
         $user_id = $_SESSION['user_id'];
         $wingmen = Wingman::find($user_id);
@@ -109,6 +145,18 @@ class SettingController extends BaseController
         $wingmen->student()->sync($selected_students);
         
         return Redirect::to(URL::to('/') . "/settings/students")->with('success', 'Students Set');
+    }
+
+
+    public function saveWingmanStudents($wingman_id) {
+        $user_id = $wingman_id;
+        $wingmen = Wingman::find($user_id);
+
+        $selected_students = Input::get("students");
+
+        $wingmen->student()->sync($selected_students);
+
+        return Redirect::to(URL::to('/') . "/settings/". $wingman_id . "/students")->with('success', 'Students Set');
     }
 }
 // dd(DB::getQueryLog());

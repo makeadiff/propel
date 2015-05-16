@@ -27,6 +27,7 @@
 
 <body class="blue-red">
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
             <span class="sr-only">Toggle navigation</span>
@@ -45,10 +46,15 @@
             <!--<li><a href="{{{URL::to('/')}}}/calendar">Calendar</a></li>
             <li><a href="{{{URL::to('/')}}}/attendance">Attendance</a></li>
             <li><a href="{{{URL::to('/')}}}/wingman-journal">Wingman Journal</a></li>-->
-            <li class=""><a href="{{{URL::to('/')}}}/../../../madapp/index.php/auth/logout">Logout</a></li>
+            @if(!empty($_SESSION['original_id']) && $_SESSION['user_id'] != $_SESSION['original_id'])
+                <li class=""><a href="{{{URL::to('/city-change/back-to-national')}}}">Back to National</a></li>
+            @endif
+            <li class=""><a>{{{Volunteer::find($_SESSION['user_id'])->name}}}</a></li>
+            <li class=" "><a href="{{{URL::to('/')}}}/../../../madapp/index.php/auth/logout">Logout</a></li>
             @show
         </ul>
 
+    </div>
     </div>
 </nav>
 

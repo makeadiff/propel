@@ -50,14 +50,25 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/settings/wingmen','SettingController@selectWingmen');
     Route::post('/settings/wingmen','SettingController@saveWingmen');
 
+    Route::get('/settings/select-wingman','SettingController@selectWingman');
+
     Route::get('/settings/students','SettingController@selectStudents');
     Route::post('/settings/students','SettingController@saveStudents');
+
+    Route::get('/settings/{wingman_id}/students','SettingController@selectWingmanStudents');
+    Route::post('/settings/{wingman_id}/students','SettingController@saveWingmanStudents');
 
     Route::get('/reports/class-status/select-city','ReportController@showCities');
     Route::get('/reports','ReportController@showReports');
     Route::get('/reports/class-status/city/{city_id}','ReportController@showClassStatus');
     Route::get('/reports/wingman-journal-report','ReportController@showWingmanJournalReport');
     Route::get('/reports/attendance-report','ReportController@showAttendanceReport');
+
+    Route::get('/city-change/city-select','CityChangeController@showCitySelect');
+    Route::get('/city-change/city/{city_id}','CityChangeController@showWingmanSelect');
+    Route::get('/city-change/wingman/{wingman_id}','CityChangeController@changeToWingman');
+    Route::get('/city-change/back-to-national','CityChangeController@backToNational');
+
 
 
 });

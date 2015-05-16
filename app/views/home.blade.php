@@ -10,6 +10,12 @@
         <br>
         <div class="row">
 
+        @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='city-change/city-select' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/cities.png')}}}"><br>Cities</a>
+            </div>
+        @endif
+
         @if($user_group == "Propel Fellow")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='wingman-journal/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/journal.png')}}}"><br>Journals of<br>Wingmen</a>
@@ -57,8 +63,15 @@
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
+                <a href='settings/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/students.png')}}}"><br>Assign<br>Students<br>to Wingmen</a>
+            </div>
+
+            <div class="col-md-4 col-sm-6 text-center">
                 <a href='settings/subjects' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/subjects.png')}}}"><br>Assign<br>Subjects</a>
             </div>
+
+
+
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='settings/students' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/students.png')}}}"><br>Assign<br>Students</a>
