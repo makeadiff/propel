@@ -25,7 +25,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'makeadiff_madapp',
 			'username'  => 'root',
-			'password'  => 'sanjay314',
+			'password'  => 'password',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
