@@ -42,7 +42,11 @@
         </button>
         @section('navbar-header')
             <!--<a class="navbar-brand" href="{{{URL::to('/')}}}/../../../madapp/index.php/dashboard/dashboard_view">MADApp</a>-->
-        <a class="navbar-brand" href="{{{URL::to('/')}}}"><span class="glyphicon glyphicon-home"></span>&nbsp;Propel</a>
+          @if(Route::currentRouteName() != "home")
+            <a class="navbar-brand" href="javascript:history.back()"><span class="glyphicon glyphicon-chevron-left"></span></a>
+          @endif
+          <a class="navbar-brand" href="{{{URL::to('/')}}}"><span class="glyphicon glyphicon-home"></span>&nbsp;Propel</a>
+          
         @show
 
         </div>

@@ -27,7 +27,7 @@ Route::get('/error','CommonController@showError');
 
 Route::group(array('before'=>'login_check|propel_check'),function()
 {
-    Route::get('/','HomeController@showHome');
+    Route::get('/',['as'=>'home','uses'=>'HomeController@showHome']);
     Route::get('/success','CommonController@showSuccess');
 
     Route::get('/wingman-journal/select-wingman','WingmanJournalController@selectWingman');
