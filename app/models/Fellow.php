@@ -14,6 +14,11 @@ class Fellow extends Eloquent
         return $this->belongsToMany('Group','UserGroup','user_id','group_id');
     }
 
+    public function city()
+    {
+        return $this->belongsTo('City');
+    }
+
 
 
 }

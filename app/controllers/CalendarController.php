@@ -10,12 +10,54 @@ class CalendarController extends BaseController
         return View::make('calendar.student-list')->with('students',$students)->with('wingman_id',$wingman_id);
     }
 
+    public function showCenterCalendar($center_id)
+    {
+
+        $this->setGroup();
+
+        //$cal = new CalendarLib("daily");
+
+
+        /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
+        */
+        $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')
+            ->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')
+            ->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')
+            ->leftJoin('propel_wingmanModules as V','V.id','=','R.wingman_module_id')->leftJoin('propel_subjects as W','W.id','=','S.subject_id')
+            ->join('Student','Student.id','=','P.student_id')
+            ->select('P.id','P.type as title','P.start_time as start','P.end_time as end','P.status','Q.reason as reason','Q.comment as comment',
+                'U.name as wingman_name','T.name as volunteer_name','S.volunteer_id as volunteer_id','R.wingman_id as wingman_id','V.id as module_id',
+                'W.id as subject_id','V.name as module_name','W.name as subject_name','Student.name as student_name')
+            ->where('Student.center_id','=',$center_id)->get();
+
+
+        foreach ($calendarEvents as $calendarEvent) {
+            /*if($calendarEvent->title == 'wingman_time'){
+                $calendarEvent->title = 'Wigman Time';
+            }
+            elseif ($calendarEvent->title == 'child_busy') {
+                $calendarEvent->title = 'Child Busy';
+            }
+            elseif ($calendarEvent->title == 'volunteer_time') {
+                $calendarEvent->title = 'Volunteer Time';
+            }*/
+            $calendarEvent->title = $calendarEvent->student_name . " : " . str_replace('_', ' ',$calendarEvent->title) ;
+            $calendarEvent->title = ucwords($calendarEvent->title);
+            $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
+            $calendarEvent->reason = ucwords($calendarEvent->reason);
+
+        }
+        $calendarEvents = json_encode($calendarEvents);
+
+        return View::make('calendar.center-calendar-view')->with('calendarEvents',$calendarEvents) ;
+    }
+
     public function showCalendar($wingman_id,$student_id)
     {
 
         $this->setGroup();
 
-        $cal = new CalendarLib("daily");
+        //$cal = new CalendarLib("daily");
 
         $city = Wingman::find($wingman_id)->city()->first();
         $volunteers  = Volunteer::where('city_id','=',$city->id)->get();
@@ -45,7 +87,7 @@ class CalendarController extends BaseController
         //return $calendarEvents;
         
         $GLOBALS['student_id'] = $student_id;
-        return View::make('calendar.calendar-view')->with('cal',$cal)->with('volunteers',$volunteers)->with('subjects',$subjects)
+        return View::make('calendar.calendar-view')->with('volunteers',$volunteers)->with('subjects',$subjects)
                         ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id)->with('calendarEvents',$calendarEvents) ;
     }
 
@@ -182,6 +224,16 @@ class CalendarController extends BaseController
         $wingmen = $fellow->wingman()->get();
 
         return View::make('calendar.select-wingman')->with('wingmen',$wingmen);
+    }
+
+    public function selectCenter()
+    {
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+
+        $centers = $fellow->city()->first()->center()->get();
+
+        return View::make('calendar.select-center')->with('centers',$centers);
     }
 
     public static function setGroup()

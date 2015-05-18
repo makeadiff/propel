@@ -35,6 +35,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
 
     Route::get('/calendar/select-wingman','CalendarController@selectWingman');
     Route::get('/calendar/approve-calendar','CalendarController@approveView');
+    Route::get('/calendar/select-center','CalendarController@selectCenter');
+    Route::get('/calendar/center/{center_id}','CalendarController@showCenterCalendar');
     Route::get('/calendar/{wingman_id}','CalendarController@showStudents');
     Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
     Route::post('/calendar/createEdit','CalendarController@createEdit');
@@ -42,6 +44,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
+
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
 
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');

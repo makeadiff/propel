@@ -41,7 +41,7 @@
                     right: 'month,agendaWeek,agendaDay'
                 },
                 <?php
-                    if(isset($_GET['date'])){
+                    if(isset($_aET['date'])){
                         echo 'defaultDate: \''.$_GET['date'].'\',';
                     }
                 ?>
@@ -49,10 +49,18 @@
                 selectHelper: true,
                 select: function(start, end) {
                     var title=' ';
-                    var cur_date = $.datepicker.formatDate('yy-mm-dd',new Date(start));
-                    var end_date = $.datepicker.formatDate('yy-mm-dd',new Date(end));
-                    $("#on_date").val(cur_date);
+                    var start_date = new Date(start);
+                    var end_date = new Date(end);
+
+                    //End day returned by function is one day ahead, hence subtracting one day
+                    end_date.setDate(end_date.getDate()-1);
+
+                    start_date = $.datepicker.formatDate('yy-mm-dd',start_date);
+                    end_date = $.datepicker.formatDate('yy-mm-dd',end_date);
+
+                    $("#on_date").val(start_date);
                     $("#end_date").val(end_date);
+
                     var start_time = timeFormat(start);
                     var end_time = timeFormat(end);
                     $("#createModal").modal('show');
@@ -395,12 +403,30 @@
 
 <script>
     $(document).ready(function(){
-        $('#start_time').pickatime();
-        $('#end_time').pickatime();
-        $('#edit_start_time').pickatime();
-        $('#edit_start_date').pickadate();
-        $('#edit_end_time').pickatime();
-        $('#edit_end_date').pickadate();
+        $('#start_time').pickatime({
+            min: [5,00],
+            max: [22,0]
+        });
+        $('#end_time').pickatime({
+            min: [5,00],
+            max: [22,0]
+        });
+        $('#edit_start_time').pickatime({
+            min: [5,00],
+            max: [22,0]
+        });
+        $('#edit_start_date').pickadate({
+            min: [5,00],
+            max: [22,0]
+        });
+        $('#edit_end_time').pickatime({
+            min: [5,00],
+            max: [22,0]
+        });
+        $('#edit_end_date').pickadate({
+            min: [5,00],
+            max: [22,0]
+        });
         $('.list_popover').popover({'html' : true});
 
     });
