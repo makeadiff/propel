@@ -26,7 +26,7 @@
             });
         });
     </script>
-    <title>Propel App | MADApp</title>
+    <title>Propel | MADApp</title>
     @yield('head')
 </head>
 
@@ -42,7 +42,7 @@
         </button>
         @section('navbar-header')
             <!--<a class="navbar-brand" href="{{{URL::to('/')}}}/../../../madapp/index.php/dashboard/dashboard_view">MADApp</a>-->
-        <a class="navbar-brand" href="{{{URL::to('/')}}}">Propel</a>
+        <a class="navbar-brand" href="{{{URL::to('/')}}}"><span class="glyphicon glyphicon-home"></span>&nbsp;Propel</a>
         @show
 
         </div>
