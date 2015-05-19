@@ -155,6 +155,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" style="max-width:900px; margin:auto">
+                    <span class="" style="min-width:50px; padding:0 5px; float:left; color:#FFF"><strong>Student Name: {{$student_name}}</strong></span>
                     <span class="fc-event legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px;">Not Approved Event</span>
                     <span class="fc-event cancelled legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px">Cancelled Event</span>
                     <span class="fc-event approved legend" style="min-width:50px; padding:0 5px; float:right;">Approved Event</span>

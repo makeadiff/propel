@@ -6312,7 +6312,7 @@ TimeGrid.mixin({
 		var timeText;
 		var fullTimeText; // more verbose time text. for the print stylesheet
 		var startTimeText; // just the start time text
-
+		var status = event.status;
 		classes.unshift('fc-time-grid-event', 'fc-v-event');
 
 		if (view.isMultiDayEvent(event)) { // if the event appears to span more than one day...
@@ -6329,7 +6329,7 @@ TimeGrid.mixin({
 			timeText = this.getEventTimeText(event);
 			fullTimeText = this.getEventTimeText(event, 'LT');
 			startTimeText = this.getEventTimeText(event, null, false); // displayEnd=false
-			var status = event.status;
+			
 		}
 
 		if(seg.isEnd || seg.isStart){

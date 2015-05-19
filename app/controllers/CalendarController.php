@@ -42,11 +42,10 @@ class CalendarController extends BaseController
 
         }
         $calendarEvents = json_encode($calendarEvents);
-        //return $calendarEvents;
-        
+        $student_name = Student::where('id','=',$student_id)->first();
         $GLOBALS['student_id'] = $student_id;
         return View::make('calendar.calendar-view')->with('cal',$cal)->with('volunteers',$volunteers)->with('subjects',$subjects)
-                        ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id)->with('calendarEvents',$calendarEvents) ;
+                        ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id)->with('calendarEvents',$calendarEvents)->with('student_name',$student_name->name) ;
     }
 
     public function createEdit()

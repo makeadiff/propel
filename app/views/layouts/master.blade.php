@@ -21,7 +21,8 @@
         $(function () {
             $('.footable').footable({
                 breakpoints: {
-                    phone: 555
+                    phone: 555,
+                    tablet: 1024,
                 }
             });
         });
