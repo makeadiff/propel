@@ -236,6 +236,19 @@ class CalendarController extends BaseController
         return View::make('calendar.select-center')->with('centers',$centers);
     }
 
+
+
+    public function selectAsv()
+    {
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+
+        $asvs = $fellow->city()->first()->volunteer()->get();
+
+        return View::make('calendar.select-asv')->with('asvs',$asvs);
+    }
+
+
     public static function setGroup()
     {
         $user_id = $_SESSION['user_id'];

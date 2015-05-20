@@ -33,11 +33,17 @@
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
+                <a href='calendar/select-asv' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/asv.png')}}}"><br>Calendars of<br>ASVs</a>
+            </div>
+            <div class="col-md-4 col-sm-6 text-center">
                 <a href='calendar/select-center' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/centers.png')}}}"><br>Calendars of<br>Centers</a>
             </div>
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='calendar/{{{$user->id}}}' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/calendar.png')}}}"><br>Calendar</a>
+                <a href='calendar/{{{$user->id}}}' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/calendar.png')}}}"><br>Calendar of<br>Students</a>
+            </div>
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='calendar/select-asv' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/asv.png')}}}"><br>Calendars of<br>ASVs</a>
             </div>
         @endif
 
