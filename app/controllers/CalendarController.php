@@ -15,11 +15,6 @@ class CalendarController extends BaseController
 
         $this->setGroup();
 
-        //$cal = new CalendarLib("daily");
-
-
-        /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
-        */
         $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')
             ->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')
             ->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')
@@ -32,15 +27,7 @@ class CalendarController extends BaseController
 
 
         foreach ($calendarEvents as $calendarEvent) {
-            /*if($calendarEvent->title == 'wingman_time'){
-                $calendarEvent->title = 'Wigman Time';
-            }
-            elseif ($calendarEvent->title == 'child_busy') {
-                $calendarEvent->title = 'Child Busy';
-            }
-            elseif ($calendarEvent->title == 'volunteer_time') {
-                $calendarEvent->title = 'Volunteer Time';
-            }*/
+
             $calendarEvent->title = $calendarEvent->student_name . " : " . str_replace('_', ' ',$calendarEvent->title) ;
             $calendarEvent->title = ucwords($calendarEvent->title);
             $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
@@ -90,6 +77,40 @@ class CalendarController extends BaseController
         return View::make('calendar.calendar-view')->with('volunteers',$volunteers)->with('subjects',$subjects)
                         ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id)->with('calendarEvents',$calendarEvents)->with('student_name',$student_name->name) ;
 
+    }
+
+    public function showAsvCalendar($asv_id)
+    {
+
+        $this->setGroup();
+
+        $city = Volunteer::find($asv_id)->city()->first();
+        $students  = $city->student()->get();
+        $subjects = Volunteer::find($asv_id)->city()->first()->subject()->get();
+
+
+        $calendarEvents = DB::table('propel_calendarEvents as ce')->leftJoin('propel_cancelledCalendarEvents as cce','ce.id','=','cce.calendar_event_id')
+            ->join('propel_volunteerTimes as vt','vt.calendar_event_id','=','ce.id')
+            ->leftJoin('User as u','u.id','=','vt.volunteer_id')
+            ->leftJoin('propel_subjects as sub','sub.id','=','vt.subject_id')
+            ->join('Student','Student.id','=','ce.student_id')
+            ->select('ce.id','ce.type as title','ce.start_time as start','ce.end_time as end','ce.status','cce.reason as reason','cce.comment as comment'
+                ,'u.name as volunteer_name','vt.volunteer_id as volunteer_id',
+                'sub.id as subject_id','sub.name as subject_name','Student.name as student_name')
+            ->where('vt.volunteer_id','=',$asv_id)->get();
+
+
+        foreach ($calendarEvents as $calendarEvent) {
+
+            $calendarEvent->title = $calendarEvent->student_name . " : " . str_replace('_', ' ',$calendarEvent->title) ;
+            $calendarEvent->title = ucwords($calendarEvent->title);
+            $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
+            $calendarEvent->reason = ucwords($calendarEvent->reason);
+
+        }
+        $calendarEvents = json_encode($calendarEvents);
+
+        return View::make('calendar.asv-calendar-view')->with('calendarEvents',$calendarEvents)->with('city',$city)->with('students',$students)->with('subjects',$subjects) ;
     }
 
     public function createEdit()

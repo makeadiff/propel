@@ -40,6 +40,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/calendar/select-center','CalendarController@selectCenter');
     Route::get('/calendar/center/{center_id}','CalendarController@showCenterCalendar');
     Route::get('/calendar/select-asv','CalendarController@selectAsv');
+    Route::get('/calendar/asv/{asv_id}','CalendarController@showAsvCalendar');
     Route::get('/calendar/{wingman_id}','CalendarController@showStudents');
     Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
     Route::post('/calendar/createEdit','CalendarController@createEdit');

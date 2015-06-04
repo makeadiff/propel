@@ -55,10 +55,10 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                <tr>
+                <tr  class="hide-if-no-paging">
                     <td colspan="7">
                         <div class="text-center">
-                            <ul class="pagination pagination-centered hide-if-no-paging"></ul>
+                            <ul class="pagination pagination-centered"></ul>
                         </div>
                     </td>
                 </tr>

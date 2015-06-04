@@ -76,7 +76,7 @@
                     echo $value.')';
                 ?></a>
                 </li>
-                <li class=""><a href="http://makeadiff.in/madapp/index.php/auth/logout">Logout</a></li>
+                <li class=""><a href="http://localhost/makeadiff.in/home/makeadiff/public_html/madapp/index.php/auth/logout">Logout</a></li>
                 @show
             </ul>
 

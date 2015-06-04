@@ -13,7 +13,7 @@
 
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <h2 class="sub-title">New Wingman Journal</h2><br>
+                <h2 class="sub-title">Edit Wingman Journal</h2><br>
                 <form id="journal-entry" role="form" method="post" enctype="multipart/form-data" action="{{{URL::to('/journal-entry/' . $journal_entry->id)}}}">
                     <input type="hidden" name="_method" value="PUT" />
 

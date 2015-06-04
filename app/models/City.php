@@ -24,4 +24,9 @@ class City extends Eloquent
         return $this->hasMany("Center");
     }
 
+    public function student()
+    {
+        return $this->hasManyThrough('Student','Center');
+    }
+
 }

@@ -163,7 +163,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" style="max-width:900px; margin:auto">
-                    <span class="" style="min-width:50px; padding:0 5px; float:left; color:#FFF"><strong>Student Name: {{$student_name}}</strong></span>
+
                     <span class="fc-event legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px;">Not Approved Event</span>
                     <span class="fc-event cancelled legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px">Cancelled Event</span>
                     <span class="fc-event approved legend" style="min-width:50px; padding:0 5px; float:right;">Approved Event</span>
@@ -206,9 +206,7 @@
                     <div class="form-group optional volunteer-time" style="display:none">
                         <label for="volunteer" class="control-label">Volunteer</label>
                         <select class="form-control" id="volunteer" name="volunteer">
-                            @foreach($volunteers as $volunteer)
-                                <option value="{{{$volunteer->id}}}">{{ucwords(strtolower($volunteer->name))}}</option>
-                            @endforeach
+
                         </select>
                     </div>
 
@@ -224,9 +222,7 @@
                     <div class="form-group optional wingman-time" style="display:none">
                         <label for="wingman_module" class="control-label">Wingman Module : </label>
                         <select class="form-control" id="wingman_module" name="wingman_module">
-                            @foreach($wingman_modules as $wingman_module)
-                                <option value="{{{$wingman_module->id}}}">{{{$wingman_module->name}}}</option>
-                            @endforeach
+
                         </select>
                     </div>
 
@@ -246,8 +242,8 @@
 
                     <input type="hidden" id="on_date" name="on_date">
                     <input type="hidden" id="end_date" name="end_date">
-                    <input type="hidden" name="student_id" value="{{{$student_id}}}">
-                    <input type="hidden" name="wingman_id" value="{{{$wingman_id}}}">
+
+
 
 
             </div>
@@ -283,9 +279,7 @@
                     <div class="form-group optional volunteer-time" style="display:none">
                         <label for="volunteer" class="control-label">Volunteer</label>
                         <select class="form-control" id="edit_volunteer" name="edit_volunteer">
-                            @foreach($volunteers as $volunteer)
-                                <option value="{{{$volunteer->id}}}">{{ucwords(strtolower($volunteer->name))}}</option>
-                            @endforeach
+
                         </select>
                     </div>
 
@@ -301,9 +295,7 @@
                     <div class="form-group optional wingman-time" style="display:none">
                         <label for="wingman_module" class="control-label">Wingman Module : </label>
                         <select class="form-control" id="edit_wingman_module" name="edit_wingman_module">
-                            @foreach($wingman_modules as $wingman_module)
-                                <option value="{{{$wingman_module->id}}}">{{{$wingman_module->name}}}</option>
-                            @endforeach
+
                         </select>
                     </div>
 
@@ -329,8 +321,7 @@
 
                     <input type="hidden" id="on_date" name="on_date">
                     <input type="hidden" id="end_date" name="end_date">
-                    <input type="hidden" name="edit_student_id" value="{{{$student_id}}}">
-                    <input type="hidden" name="edit_wingman_id" value="{{{$wingman_id}}}">
+
                     <input type="hidden" id="calendar_id" name="calendar_id">
 
             </div>
@@ -367,8 +358,7 @@
                     </div>
                     <input type="hidden" id="calendar_event_id" name="calendar_event_id">
                     <input type="hidden" id="cancel_on_date" name="cancel_on_date">
-                    <input type="hidden" name="student_id" value="{{{$student_id}}}">
-                    <input type="hidden" name="wingman_id" value="{{{$wingman_id}}}">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -498,8 +488,6 @@
       var date = new Date (month);
       var monthValue = parseInt(date.getMonth())+1;
       var yearValue = parseInt(date.getFullYear());
-      var student_id = {{{$student_id}}};
-      var href = "{{{URL::to('/')}}}/calendar/approve/" + student_id + '/' + monthValue + '/' + yearValue;
       window.location.assign(href);
     }
 
