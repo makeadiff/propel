@@ -110,10 +110,10 @@ class CalendarController extends BaseController
         }
         $calendarEvents = json_encode($calendarEvents);
 
-        return View::make('calendar.asv-calendar-view')->with('calendarEvents',$calendarEvents)->with('city',$city)->with('students',$students)->with('subjects',$subjects) ;
+        return View::make('calendar.asv-calendar-view')->with('calendarEvents',$calendarEvents)->with('city',$city)->with('students',$students)->with('subjects',$subjects) ->with('volunteer_id',$asv_id);
     }
 
-    public function createEdit()
+    public function createEvent()
     {
 
         if(Input::get('type') == "")
@@ -122,44 +122,45 @@ class CalendarController extends BaseController
         if(Input::get('subject') == "" && Input::get('type')  == 'volunteer_time')
             return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')))->with('error', 'Subject not selected.');
 
-        /*$on_date = Input::get('on_date');
-        $existing_ce = CalendarEvent::whereRaw("DATE(start_time) = '$on_date'")->where('student_id','=',Input::get('student_id'))->first();
-        if(!empty($existing_ce)) {
-            WingmanTime::where('calendar_event_id','=',$existing_ce->id)->delete();
-            VolunteerTime::where('calendar_event_id','=',$existing_ce->id)->delete();
-            CancelledCalendarEvent::where('calendar_event_id','=',$existing_ce->id)->delete();
-            $existing_ce->delete();
-        }*/
+        //Foreach because in case there are multiple student ids (in case of asv calendar)
+
+        foreach((array)Input::get('student_id') as $student) {
+            $ce = new CalendarEvent;
+            $ce->type = Input::get('type');
+            $ce->start_time = new DateTime(Input::get('on_date') . ' ' . Input::get('start_time'));
+            $ce->end_time = new DateTime(Input::get('end_date') . ' ' . Input::get('end_time'));
+            $ce->student_id = $student;
+            $ce->status = 'created';
+            $ce->save();
 
 
-        $ce = new CalendarEvent;
-        $ce->type = Input::get('type');
-        //return Input::get('on_date').' '.Input::get('start_time');
-        $ce->start_time = new DateTime(Input::get('on_date') . ' ' . Input::get('start_time'));
-        $ce->end_time = new DateTime(Input::get('end_date') . ' ' . Input::get('end_time'));
-        $ce->student_id = Input::get('student_id');
-        $ce->status = 'created';
-        $ce->save();
+            switch($ce->type) {
+                case 'wingman_time' :
+                    $wt = new WingmanTime;
+                    $wt->wingman_id = Input::get('wingman_id');
+                    $wt->wingman_module_id = Input::get('wingman_module');
+                    $wt->calendar_event_id = $ce->id;
+                    $wt->save();
+                    break;
 
-        switch($ce->type) {
-            case 'wingman_time' :
-                $wt = new WingmanTime;
-                $wt->wingman_id = Input::get('wingman_id');
-                $wt->wingman_module_id = Input::get('wingman_module');
-                $wt->calendar_event_id = $ce->id;
-                $wt->save();
-                break;
-
-            case 'volunteer_time' :
-                $vt = new VolunteerTime;
-                $vt->volunteer_id = Input::get('volunteer');
-                $vt->subject_id = Input::get('subject');
-                $vt->calendar_event_id = $ce->id;
-                $vt->save();
-                break;
+                case 'volunteer_time' :
+                    $vt = new VolunteerTime;
+                    $vt->volunteer_id = Input::get('volunteer_id');
+                    $vt->subject_id = Input::get('subject');
+                    $vt->calendar_event_id = $ce->id;
+                    $vt->save();
+                    break;
+            }
         }
 
-        return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
+        //To check whether the request is coming from the child calendar or the asv calendar
+        if(Request::segment(2) == 'asv') {
+            return Redirect::to(URL::to('/calendar/asv/'  . Input::get('volunteer_id')));
+        }else {
+            return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
+        }
+
+
 
     }
 
@@ -219,7 +220,7 @@ class CalendarController extends BaseController
         if(Input::get('reason') == 'mistaken_entry') {
             $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
             $existing_ce->delete();
-            return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
+
         }else {
             $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
             $existing_ce->status = 'cancelled';
@@ -234,6 +235,12 @@ class CalendarController extends BaseController
             $cancelled_event->comment = Input::get('comment');
             $cancelled_event->save();
 
+        }
+
+        //To check whether the request is coming from the child calendar or the asv calendar
+        if(Request::segment(2) == 'asv') {
+            return Redirect::to(URL::to('/calendar/asv/'  . Input::get('volunteer_id')));
+        }else {
             return Redirect::to(URL::to('/calendar/' . Input::get('wingman_id') . '/' . Input::get('student_id')));
         }
     }

@@ -126,7 +126,7 @@
             var minutes = time_value.getUTCMinutes();
             var sec = time_value.getUTCSeconds();
             var dd = 'AM';
-            var h = hours;
+            var h = hours;;
             if(h>=12){
                 h = hours-12;
                 dd = 'PM';
@@ -191,59 +191,49 @@
                 <h4 class="modal-title">Create Event</h4>
             </div>
             <div class="modal-body">
-                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/createEdit')}}}">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/asv/createEvent')}}}">
+
+
                     <div class="form-group">
-                        <label for="type" class="control-label">Type</label>
-                        <select class="form-control" id="type" name="type">
-                            <option value=""></option>
-                            <option value="child_busy">Child Busy</option>
-                            <option value="volunteer_time">Volunteer Time</option>
-                            <option value="wingman_time">Wingman Time</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group optional volunteer-time" style="display:none">
-                        <label for="volunteer" class="control-label">Volunteer</label>
-                        <select class="form-control" id="volunteer" name="volunteer">
-
-                        </select>
-                    </div>
-
-                    <div class="form-group optional volunteer-time" style="display:none">
-                        <label for="subject" class="control-label">Subject</label>
-                        <select class="form-control" id="subject" name="subject">
-                            @foreach($subjects as $subject)
-                                <option value="{{{$subject->id}}}">{{{$subject->name}}}</option>
+                        <label for="student" class="control-label">Students : </label>
+                        <select multiple class="form-control" name="student_id[]">
+                            @foreach($students as $student)
+                                <option value="{{{$student->id}}}">{{{$student->name}}}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="form-group optional wingman-time" style="display:none">
-                        <label for="wingman_module" class="control-label">Wingman Module : </label>
-                        <select class="form-control" id="wingman_module" name="wingman_module">
-
+                    <div class="form-group">
+                        <label for="subject" class="control-label">Subject</label>
+                        <select class="form-control" id="subject" name="subject">
+                            @foreach($subjects as $subject)
+                            <option value="{{{$subject->id}}}">{{{$subject->name}}}</option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="start_time" class="control-label">Start Time : </label>
+
                         <div class="form-group">
-                            <input type="text" id='start_time' name="start_time" class="form-control" style="width: 25%" placeholder="Start Time">
+                            <input type="text" id='start_time' name="start_time" class="form-control" style="width: 25%"
+                                   placeholder="Start Time">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="end_time" class="control-label">End Time : </label>
+
                         <div class="form-group">
-                            <input type="text" id='end_time' name="end_time" class="form-control" style="width: 25%" placeholder="End Time">
+                            <input type="text" id='end_time' name="end_time" class="form-control" style="width: 25%"
+                                   placeholder="End Time">
                         </div>
                     </div>
 
+                    <input type="hidden" name="volunteer_id" value="{{{$volunteer_id}}}">
+                    <input type="hidden" name="type" value="volunteer_time">
                     <input type="hidden" id="on_date" name="on_date">
                     <input type="hidden" id="end_date" name="end_date">
-
-
 
 
             </div>
@@ -341,7 +331,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Cancel Class</h4>
             </div>
-            <form method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/cancelEvent')}}}">
+            <form method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/asv/cancelEvent')}}}">
             <div class="modal-body">
                     <div class="form-group">
                         <label for="type" class="control-label">Reason : </label>
@@ -356,6 +346,7 @@
                         <label for="comment" class="control-label">Comment : </label>
                         <textarea class="form-control" id="comment" name="comment"></textarea>
                     </div>
+                    <input type="hidden" name="volunteer_id" value="{{{$volunteer_id}}}">
                     <input type="hidden" id="calendar_event_id" name="calendar_event_id">
                     <input type="hidden" id="cancel_on_date" name="cancel_on_date">
 
@@ -454,33 +445,7 @@
 <script src="{{{URL::to('/')}}}/js/picker.date.js"></script>
 <script src="{{{URL::to('/')}}}/js/picker.time.js"></script>
 <script>
-    $(function(){
-        $("#type").change(function () {
-            // hide all optional elements
-            $('.optional').css('display','none');
 
-            $("#type option:selected").each(function () {
-                if($(this).val() == "volunteer_time") {
-                    $('.volunteer-time').css('display','block');
-                } else if($(this).val() == "wingman_time") {
-                    $('.wingman-time').css('display','block');
-                }
-            });
-        });
-
-        $("#edit_type").change(function () {
-            // hide all optional elements
-            $('.optional').css('display','none');
-
-            $("#edit_type option:selected").each(function () {
-                if($(this).val() == "volunteer_time") {
-                    $('.volunteer-time').css('display','block');
-                } else if($(this).val() == "wingman_time") {
-                    $('.wingman-time').css('display','block');
-                }
-            });
-        });
-    });
 
     function getMonthCal(){
       var date = $("#calendar").fullCalendar('getDate');

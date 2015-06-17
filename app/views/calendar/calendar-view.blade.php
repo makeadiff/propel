@@ -191,7 +191,7 @@
                 <h4 class="modal-title">Create Event</h4>
             </div>
             <div class="modal-body">
-                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/createEdit')}}}">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/createEvent')}}}">
                     <div class="form-group">
                         <label for="type" class="control-label">Type</label>
                         <select class="form-control" id="type" name="type">
@@ -205,7 +205,7 @@
 
                     <div class="form-group optional volunteer-time" style="display:none">
                         <label for="volunteer" class="control-label">Volunteer</label>
-                        <select class="form-control" id="volunteer" name="volunteer">
+                        <select class="form-control" id="volunteer" name="volunteer_id">
                             @foreach($volunteers as $volunteer)
                                 <option value="{{{$volunteer->id}}}">{{ucwords(strtolower($volunteer->name))}}</option>
                             @endforeach

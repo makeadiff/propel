@@ -43,9 +43,11 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/calendar/asv/{asv_id}','CalendarController@showAsvCalendar');
     Route::get('/calendar/{wingman_id}','CalendarController@showStudents');
     Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
-    Route::post('/calendar/createEdit','CalendarController@createEdit');
+    Route::post('/calendar/createEvent','CalendarController@createEvent');
+    Route::post('/calendar/asv/createEvent','CalendarController@createEvent');
     Route::post('/calendar/editEvent','CalendarController@editEvent');
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
+    Route::post('/calendar/asv/cancelEvent','CalendarController@cancelEvent');
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
 
