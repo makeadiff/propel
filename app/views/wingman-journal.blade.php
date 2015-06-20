@@ -9,9 +9,10 @@
         <h2 class="sub-title">Wingman Journal</h2>
         <br>
 
-
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
+                
+            @if(count($entries)!=0)
             <table class="table table-bordered table-responsive white footable">
                 <thead>
                 <tr>
@@ -66,8 +67,11 @@
 
             </table>
             <br>
-            <a href="../journal-entry/create" class="btn btn-primary">New Journal Entry</a>
-        </div>
+            @else
+            <p style="text-align:center; color:#FFF">No journal entry for the selected wingman.</p>
+            @endif
+                <a href="../journal-entry/create" class="btn btn-primary">New Journal Entry</a>
+            </div>
         <br>
 
         <br>

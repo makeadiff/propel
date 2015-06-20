@@ -6,22 +6,19 @@
 <div class="container-fluid">
 
 
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 white">
+    <div class="centered">
+        <div class="row">
 
             <h2 class="sub-title">Select ASV</h2>
             <br>
 
 
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8 text-center">
-                    @foreach($asvs as $asv)
-                    <a class="btn btn-default" href="{{{URL::to('/calendar/asv/'. $asv->id)}}}">{{{$asv->name}}}</a><br><br>
-                    @endforeach
-                </div>
-            </div>
-
-
+                @foreach($asvs as $asv)
+                    <div style="padding:10px" class="col-md-4 col-sm-6 text-center">
+                        <a href="{{{URL::to('/calendar/asv/'. $asv->id)}}}" class='btn btn-primary btn-dash transparent'><img  src="{{{URL::to('/img/profile.png')}}}"><br/>{{{$asv->name}}}</a>
+                    </div>
+                @endforeach
+        
         </div>
 
     </div>
