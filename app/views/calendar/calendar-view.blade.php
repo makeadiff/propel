@@ -41,7 +41,7 @@
                     right: 'month,agendaWeek,agendaDay'
                 },
                 <?php
-                    if(isset($_aET['date'])){
+                    if(isset($_GET['date'])){
                         echo 'defaultDate: \''.$_GET['date'].'\',';
                     }
                 ?>
@@ -49,30 +49,31 @@
                 selectHelper: true,
                 select: function(start, end) {
                     var title=' ';
-                    var start_date = new Date(start);
-                    var end_date = new Date(end);
+                    
+                    var start_timestamp = new Date(start);
+                    var end_timestamp = new Date(end);
 
                     //End day returned by function is one day ahead, hence subtracting one day
-                    end_date.setDate(end_date.getDate()-1);
-
-                    start_date = $.datepicker.formatDate('yy-mm-dd',start_date);
-                    end_date = $.datepicker.formatDate('yy-mm-dd',end_date);
-
-                    $("#on_date").val(start_date);
+                    end_timestamp.setDate(end_timestamp.getDate()-1);
+                    var cur_date = $.datepicker.formatDate('yy-mm-dd',start_timestamp);
+                    var end_date = $.datepicker.formatDate('yy-mm-dd',end_timestamp);
+                    $("#on_date").val(cur_date);
                     $("#end_date").val(end_date);
-
-                    var start_time = timeFormat(start);
-                    var end_time = timeFormat(end);
+                    var start_time = timeFormat(start_timestamp);
+                    var end_time = timeFormat(end_timestamp);
                     $("#createModal").modal('show');
                     $('#start_time').val(start_time);
                     $('#end_time').val(end_time);
+                    var time = end_date + ' ' + end_time;
+                    var timestamp = Date.parse(time)/1000;
+                    //alert(timestamp);
                     var eventData;
                     if (title) {
                         eventData = {
                             id:id,
                             title: title,
                             start: start,
-                            end: end
+                            end: timestamp
                         };
                         $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
                     }
@@ -416,18 +417,12 @@
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_start_date').pickadate({
-            min: [5,00],
-            max: [22,0]
-        });
+        $('#edit_start_date').pickadate();
         $('#edit_end_time').pickatime({
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_end_date').pickadate({
-            min: [5,00],
-            max: [22,0]
-        });
+        $('#edit_end_date').pickadate();
         $('.list_popover').popover({'html' : true});
 
     });

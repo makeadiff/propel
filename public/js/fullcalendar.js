@@ -5086,9 +5086,14 @@ DayGrid.mixin({
 			}
 		}
 
-		if(seg.isEnd || seg.isStart){
-			var timeS = $.datepicker.formatDate('M dd',new Date(event.start))+' '+timeFormat(event.start);
-			var timeE = $.datepicker.formatDate('M dd',new Date(event.end))+' '+timeFormat(event.end);
+		if(seg.isEnd || seg.isStart){ //Check the new Date function for the error
+			//var timeS = $.datepicker.formatDate('M dd',new Date(event.start))+' '+timeFormat(event.start);
+			//var timeE = $.datepicker.formatDate('M dd',new Date(event.end))+' '+timeFormat(event.end);
+			//alert(event.end);
+			var timeS = new Date(event.start);
+			//timeS = timeS.format('dd.mm.yyyy');
+			var timeE = new Date(event.end);
+			//timeE = timeE.format('dd.mm.yyyy');
 		}
 
 		titleHtml =

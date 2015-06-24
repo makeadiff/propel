@@ -6,7 +6,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Wingman Journal</h2>
+        <h2 class="sub-title">Child Feedback</h2>
         <br>
 
         <div class="row">
@@ -47,7 +47,7 @@
                                 }
                             ?>
                         </td>
-                        <td><a class="white" href="../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
+                        <td><a class="white" href="../../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
                         <td>{{{date_format(date_create($entry->on_date),'l, jS F Y')}}}</td>
                         <td><a href="{{{URL::to('/journal-entry/' . $entry->id . '/edit')}}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
                             <a href="javascript:checkDelete({{{$entry->id}}})"><span class="glyphicon glyphicon-remove white"></span></a>
@@ -68,11 +68,7 @@
             </table>
             <br>
             @else
-            <p style="text-align:center; color:#FFF">No journal entry for the selected wingman.</p>
-            @endif
-
-            @if($user_group == 'Propel Wingman')
-                <a href="../journal-entry/create" class="btn btn-primary">New Journal Entry</a>
+            <p style="text-align:center; color:#FFF">No feedback entry for the selected child.</p>
             @endif
             </div>
         <br>

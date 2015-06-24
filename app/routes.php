@@ -4,7 +4,7 @@ Route::filter('login_check',function()
 {
     session_start();
 
-    //$_SESSION['user_id']=47642; //48032 //22730
+    $_SESSION['user_id']=48032; //48032 //47642 //22730
 
     if(empty($_SESSION['user_id'])){
 
@@ -35,6 +35,11 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/wingman-journal/select-wingman','WingmanJournalController@selectWingman');
     Route::get('/wingman-journal/{wingman_id}','WingmanJournalController@showList');
 
+    Route::get('/feedback/module-feedback','WingmanJournalController@showModuleFeedback');
+    Route::get('/feedback/select-wingman','WingmanJournalController@selectWingmanFeedback');
+    Route::get('/feedback/{wingman_id}','WingmanJournalController@showStudents');
+    Route::get('/feedback/{wingman_id}/{student_id}','WingmanJournalController@showFeedback');
+    
     Route::get('/calendar/select-wingman','CalendarController@selectWingman');
     Route::get('/calendar/approve-calendar','CalendarController@approveView');
     Route::get('/calendar/select-center','CalendarController@selectCenter');

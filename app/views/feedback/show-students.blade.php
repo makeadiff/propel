@@ -18,7 +18,7 @@
         <div class="row">
             @foreach($students as $student)
                 <div style="padding:10px" class="col-md-4 col-sm-6 text-center">
-                    <a href="{{{URL::to('/calendar/'. $wingman_id . '/' . $student->id)}}}" class='btn btn-primary btn-dash transparent'><img  src="{{{URL::to('/img/kids.png')}}}"><br/>{{{$student->name}}}</a>
+                    <a href="{{{URL::to('/feedback/'. $wingman_id . '/' . $student->id)}}}" class='btn btn-primary btn-dash transparent'><img  src="{{{URL::to('/img/kids.png')}}}"><br/>{{{$student->name}}}</a>
                 </div>
             @endforeach
         </div>

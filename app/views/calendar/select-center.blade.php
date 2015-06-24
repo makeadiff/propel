@@ -6,20 +6,18 @@
 <div class="container-fluid">
 
 
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 white">
+    <div class="centered">
+        <div class="row">
 
             <h2 class="sub-title">Select Center</h2>
             <br>
 
 
-            <div class="row">
-                <div class="col-md-offset-2 col-md-8 text-center">
-                    @foreach($centers as $center)
-                    <a class="btn btn-default" href="{{{URL::to('/calendar/center/'. $center->id)}}}">{{{$center->name}}}</a><br><br>
-                    @endforeach
+            @foreach($centers as $center)
+                <div style="padding:10px" class="col-md-4 col-sm-6 text-center">
+                    <a href="{{{URL::to('/calendar/center/'. $center->id)}}}" class='btn btn-primary btn-dash transparent'><img  src="{{{URL::to('/img/centers.png')}}}"><br/>{{{$center->name}}}</a>
                 </div>
-            </div>
+            @endforeach
 
 
         </div>

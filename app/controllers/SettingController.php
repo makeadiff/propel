@@ -65,7 +65,6 @@ class SettingController extends BaseController
                 if($group->name == 'Propel Wingman') {
                    $flag=true;
                 }
-
             }
 
             if($flag == false) {

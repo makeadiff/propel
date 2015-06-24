@@ -8,7 +8,7 @@
 
         <h2 class="sub-title">Attendance</h2>
         <br>
-
+        @if(!empty($attended))
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
             <form action="" method="post">
@@ -49,6 +49,12 @@
 
         <br>
         </div>
+        @else
+        <p style="text-align:center; color:#FFF">Attendance has been marked</p><br/><br/>
+        <div class="centered">
+            <a class="btn btn-default" href="{{{URL::to('/')}}}">Go Back</a>
+        </div>
+        @endif
     </div>
 </div>
 

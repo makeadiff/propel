@@ -7,10 +7,10 @@
 
 
     <div class="row">
+        @if(!empty($datalist))
         <h2 class="sub-title">Approve Calendar</h2>
         <p style="text-align:center; color:#FFF">(Pending Approval) <br/>Select mutliple wingmen to approve multiple calendars at once.</p>
         <br>
-
         <div class="col-md-offset-2 col-md-8">
             <div class="alert alert-danger" id="errorMessageApproval" style="display:none;" role="alert"></div>
             <p class="white"><input type="checkbox" onclick="select_all()" id="select_all">&nbsp;Select All<br/></p>
@@ -72,6 +72,14 @@
             </div>
             </form>
         </div>
+        @else
+        <br/><br/><br/>
+        <h2 class="sub-title">All Events Approved</h2>
+        <p style="text-align:center; color:#FFF">There is not unapproved event in the calendar.</p><br/><br/>
+        <div class="centered">
+            <a class="btn btn-default" href="{{{URL::to('/')}}}">Go Back</a>
+        </div>
+        @endif
         
     </div>
 

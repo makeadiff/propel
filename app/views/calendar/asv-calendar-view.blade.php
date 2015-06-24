@@ -317,18 +317,12 @@
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_start_date').pickadate({
-            min: [5,00],
-            max: [22,0]
-        });
+        $('#edit_start_date').pickadate();
         $('#edit_end_time').pickatime({
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_end_date').pickadate({
-            min: [5,00],
-            max: [22,0]
-        });
+        $('#edit_end_date').pickadate();
         $('.list_popover').popover({'html' : true});
 
     });

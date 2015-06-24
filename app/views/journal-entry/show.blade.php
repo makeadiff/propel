@@ -21,7 +21,7 @@
                     echo "Child Feedback";
                 }
                 else if($journal_entry->type=="module_feedback"){
-                    echo "Module Feedback";
+                    echo "Module Feedback (".$journal_entry->title.")";
                 }
                 else{
                     echo "Other";

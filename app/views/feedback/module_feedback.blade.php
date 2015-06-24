@@ -6,8 +6,18 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Wingman Journal</h2>
+        <h2 class="sub-title">Module Feedback</h2>
         <br>
+
+        <div class="centered" style="text-align:center">
+            <select id="moduleId" class="form-control" placeholder="Student" name="student" style="width: auto; margin:auto" onchange="toggleDisplay();"> 
+                <option value="A" selected="selected">-- Select Module --</option>
+            @foreach($modules as $module)
+                <option value="{{$module->id}}">{{$module->name}}</option>
+            @endforeach
+            </select>
+            <br/>
+        </div>
 
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
@@ -32,7 +42,7 @@
                 </thead>
                 <tbody>
                     @foreach($entries as $entry)
-                        <tr>
+                        <tr class="tableRows {{$entry->module_id}}">
                         <td>
                             <?php
                                 $type = $entry->type;
@@ -47,7 +57,7 @@
                                 }
                             ?>
                         </td>
-                        <td><a class="white" href="../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
+                        <td><a class="white" href="../../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
                         <td>{{{date_format(date_create($entry->on_date),'l, jS F Y')}}}</td>
                         <td><a href="{{{URL::to('/journal-entry/' . $entry->id . '/edit')}}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
                             <a href="javascript:checkDelete({{{$entry->id}}})"><span class="glyphicon glyphicon-remove white"></span></a>
@@ -68,11 +78,7 @@
             </table>
             <br>
             @else
-            <p style="text-align:center; color:#FFF">No journal entry for the selected wingman.</p>
-            @endif
-
-            @if($user_group == 'Propel Wingman')
-                <a href="../journal-entry/create" class="btn btn-primary">New Journal Entry</a>
+            <p style="text-align:center; color:#FFF">No feedback entry for the selected child.</p>
             @endif
             </div>
         <br>
