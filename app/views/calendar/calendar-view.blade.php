@@ -50,17 +50,17 @@
                 select: function(start, end) {
                     var title=' ';
                     
-                    var start_date = new Date(start);
-                    var end_date = new Date(end);
+                    var start_timestamp = new Date(start);
+                    var end_timestamp = new Date(end);
 
                     //End day returned by function is one day ahead, hence subtracting one day
-                    end_date.setDate(end_date.getDate()-1);
-                    var cur_date = $.datepicker.formatDate('yy-mm-dd',new Date(start));
-                    var end_date = $.datepicker.formatDate('yy-mm-dd',end_date);
+                    end_timestamp.setDate(end_timestamp.getDate()-1);
+                    var cur_date = $.datepicker.formatDate('yy-mm-dd',start_timestamp);
+                    var end_date = $.datepicker.formatDate('yy-mm-dd',end_timestamp);
                     $("#on_date").val(cur_date);
                     $("#end_date").val(end_date);
-                    var start_time = timeFormat(start);
-                    var end_time = timeFormat(end);
+                    var start_time = timeFormat(start_timestamp);
+                    var end_time = timeFormat(end_timestamp);
                     $("#createModal").modal('show');
                     $('#start_time').val(start_time);
                     $('#end_time').val(end_time);

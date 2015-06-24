@@ -62,3 +62,15 @@ function select_all(){
 		}
 	}	
 }
+
+function toggleDisplay(){
+	var id = document.getElementById('moduleId').value;
+	if(id=="A"){
+		$('.tableRows').fadeIn('fast');
+	}
+	else{
+		$('.tableRows').hide();
+		$('.'+id).show();
+	}
+		
+}
