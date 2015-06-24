@@ -6,7 +6,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Child Feedback</h2>
+        <h2 class="sub-title">Student Feedback</h2>
         <br>
 
         <div class="row">
@@ -37,7 +37,7 @@
                             <?php
                                 $type = $entry->type;
                                 if($type=="child_feedback"){
-                                    echo "Child Feedback";
+                                    echo "Student Feedback";
                                 }
                                 else if($type=="module_feedback"){
                                     echo "Module Feedback";
@@ -68,7 +68,7 @@
             </table>
             <br>
             @else
-            <p style="text-align:center; color:#FFF">No feedback entry for the selected child.</p>
+            <p style="text-align:center; color:#FFF">No feedback entry for the selected student.</p>
             @endif
             </div>
         <br>

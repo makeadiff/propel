@@ -20,19 +20,12 @@
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='wingman-journal/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/journal.png')}}}"><br>Journals of<br>Wingmen</a>
             </div>
-            <div class="col-md-4 col-sm-6 text-center">
-                <a href='feedback/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Child<br>Feedback</a>
-            </div>
-            <div class="col-md-4 col-sm-6 text-center">
-                <a href='feedback/module-feedback' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/feedback.png')}}}"><br>Module<br>Feedback</a>
-            </div>
+
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='wingman-journal/{{{$user->id}}}' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/journal.png')}}}"><br>Wingman<br>Journal</a>
             </div>
-            <div class="col-md-4 col-sm-6 text-center">
-                <a href='feedback/{{{$user->id}}}' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Child<br>Feedback</a>
-            </div>
+
         @endif
 
 
@@ -77,6 +70,13 @@
         @if($user_group == "Propel Fellow")
 
             <div class="col-md-4 col-sm-6 text-center">
+                <a href='feedback/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Student<br>Feedback</a>
+            </div>
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='feedback/module-feedback' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/feedback.png')}}}"><br>Module<br>Feedback</a>
+            </div>
+
+            <div class="col-md-4 col-sm-6 text-center">
                 <a href='http://makeadiff.in/madapp/index.php/kids/manageaddkids' target='_blank' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/kids.png')}}}"><br>Students</a>
             </div>
 
@@ -95,6 +95,9 @@
 
 
         @elseif($user_group == "Propel Wingman")
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='feedback/{{{$user->id}}}' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Student<br>Feedback</a>
+            </div>
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='settings/students' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/students.png')}}}"><br>Assign<br>Students</a>
             </div>
