@@ -149,6 +149,28 @@ class CalendarController extends BaseController
                     $vt->subject_id = Input::get('subject');
                     $vt->calendar_event_id = $ce->id;
                     $vt->save();
+
+                    //Send SMS to the volunteer informing them about the class
+
+                    $volunteer = Volunteer::find(Input::get('volunteer_id'));
+
+                    //To get the first name
+                    list($volunteer_name) = explode(" ",$volunteer->name);
+                    $user = Volunteer::find($_SESSION['user_id']);
+                    list($user_name) = explode(" ", $user->name);
+
+                    //To get correctly formatted date and time
+                    $on_date = date("d-M", strtotime(Input::get('on_date')));
+                    $on_time = Input::get('start_time');
+
+                    $student = Student::find($ce->student_id);
+                    $center_name = $student->center()->first()->name;
+
+                    $sms = new SMSController();
+                    $sms->message = "Hi $volunteer_name,\n\nYou have been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
+                    $sms->number = $volunteer->phone;
+                    $sms->send();
+
                     break;
             }
         }
@@ -205,6 +227,29 @@ class CalendarController extends BaseController
                 $vt->subject_id = Input::get('edit_subject');
                 $vt->calendar_event_id = $existing_ce->id;
                 $vt->save();
+
+                //Send SMS to the volunteer informing them about the class
+
+                $volunteer = Volunteer::find(Input::get('edit_volunteer'));
+
+                //To get the first name
+                list($volunteer_name) = explode(" ",$volunteer->name);
+                $user = Volunteer::find($_SESSION['user_id']);
+                list($user_name) = explode(" ", $user->name);
+
+                //To get correctly formatted date and time
+                $on_date = date("d-M", strtotime(Input::get('on_date')));
+                $on_time = Input::get('start_time');
+
+                $student = Student::find($existing_ce->student_id);
+                $center_name = $student->center()->first()->name;
+
+                $sms = new SMSController();
+                $sms->message = "Hi $volunteer_name,\n\nYou have been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
+                $sms->number = $volunteer->phone;
+                $sms->send();
+
+
                 break;
         }
 
@@ -215,14 +260,51 @@ class CalendarController extends BaseController
 
     public function cancelEvent()
     {
-        //$on_date = Input::get('cancel_on_date');
+        $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
+
+        if ($existing_ce->type == "volunteer_time") {
+
+            //Info required to send SMS
+
+            $volunteer = $existing_ce->volunteerTime()->first()->volunteer()->first();
+
+            //To get the first name
+            list($volunteer_name) = explode(" ",$volunteer->name);
+            $user = Volunteer::find($_SESSION['user_id']);
+            list($user_name) = explode(" ", $user->name);
+
+            //To get correctly formatted date and time
+            $on_date = date("d-M", strtotime($existing_ce->start_time));
+            $on_time = Input::get('start_time');
+
+            $student = Student::find($existing_ce->student_id);
+            $center_name = $student->center()->first()->name;
+            //Send SMS to the volunteer informing them about the class
+
+            $sms = new SMSController();
+
+            switch(Input::get('reason')) {
+                case 'mistaken_entry' :
+                    $sms->message = "Hi $volunteer_name,\n\nYour class at $center_name on $on_date has been cancelled since it was a mistaken entry.\n\nPlease contact $user_name($user->phone) for more details.";
+                    break;
+                case 'volunteer_not_available' :
+                    $sms->message = "Hi $volunteer_name,\n\nYour class at $center_name on $on_date has been cancelled since you are not available.\n\nPlease contact $user_name($user->phone) for more details.";
+                    break;
+                case 'student_not_available' :
+                    $sms->message = "Hi $volunteer_name,\n\nYour class at $center_name on $on_date has been cancelled since the student is not available.\n\nPlease contact $user_name($user->phone) for more details.";
+                    break;
+
+            }
+            $sms->number = $volunteer->phone;
+            $sms->send();
+
+        }
 
         if(Input::get('reason') == 'mistaken_entry') {
-            $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
+
             $existing_ce->delete();
 
         }else {
-            $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
             $existing_ce->status = 'cancelled';
             $existing_ce->save();
             $existing_cancelled_ce = CancelledCalendarEvent::where('calendar_event_id','=',Input::get('calendar_event_id'))->first();

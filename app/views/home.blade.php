@@ -29,7 +29,7 @@
 
         @if($user_group == "Propel Fellow")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='calendar/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/calendar.png')}}}"><br>Calendars of<br>Wingmen</a>
+                <a href='calendar/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/calendar.png')}}}"><br>Calendars of<br>Students</a>
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
@@ -55,7 +55,7 @@
 
         @if($user_group == "Propel Fellow")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='attendance/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/attendance.png')}}}"><br>Attendance of<br>Wingmen</a>
+                <a href='attendance/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/attendance.png')}}}"><br>Attendance of<br>Wingmen/ASV</a>
             </div>
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
@@ -63,9 +63,7 @@
             </div>
         @endif
 
-        <div class="col-md-4 col-sm-6 text-center">
-            <a href='http://makeadiff.in/apps/okr' target="_blank" class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/okr.png')}}}"><br>OKR</a>
-        </div>
+
 
         @if($user_group == "Propel Fellow")
 
@@ -94,11 +92,11 @@
         @endif
 
 
-        @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel" || $user_group == "Propel Fellow")
+<!--        @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel" || $user_group == "Propel Fellow")
             <div class="col-md-4 col-sm-6 text-center">
                 <a target="_blank" href='http://makeadiff.in/madapp/index.php/event/event' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/events.png')}}}"><br>Events</a>
             </div>
-        @endif
+        @endif-->
 
         @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
             <div class="col-md-4 col-sm-6 text-center">
