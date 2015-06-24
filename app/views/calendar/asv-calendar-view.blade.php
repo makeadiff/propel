@@ -173,10 +173,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                @if($user_group!='Propel Wingman')
-                    <button type="submit" class="btn btn-default" onclick="getMonthCal()">Approve Calendar</button>
-                    <br/><br/>
-                @endif
+
             </div>
         </div>
     </div>
