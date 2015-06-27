@@ -6,7 +6,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Choose Wingmen</h2>
+        <h2 class="sub-title">Assign Wingmen</h2>
         <br>
         <div class="row">
             <div class="col-md-offset-3 col-md-6">

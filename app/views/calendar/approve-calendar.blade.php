@@ -75,7 +75,7 @@
         @else
         <br/><br/><br/>
         <h2 class="sub-title">All Events Approved</h2>
-        <p style="text-align:center; color:#FFF">There is not unapproved event in the calendar.</p><br/><br/>
+        <p style="text-align:center; color:#FFF">There is no unapproved event in the calendar.</p><br/><br/>
         <div class="centered">
             <a class="btn btn-default" href="{{{URL::to('/')}}}">Go Back</a>
         </div>

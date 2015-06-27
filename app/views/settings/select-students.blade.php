@@ -48,8 +48,6 @@
             <button type="button" class="btn btn-primary" id="assignStudents">Assign Students</button>
             @endif
             </div>
-            <div class="col-md-offset-3 col-md-6">
-        </div>
         <br>
 
         <br>
