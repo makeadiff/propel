@@ -14,7 +14,7 @@ class HomeController extends BaseController
 
 
         foreach($groups as $group) {
-            if($group->name == 'Propel Fellow' || $group->name == 'Propel Wingman' || $group->name == 'Propel Strat' || $group->name == 'Program Director, Propel') {
+            if($group->id == '272' || $group->id == '348' || $group->id == '359' || $group->id == '212') {
                 $flag = true;
             }
 
@@ -40,13 +40,13 @@ class HomeController extends BaseController
         $director = false;
 
         foreach($groups as $group) {
-            if($group->name == 'Propel Fellow')
+            if($group->id == '272')
                 $fellow = true;
-            elseif($group->name == 'Propel Wingman')
+            elseif($group->id == '348')
                 $wingman = true;
-            elseif($group->name == 'Propel Strat')
+            elseif($group->id == '359')
                 $strat = true;
-            elseif($group->name == 'Program Director, Propel'){
+            elseif($group->id == '212'){
                 $director = true;
                 $_SESSION['original_id'] = $_SESSION['user_id'];
             }

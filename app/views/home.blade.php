@@ -21,7 +21,7 @@
                 <a href='wingman-journal/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/journal.png')}}}"><br>Journals of<br>Wingmen</a>
             </div>
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='feedback/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Child<br>Feedback</a>
+                <a href='feedback/select-student' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Child<br>Feedback</a>
             </div>
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='feedback/module-feedback' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/feedback.png')}}}"><br>Module<br>Feedback</a>

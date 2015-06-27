@@ -17,41 +17,28 @@
                 <thead>
                 <tr>
                     <th>
-                        Type
+                        Title
                     </th>
                     <th>
-                        Title
+                        Wingman Name
                     </th>
                     <th data-sort-ignore="true">
                         Date
                     </th>
-                    <th data-sort-ignore="true">
+                    <!--<th data-sort-ignore="true">
                         Actions
-                    </th>
+                    </th>-->
                 </tr>
                 </thead>
                 <tbody>
                     @foreach($entries as $entry)
                         <tr>
-                        <td>
-                            <?php
-                                $type = $entry->type;
-                                if($type=="child_feedback"){
-                                    echo "Child Feedback";
-                                }
-                                else if($type=="module_feedback"){
-                                    echo "Module Feedback";
-                                }
-                                else{
-                                    echo "Other";
-                                }
-                            ?>
-                        </td>
                         <td><a class="white" href="../../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
+                        <td>{{{$entry->wingman_name}}}</td>
                         <td>{{{date_format(date_create($entry->on_date),'l, jS F Y')}}}</td>
-                        <td><a href="{{{URL::to('/journal-entry/' . $entry->id . '/edit')}}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
+                        <!--<td><a href="{{{URL::to('/journal-entry/' . $entry->id . '/edit')}}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
                             <a href="javascript:checkDelete({{{$entry->id}}})"><span class="glyphicon glyphicon-remove white"></span></a>
-                        </td>
+                        </td>-->
                         </tr>
                     @endforeach
                 </tbody>
