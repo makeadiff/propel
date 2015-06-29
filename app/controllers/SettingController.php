@@ -51,30 +51,19 @@ class SettingController extends BaseController
 
         $selected_wingmen = Fellow::find($user_id)->wingman()->get();
 
-        $selected_wingmen_id = array();
-        foreach($selected_wingmen as $sub)
-            $selected_wingmen_id[] = $sub->id;
+        
+        $all_wingmen = DB::table('User as A')->join('City as B','A.city_id','=','B.id')->join('UserGroup as C','A.id','=','C.user_id')->select('A.id as id','A.name as name','A.phone as phone')->where('B.id','=',$city_id)->where('C.group_id','=',348)->where('A.status','=',1)->get();
 
-        $all_wingmen = City::find($city_id)->wingman()->where('status','=',1)->where('user_type','=','volunteer')->orderBy('name')->get();
-
-
-        foreach($all_wingmen as $key => $wingman) {
-            $groups = $wingman->group()->get();
-            $flag = false;
-            foreach($groups as $group) {
-                if($group->name == 'Propel Wingman') {
-                   $flag=true;
+        foreach ($all_wingmen as $wingman) {
+            foreach ($selected_wingmen as $selected) {
+                if($wingman->id == $selected->id){
+                    $wingman->phone="checked";
                 }
-            }
-
-            if($flag == false) {
-                unset($all_wingmen[$key]);
-            }
-
-        }
+            }                
+        }            
 
 
-        return View::make('settings/select-wingmen')->with('selected_wingmen_id',$selected_wingmen_id)->with('all_wingmen',$all_wingmen);
+        return View::make('settings/select-wingmen')->with('selected_wingmen',$selected_wingmen)->with('all_wingmen',$all_wingmen);
     }
 
     public function saveWingmen() {
