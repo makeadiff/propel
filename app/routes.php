@@ -4,7 +4,9 @@ Route::filter('login_check',function()
 {
     session_start();
 
-//    $_SESSION['user_id']=48032; //48032 //47642 //22730
+
+    //$_SESSION['user_id']=48032; //48032 //47642 //22730 //50671
+
 
     if(empty($_SESSION['user_id'])){
 
@@ -36,7 +38,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/wingman-journal/{wingman_id}','WingmanJournalController@showList');
 
     Route::get('/feedback/module-feedback','WingmanJournalController@showModuleFeedback');
-    Route::get('/feedback/select-wingman','WingmanJournalController@selectWingmanFeedback');
+    Route::get('/feedback/select-student','WingmanJournalController@selectStudentsCity');
     Route::get('/feedback/{wingman_id}','WingmanJournalController@showStudents');
     Route::get('/feedback/{wingman_id}/{student_id}','WingmanJournalController@showFeedback');
     
@@ -57,7 +59,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
 
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
-
+    
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
     Route::get('/attendance/{user_id}','AttendanceController@show');
     Route::post('/attendance/{user_id}','AttendanceController@save');
@@ -85,7 +87,5 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/city-change/city/{city_id}','CityChangeController@showWingmanSelect');
     Route::get('/city-change/wingman/{wingman_id}','CityChangeController@changeToWingman');
     Route::get('/city-change/back-to-national','CityChangeController@backToNational');
-
-
 
 });

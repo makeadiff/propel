@@ -51,30 +51,19 @@ class SettingController extends BaseController
 
         $selected_wingmen = Fellow::find($user_id)->wingman()->get();
 
-        $selected_wingmen_id = array();
-        foreach($selected_wingmen as $sub)
-            $selected_wingmen_id[] = $sub->id;
+        
+        $all_wingmen = DB::table('User as A')->join('City as B','A.city_id','=','B.id')->join('UserGroup as C','A.id','=','C.user_id')->select('A.id as id','A.name as name','A.phone as phone')->where('B.id','=',$city_id)->where('C.group_id','=',348)->where('A.status','=',1)->get();
 
-        $all_wingmen = City::find($city_id)->wingman()->where('status','=',1)->where('user_type','=','volunteer')->orderBy('name')->get();
-
-
-        foreach($all_wingmen as $key => $wingman) {
-            $groups = $wingman->group()->get();
-            $flag = false;
-            foreach($groups as $group) {
-                if($group->name == 'Propel Wingman') {
-                   $flag=true;
+        foreach ($all_wingmen as $wingman) {
+            foreach ($selected_wingmen as $selected) {
+                if($wingman->id == $selected->id){
+                    $wingman->phone="checked";
                 }
-            }
-
-            if($flag == false) {
-                unset($all_wingmen[$key]);
-            }
-
-        }
+            }                
+        }            
 
 
-        return View::make('settings/select-wingmen')->with('selected_wingmen_id',$selected_wingmen_id)->with('all_wingmen',$all_wingmen);
+        return View::make('settings/select-wingmen')->with('selected_wingmen',$selected_wingmen)->with('all_wingmen',$all_wingmen);
     }
 
     public function saveWingmen() {
@@ -82,7 +71,7 @@ class SettingController extends BaseController
         $fellow = Fellow::find($user_id);
 
         $selected_wingmen = Input::get("wingmen");
-
+        //return $selected_wingmen;
         $fellow->wingman()->sync($selected_wingmen);
         
         return Redirect::to(URL::to('/') . "/settings/wingmen")->with('success', 'Wingmen Set.');
@@ -97,7 +86,6 @@ class SettingController extends BaseController
         $selected_student = Wingman::find($user_id)->student()->get();
 
         $selected_student_id = array();
-
         foreach($selected_student as $student)
             $selected_student_id[] = $student->id;
 
@@ -107,8 +95,8 @@ class SettingController extends BaseController
             $students = $center->student()->lists('name', 'id');
             foreach ($students as $key => $value) $all_students[$key] = $value;
         }
-
-        return View::make('settings/select-students')->with('selected_student_id',$selected_student_id)->with('all_students',$all_students);
+        
+        return View::make('settings/select-students')->with('selected_student_id',$selected_student_id)->with('all_students',$all_students)->with('selected_student',$selected_student);
     }
 
     //Fellow selects Wingman's students
@@ -117,22 +105,21 @@ class SettingController extends BaseController
     {
         $user_id = $wingman_id;
         $city_id = Volunteer::find($user_id)->city_id;
+        $wingman = Wingman::where('id','=',$user_id)->first();
 
-        $selected_student = Wingman::find($user_id)->student()->get();
+        $selected_student = DB::table('propel_student_wingman as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->select('A.student_id as id','B.name as student_name','C.name as center_name')->where('A.wingman_id','=',$user_id)->get();
 
-        $selected_student_id = array();
+        $student_list = DB::table('Student as A')->join('Center as D','D.id','=','A.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as id','A.name as name','D.name as center_name','A.description as grade')->where('E.id',$city_id)->where('D.status','=','1')->orderBy('A.name','ASC')->get();
 
-        foreach($selected_student as $student)
-            $selected_student_id[] = $student->id;
-
-        $all_centers = City::find($city_id)->center()->get();
-        $all_students = array();
-        foreach($all_centers as $center) {
-            $students = $center->student()->lists('name', 'id');
-            foreach ($students as $key => $value) $all_students[$key] = $value;
+        foreach ($student_list as $student) {
+            foreach ($selected_student as $selected) {
+                if($student->id == $selected->id){
+                    $student->grade="checked";
+                }
+            }
         }
 
-        return View::make('settings/select-students')->with('selected_student_id',$selected_student_id)->with('all_students',$all_students);
+        return View::make('settings/select-students')->with('selected_student',$selected_student)->with('wingman',$wingman)->with('student_list',$student_list);
     }
 
     public function saveStudents() {
@@ -140,7 +127,7 @@ class SettingController extends BaseController
         $wingmen = Wingman::find($user_id);
 
         $selected_students = Input::get("students");
-
+        return $selected_students;
         $wingmen->student()->sync($selected_students);
         
         return Redirect::to(URL::to('/') . "/settings/students")->with('success', 'Students Set');
@@ -150,11 +137,10 @@ class SettingController extends BaseController
     public function saveWingmanStudents($wingman_id) {
         $user_id = $wingman_id;
         $wingmen = Wingman::find($user_id);
-
+        
         $selected_students = Input::get("students");
-
         $wingmen->student()->sync($selected_students);
-
+        
         return Redirect::to(URL::to('/') . "/settings/". $wingman_id . "/students")->with('success', 'Students Set');
     }
 }
