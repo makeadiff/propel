@@ -79,7 +79,7 @@
                     }
                     $('#calendar').fullCalendar('unselect');
                 },
-                editable: false,
+                editable: true,
                 eventLimit: false, // allow "more" link when too many events
                 
                 events: <?php echo $calendarEvents ?>,
@@ -101,6 +101,9 @@
                     }
                     else if(data.getAttribute('status')!= 'approved'){
                         $("#dialogModal").modal('show');   
+                    }
+                    else if(data.getAttribute('status')=='approved' && user_group=="Propel Wingman"){
+                        $('#cancelModal').modal('show');
                     }
                     
                     event_id = id;
