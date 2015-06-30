@@ -52,7 +52,7 @@ class SettingController extends BaseController
         $selected_wingmen = Fellow::find($user_id)->wingman()->get();
 
         
-        $all_wingmen = DB::table('User as A')->join('City as B','A.city_id','=','B.id')->join('UserGroup as C','A.id','=','C.user_id')->select('A.id as id','A.name as name','A.phone as phone')->where('B.id','=',$city_id)->where('C.group_id','=',348)->where('A.status','=',1)->get();
+        $all_wingmen = DB::table('User as A')->join('City as B','A.city_id','=','B.id')->join('UserGroup as C','A.id','=','C.user_id')->select('A.id as id','A.name as name','A.phone as phone')->distinct()->where('B.id','=',$city_id)->where('C.group_id','=',348)->where('A.status','=',1)->get();
 
         foreach ($all_wingmen as $wingman) {
             foreach ($selected_wingmen as $selected) {
