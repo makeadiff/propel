@@ -33,6 +33,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
 {
     Route::get('/',['as'=>'home','uses'=>'HomeController@showHome']);
     Route::get('/success','CommonController@showSuccess');
+    Route::get('/logout','CommonController@logout');
 
     Route::get('/wingman-journal/select-wingman','WingmanJournalController@selectWingman');
     Route::get('/wingman-journal/{wingman_id}','WingmanJournalController@showList');

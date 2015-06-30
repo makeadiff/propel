@@ -22,7 +22,7 @@
             $('.footable').footable({
                 breakpoints: {
                     phone: 555,
-                    tablet: 1024,
+                    tablet: 1024
                 }
             });
         });
@@ -76,11 +76,10 @@
                     echo $value.')';
                 ?></a>
                 </li>
-                @if(App::environment('local'))
-                    <li class=""><a href="http://localhost/makeadiff.in/home/makeadiff/public_html/madapp/index.php/auth/logout">Logout</a></li>
-                @else
-                    <li class=""><a href="http://makeadiff.in/madapp/index.php/auth/logout">Logout</a></li>
-                @endif
+
+                    <li class=""><a href="{{{URL::to('/logout')}}}">Logout</a></li>
+
+
                 @show
             </ul>
 

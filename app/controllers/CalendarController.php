@@ -123,7 +123,10 @@ class CalendarController extends BaseController
 
         //Foreach because in case there are multiple student ids (in case of asv calendar)
 
-        foreach((array)Input::get('student_id') as $student) {
+        $students = (array)Input::get('student_id');
+        $length = count($students);
+
+        foreach($students as $index => $student) {
             $ce = new CalendarEvent;
             $ce->type = Input::get('type');
             $ce->start_time = new DateTime(Input::get('on_date') . ' ' . Input::get('start_time'));
@@ -149,26 +152,33 @@ class CalendarController extends BaseController
                     $vt->calendar_event_id = $ce->id;
                     $vt->save();
 
-                    //Send SMS to the volunteer informing them about the class
+                    //To ensure that in case of request from ASV calendar, where there would be multiple students chosen, the SMS is only sent once and not multiple times.
+                    //Here it is sent on the last iteration.
 
-                    $volunteer = Volunteer::find(Input::get('volunteer_id'));
+                    if($index == $length -1){
+                        //Send SMS to the volunteer informing them about the class
 
-                    //To get the first name
-                    list($volunteer_name) = explode(" ",$volunteer->name);
-                    $user = Volunteer::find($_SESSION['user_id']);
-                    list($user_name) = explode(" ", $user->name);
+                        $volunteer = Volunteer::find(Input::get('volunteer_id'));
 
-                    //To get correctly formatted date and time
-                    $on_date = date("d-M", strtotime(Input::get('on_date')));
-                    $on_time = Input::get('start_time');
+                        //To get the first name
+                        list($volunteer_name) = explode(" ",$volunteer->name);
+                        $user = Volunteer::find($_SESSION['user_id']);
+                        list($user_name) = explode(" ", $user->name);
 
-                    $student = Student::find($ce->student_id);
-                    $center_name = $student->center()->first()->name;
+                        //To get correctly formatted date and time
+                        $on_date = date("d-M", strtotime(Input::get('on_date')));
+                        $on_time = Input::get('start_time');
 
-                    $sms = new SMSController();
-                    $sms->message = "Hi $volunteer_name,\n\nYou have been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
-                    $sms->number = $volunteer->phone;
-                    $sms->send();
+                        $student = Student::find($ce->student_id);
+                        $center_name = $student->center()->first()->name;
+
+                        $sms = new SMSController();
+                        $sms->message = "Hi $volunteer_name,\n\nYou have been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
+                        $sms->number = $volunteer->phone;
+                        $sms->send();
+                    }
+
+
 
                     break;
             }
