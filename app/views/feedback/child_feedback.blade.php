@@ -6,7 +6,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Child Feedback</h2>
+        <h2 class="sub-title">Student Feedback</h2>
         <br>
 
         <div class="row">
@@ -33,6 +33,22 @@
                 <tbody>
                     @foreach($entries as $entry)
                         <tr>
+
+                        <td>
+                            <?php
+                                $type = $entry->type;
+                                if($type=="child_feedback"){
+                                    echo "Student Feedback";
+                                }
+                                else if($type=="module_feedback"){
+                                    echo "Module Feedback";
+                                }
+                                else{
+                                    echo "Other";
+                                }
+                            ?>
+                        </td>
+
                         <td><a class="white" href="../../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
                         <td>{{{$entry->wingman_name}}}</td>
                         <td>{{{date_format(date_create($entry->on_date),'l, jS F Y')}}}</td>
@@ -55,7 +71,7 @@
             </table>
             <br>
             @else
-            <p style="text-align:center; color:#FFF">No feedback entry for the selected child.</p>
+            <p style="text-align:center; color:#FFF">No feedback entry for the selected student.</p>
             @endif
             </div>
         <br>

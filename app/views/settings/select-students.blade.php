@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
             @if(count($selected_student)!=0)
-            <p style="text-align:center; color:#FFF; font-size:16px">Students assigned to {{{$wingman->name}}}.</p>
+            <p style="text-align:center; color:#FFF; font-size:16px">Students assigned to {{{$wingman->name}}}</p>
             <table class="table table-bordered table-responsive white footable">
                 <thead>
                 <tr>
@@ -93,11 +93,13 @@
 
 
 <script type="text/javascript" src="{{{URL::to('/')}}}/js/section/select-students.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function(){
         $('#assignStudents').click(function(){
             $('#assignStudentsModal').modal('show');
         });
-    });        
+    });
 </script>
+
 @stop
