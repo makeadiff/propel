@@ -3,12 +3,7 @@
 class AttendanceController extends BaseController
 {
 
-    function showAttendance()
-    {
-
-    }
-
-	public function showAttendanceToWingman($user_id)
+	public function show($user_id)
     {
     	$wingmans_kids = Wingman::find($user_id)->student()->get();
 
@@ -19,25 +14,8 @@ class AttendanceController extends BaseController
     	foreach($wingmans_kids as $wk) 
     		$student_ids[] = $wk->id;
 
-        $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where('type','<>','wingman_time')->where(function($query){
-                            $query->where('status','approved')->orWhere('status','attended');})->get();
-        //return $attended;
-        return View::make('attendance.attended-list')->with('attended',$attended);
-    }
-
-    public function showAttendanceToFellow($wingman_id)
-    {
-        $wingmans_kids = Wingman::find($wingman_id)->student()->get();
-
-        if(empty($wingmans_kids[0]))
-            return Redirect::to('error')->with('message','There are no students assigned to the wingman');
-
-        $student_ids = array();
-        foreach($wingmans_kids as $wk)
-            $student_ids[] = $wk->id;
-
         $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
-                $query->where('status','approved')->orWhere('status','attended');})->get();
+                            $query->where('status','approved')->orWhere('status','attended');})->get();
         //return $attended;
         return View::make('attendance.attended-list')->with('attended',$attended);
     }
