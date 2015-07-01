@@ -79,7 +79,7 @@
                     }
                     $('#calendar').fullCalendar('unselect');
                 },
-                editable: true,
+                editable: false,
                 eventLimit: false, // allow "more" link when too many events
                 
                 events: <?php echo $calendarEvents ?>,
@@ -103,7 +103,8 @@
                         $("#dialogModal").modal('show');   
                     }
                     else if(data.getAttribute('status')=='approved' && user_group=="Propel Wingman"){
-                        $('#cancelModal').modal('show');
+                        $('#event_detail_wingman').html(string);
+                        $('#wingManDialogModal').modal('show');
                     }
                     
                     event_id = id;
@@ -406,6 +407,27 @@
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="wingManDialogModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Select Option</h4>
+            </div>
+            <div class="modal-body" id="event_detail_wingman">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="cancelEvent">Cancel Event</button>
+                <button type="button" class="btn btn-primary" id="rescheduleEvent">Reschedule Event</button>
+                
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <script>
     $(document).ready(function(){
         $('#start_time').pickatime({
@@ -420,12 +442,16 @@
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_start_date').pickadate();
+        $('#edit_start_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
         $('#edit_end_time').pickatime({
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_end_date').pickadate();
+        $('#edit_end_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
         $('.list_popover').popover({'html' : true});
 
     });
@@ -437,6 +463,31 @@
 
     $('#editEvent').click(function(){
         $('#dialogModal').modal('hide');
+        $('.optional').css('display','none');
+        $('#edit_start_date').val($.datepicker.formatDate('dd-mm-yy',new Date(start_time)));
+        $('#edit_end_date').val($.datepicker.formatDate('dd-mm-yy',new Date(end_time)));
+        $('#edit_start_time').val(timeFormat(start_time));
+        $('#edit_end_time').val(timeFormat(end_time));
+        if(event_type == "Volunteer Time") {
+            $('.volunteer-time').css('display','block');
+            $('#edit_type').val('volunteer_time');
+            $('#edit_volunteer').val(volunteer_id);
+            $('#edit_subject').val(subject_id);
+        } else if(event_type == "Wingman Time") {
+            $('.wingman-time').css('display','block');
+            $('#edit_type').val('wingman_time');
+            $('#edit_wingman_module').val(module_id);
+        }
+        else{
+            $('#edit_type').val('child_busy');
+        }
+        $('#calendar_id').val(event_id);
+        $('#edit_volunteer').val(volunteer_id);
+        $('#editModal').modal('show');
+    });
+
+    $('#rescheduleEvent').click(function(){
+        $('#wingManDialogModal').modal('hide');
         $('.optional').css('display','none');
         if(event_type == "Volunteer Time") {
             $('.volunteer-time').css('display','block');

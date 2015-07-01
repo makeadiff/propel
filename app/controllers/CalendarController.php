@@ -216,7 +216,7 @@ class CalendarController extends BaseController
         $existing_ce->type = Input::get('edit_type');
         //return Input::get('edit_start_date').' '.Input::get('edit_start_time');
         $existing_ce->start_time = new DateTime(Input::get('edit_start_date') . ' ' . Input::get('edit_start_time'));
-        $existing_ce->end_time = new DateTime(Input::get('end_end_date') . ' ' . Input::get('edit_end_time'));
+        $existing_ce->end_time = new DateTime(Input::get('edit_end_date') . ' ' . Input::get('edit_end_time'));
         $existing_ce->student_id = Input::get('edit_student_id');
         $existing_ce->status = 'created';
         $existing_ce->save();
@@ -363,8 +363,8 @@ class CalendarController extends BaseController
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
 
-        $asvs = $fellow->city()->first()->volunteer()->get();
-
+        $asvs = $fellow->city()->first()->volunteer()->where('status','=','1')->orderBy('name','ASC')->get();
+        //return $asvs;
         return View::make('calendar.select-asv')->with('asvs',$asvs);
     }
 

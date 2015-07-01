@@ -111,6 +111,12 @@ class JournalEntryController extends \BaseController {
         $students = Wingman::find($wingman_id)->student()->get();
         $moduleList = WingmanModule::all();
 
+        foreach ($moduleList as $module) {
+            if($module->id == $journal_entry->module_id){
+                
+            }
+        }
+
         return View::make('journal-entry.edit')->with('journal_entry',$journal_entry)->with('students',$students)->with('modules',$moduleList);
 	}
 
