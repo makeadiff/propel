@@ -109,7 +109,7 @@ class SettingController extends BaseController
 
         $selected_student = DB::table('propel_student_wingman as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->select('A.student_id as id','B.name as student_name','C.name as center_name')->where('A.wingman_id','=',$user_id)->get();
 
-        $student_list = DB::table('Student as A')->join('Center as D','D.id','=','A.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as id','A.name as name','D.name as center_name','A.description as grade')->where('E.id',$city_id)->where('D.status','=','1')->orderBy('A.name','ASC')->get();
+        $student_list = DB::table('Student as A')->join('Center as D','D.id','=','A.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as id','A.name as name','D.name as center_name','A.description as grade')->distinct()->where('E.id',$city_id)->where('D.status','=','1')->orderBy('A.name','ASC')->get();
 
         foreach ($student_list as $student) {
             foreach ($selected_student as $selected) {
