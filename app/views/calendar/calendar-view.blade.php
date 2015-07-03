@@ -96,6 +96,8 @@
                                     + (data.getAttribute('wingman_name')?'<br/>Wingman Name: <strong>'+data.getAttribute('wingman_name')+'</strong> <br/>Module Name: <strong>'+ data.getAttribute('module_name')+'</strong>':'')
                                     + '<br/><strong>(' + data.getAttribute('status').toUpperCase() + ')</strong>';
                     $('#event_detail').html(string);
+                    $('#event_detail_new').html(string);
+                    
                     if(data.getAttribute('status')== 'approved' && user_group!="Propel Wingman"){
                         $("#dialogModal").modal('show');
                     }
@@ -103,14 +105,17 @@
                         $("#dialogModal").modal('show');   
                     }
                     else if(data.getAttribute('status')=='approved' && user_group=="Propel Wingman"){
-                        $('#cancelModal').modal('show');
+                        $('#newDialogModal').modal('show');
                     }
                     
                     event_id = id;
-                    start_time = data.getAttribute('start');
-                    end_time = data.getAttribute('end');
+                    start_date = $.datepicker.formatDate('dd-mm-yy',new Date(data.getAttribute('start')));
+                    end_date = $.datepicker.formatDate('dd-mm-yy',new Date(data.getAttribute('end')));
+                    start_time = timeFormat(data.getAttribute('start'));
+                    end_time = timeFormat(data.getAttribute('end'));
                     volunteer_id = (data.getAttribute('volunteer_id')?data.getAttribute('volunteer_id'):'');
                     event_type = data.name;
+                    //alert(event_type);
                     module_id = (data.getAttribute('module_id')?data.getAttribute('module_id'):'');
                     subject_id = (data.getAttribute('subject_id')?data.getAttribute('subject_id'):'');
                 },
@@ -347,6 +352,59 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="rescheduleModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Reschedule Event</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/rescheduleEvent')}}}">
+                    
+                    <div class="form-group">
+                        <label for="start_time" class="control-label">Start Time : </label>
+                        <div class="form-group">
+                            <input type="text" id='reschedule_start_date' name="reschedule_start_date" class="form-control" style="width: 25%" placeholder="Start Date">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id='reschedule_start_time' name="reschedule_start_time" class="form-control" style="width: 25%" placeholder="Start Time">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end_time" class="control-label">End Time : </label>
+                        <div class="form-group">
+                            <input type="text" id='reschedule_end_date' name="reschedule_end_date" class="form-control" style="width: 25%" placeholder="End Date">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id='reschedule_end_time' name="reschedule_end_time" class="form-control" style="width: 25%" placeholder="End Time">
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="reschedule_subject" name="reschedule_subject">
+                    <input type="hidden" id="reschedule_wingman_module" name="reschedule_wingman_module">
+                    <input type="hidden" id="reschedule_volunteer" name="reschedule_volunteer">
+                    
+                    <input type="hidden" id="reschedule_event_type" name="reschedule_event_type">
+
+                    <input type="hidden" id="reschedule_on_date" name="on_date">
+                    <input type="hidden" id="reschedule_on_date" name="end_date">
+                    <input type="hidden" name="reschedule_student_id" value="{{{$student_id}}}">
+                    <input type="hidden" name="reschedule_wingman_id" value="{{{$wingman_id}}}">
+                    <input type="hidden" id="rescheduleCalendar_id" name="rescheduleCalendar_id">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Update changes</button>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -385,6 +443,26 @@
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="newDialogModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Select Option</h4>
+            </div>
+            <div class="modal-body" id="event_detail_new">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="cancelEventApproved">Cancel Event</button>
+                <button type="button" class="btn btn-primary" id="rescheduleEvent">Reschedule Event</button>
+                
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="modal fade" id="dialogModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -412,32 +490,68 @@
             min: [5,00],
             max: [22,0]
         });
+        
         $('#end_time').pickatime({
             min: [5,00],
             max: [22,0]
         });
+        
         $('#edit_start_time').pickatime({
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_start_date').pickadate();
+        
+        $('#reschedule_start_time').pickatime({
+            min: [5,00],
+            max: [22,0]
+        });
+        
+        $('#edit_start_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#reschedule_start_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
+
         $('#edit_end_time').pickatime({
             min: [5,00],
             max: [22,0]
         });
-        $('#edit_end_date').pickadate();
+        
+        $('#reschedule_end_time').pickatime({
+            min: [5,00],
+            max: [22,0]
+        });
+                
+
+        $('#edit_end_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#reschedule_end_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
+
         $('.list_popover').popover({'html' : true});
 
     });
 
-    $('#cancelEvent').click(function(){
+    $('#cancelEvent,#cancelEventApproved').click(function(){
         $('#dialogModal').modal('hide');
+        $('#newDialogModal').modal('hide');
         $('#cancelModal').modal('show');
     });
 
     $('#editEvent').click(function(){
         $('#dialogModal').modal('hide');
         $('.optional').css('display','none');
+        
+        $('#edit_start_date').val(start_date);
+        $('#edit_start_time').val(start_time);
+        $('#edit_end_date').val(end_date);
+        $('#edit_end_time').val(end_time);
+        
         if(event_type == "Volunteer Time") {
             $('.volunteer-time').css('display','block');
             $('#edit_type').val('volunteer_time');
@@ -455,6 +569,32 @@
         $('#edit_volunteer').val(volunteer_id);
         $('#editModal').modal('show');
     });
+
+    $('#rescheduleEvent').click(function(){
+        $('#newDialogModal').modal('hide');
+        $('.optional').css('display','none');
+        
+        if(event_type == "Volunteer Time") {
+            $('#reschedule_event_type').val('volunteer_time');
+            $('#reschedule_volunteer').val(volunteer_id);
+            $('#reschedule_subject').val(subject_id);
+        } else if(event_type == "Wingman Time") {
+            $('#reschedule_event_type').val('wingman_time');
+            $('#reschedule_wingman_module').val(module_id);
+        }
+        else{
+            $('#reschedule_event_type').val('child_busy');
+        }
+
+        $('#reschedule_start_date').val(start_date);
+        $('#reschedule_start_time').val(start_time);
+        $('#reschedule_end_date').val(end_date);
+        $('#reschedule_end_time').val(end_time);
+        
+        $('#rescheduleCalendar_id').val(event_id);
+        $('#rescheduleModal').modal('show');
+    });
+
 
 </script>
 
