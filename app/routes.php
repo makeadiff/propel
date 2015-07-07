@@ -54,6 +54,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/calendar/editEvent','CalendarController@editEvent');
     Route::post('/calendar/rescheduleEvent','CalendarController@rescheduleEvent');
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
+    Route::post('/calendar/asv/cancelEvent','CalendarController@cancelEvent');
+
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
 
