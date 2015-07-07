@@ -4,7 +4,7 @@ Route::filter('login_check',function()
 {
     session_start();
 
-    //$_SESSION['user_id']=48032; //48032 //47642 //22730 //50671
+    $_SESSION['user_id']=50671; //48032 //47642 //22730 //50671
 
     if(empty($_SESSION['user_id'])){
 
@@ -52,6 +52,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/calendar/createEvent','CalendarController@createEvent');
     Route::post('/calendar/asv/createEvent','CalendarController@createEvent');
     Route::post('/calendar/editEvent','CalendarController@editEvent');
+    Route::post('/calendar/rescheduleEvent','CalendarController@rescheduleEvent');
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
