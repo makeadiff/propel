@@ -4,7 +4,7 @@ Route::filter('login_check',function()
 {
     session_start();
 
-    $_SESSION['user_id']=50671; //48032 //47642 //22730 //50671
+    //$_SESSION['user_id']=50671; //48032 //47642 //22730 //50671
 
     if(empty($_SESSION['user_id'])){
 
@@ -60,8 +60,10 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
     
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
-    Route::get('/attendance/{user_id}','AttendanceController@show');
+    Route::get('/attendance/wingman/{wingman_id}','AttendanceController@showAttendanceToFellow');
+    Route::get('/attendance/{user_id}','AttendanceController@showAttendanceToWingman');
     Route::post('/attendance/{user_id}','AttendanceController@save');
+    Route::post('/attendance/wingman/{user_id}','AttendanceController@save');
 
     Route::get('/settings/subjects','SettingController@selectSubjects');
     Route::post('/settings/subjects','SettingController@saveSubjects');
