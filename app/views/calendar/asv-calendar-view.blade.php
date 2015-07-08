@@ -335,7 +335,7 @@
     $('#editEvent').click(function(){
         $('#dialogModal').modal('hide');
         $('.optional').css('display','none');
-        if(event_type == "Volunteer Time") {
+        if(event_type == "ASV Time") {
             $('.volunteer-time').css('display','block');
             $('#edit_type').val('volunteer_time');
             $('#edit_volunteer').val(volunteer_id);

@@ -206,7 +206,7 @@
                         <select class="form-control" id="type" name="type">
                             <option value=""></option>
                             <option value="child_busy">Child Busy</option>
-                            <option value="volunteer_time">Volunteer Time</option>
+                            <option value="volunteer_time">ASV Time</option>
                             <option value="wingman_time">Wingman Time</option>
                         </select>
                     </div>
@@ -283,7 +283,7 @@
                         <select class="form-control" id="edit_type" name="edit_type">
                             <option value=""></option>
                             <option value="child_busy">Child Busy</option>
-                            <option value="volunteer_time">Volunteer Time</option>
+                            <option value="volunteer_time">ASV Time</option>
                             <option value="wingman_time">Wingman Time</option>
                         </select>
                     </div>
@@ -552,7 +552,7 @@
         $('#edit_end_date').val(end_date);
         $('#edit_end_time').val(end_time);
         
-        if(event_type == "Volunteer Time") {
+        if(event_type == "ASV Time") {
             $('.volunteer-time').css('display','block');
             $('#edit_type').val('volunteer_time');
             $('#edit_volunteer').val(volunteer_id);
@@ -574,7 +574,7 @@
         $('#newDialogModal').modal('hide');
         $('.optional').css('display','none');
         
-        if(event_type == "Volunteer Time") {
+        if(event_type == "ASV Time") {
             $('#reschedule_event_type').val('volunteer_time');
             $('#reschedule_volunteer').val(volunteer_id);
             $('#reschedule_subject').val(subject_id);

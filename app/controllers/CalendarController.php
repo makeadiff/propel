@@ -2,6 +2,7 @@
 
 class CalendarController extends BaseController
 {
+    private $asvGroupName = "Propel ASV";
 
     public function showStudents($wingman_id)
     {
@@ -43,11 +44,8 @@ class CalendarController extends BaseController
     {
 
         $this->setGroup();
-
-        //$cal = new CalendarLib("daily");
-
         $city = Wingman::find($wingman_id)->city()->first();
-        $volunteers  = Volunteer::where('city_id','=',$city->id)->get();
+        $volunteers = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->get();
         $subjects = Wingman::find($wingman_id)->city()->first()->subject()->get();
         $wingman_modules = WingmanModule::all();
         /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
@@ -429,11 +427,13 @@ class CalendarController extends BaseController
 
     public function selectAsv()
     {
+
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
+        $city = $fellow->city()->first();
 
-        $asvs = $fellow->city()->first()->volunteer()->get();
-
+        //If the below line doesn't work assign asvGroupName to a local variable and then try again. Very weird bug.
+        $asvs = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->get();
         return View::make('calendar.select-asv')->with('asvs',$asvs);
     }
 
