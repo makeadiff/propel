@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
 @section('head')
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.css" id="theme_base">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.date.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.css" id="theme_base">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.date.css" id="theme_date">
 @stop
 
 
