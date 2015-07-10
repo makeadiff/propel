@@ -84,8 +84,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/reports/attendance-report','ReportController@showAttendanceReport');
 
     Route::get('/city-change/city-select','CityChangeController@showCitySelect');
-    Route::get('/city-change/city/{city_id}','CityChangeController@showWingmanSelect');
-    Route::get('/city-change/wingman/{wingman_id}','CityChangeController@changeToWingman');
+    Route::get('/city-change/city/{city_id}','CityChangeController@showFellowSelect');
+    Route::get('/city-change/fellow/{fellow_id}','CityChangeController@changetoFellow');
     Route::get('/city-change/back-to-national','CityChangeController@backToNational');
 
 });
