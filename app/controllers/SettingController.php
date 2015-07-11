@@ -71,9 +71,12 @@ class SettingController extends BaseController
         $fellow = Fellow::find($user_id);
 
         $selected_wingmen = Input::get("wingmen");
-        //return $selected_wingmen;
-        $fellow->wingman()->sync($selected_wingmen);
-        
+        if(!empty($selected_wingmen)){
+            $fellow->wingman()->sync($selected_wingmen);
+        }
+        else{
+            DB::table('propel_fellow_wingman')->where('fellow_id','=',$user_id)->delete();
+        }
         return Redirect::to(URL::to('/') . "/settings/wingmen")->with('success', 'Wingmen Set.');
     }
 
@@ -108,8 +111,12 @@ class SettingController extends BaseController
         $wingmen = Wingman::find($user_id);
         
         $selected_students = Input::get("students");
-        $wingmen->student()->sync($selected_students);
-        
+        if(!empty($selected_students)){
+            $wingmen->student()->sync($selected_students);
+        }
+        else{
+            DB::table('propel_student_wingman')->where('wingman_id','=',$wingman_id)->delete();
+        }
         return Redirect::to(URL::to('/') . "/settings/". $wingman_id . "/students")->with('success', 'Students Set');
     }
 }
