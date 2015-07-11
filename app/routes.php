@@ -4,7 +4,7 @@ Route::filter('login_check',function()
 {
     session_start();
 
-    //$_SESSION['user_id']=50671; //48032 //47642 //22730 //50671
+    $_SESSION['user_id']=50671; //48032 //47642 //22730 //50671
 
     if(empty($_SESSION['user_id'])){
 
@@ -50,16 +50,22 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/calendar/{wingman_id}','CalendarController@showStudents');
     Route::get('/calendar/{wingman_id}/{student_id}','CalendarController@showCalendar');
     Route::post('/calendar/createEvent','CalendarController@createEvent');
+    Route::post('/calendar/asv/createEvent','CalendarController@createEvent');
     Route::post('/calendar/editEvent','CalendarController@editEvent');
+    Route::post('/calendar/rescheduleEvent','CalendarController@rescheduleEvent');
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
+    Route::post('/calendar/asv/cancelEvent','CalendarController@cancelEvent');
+
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
 
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
     
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
-    Route::get('/attendance/{user_id}','AttendanceController@show');
+    Route::get('/attendance/wingman/{wingman_id}','AttendanceController@showAttendanceToFellow');
+    Route::get('/attendance/{user_id}','AttendanceController@showAttendanceToWingman');
     Route::post('/attendance/{user_id}','AttendanceController@save');
+    Route::post('/attendance/wingman/{user_id}','AttendanceController@save');
 
     Route::get('/settings/subjects','SettingController@selectSubjects');
     Route::post('/settings/subjects','SettingController@saveSubjects');
@@ -68,11 +74,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
 
     Route::get('/settings/select-wingman','SettingController@selectWingman');
 
-    Route::get('/settings/students','SettingController@selectStudents');
-    Route::post('/settings/students','SettingController@saveStudents');
-
-    Route::get('/settings/{wingman_id}/students','SettingController@selectWingmanStudents');
-    Route::post('/settings/{wingman_id}/students','SettingController@saveWingmanStudents');
+    Route::get('/settings/{wingman_id}/students','SettingController@selectStudents');
+    Route::post('/settings/{wingman_id}/students','SettingController@saveStudents');
 
     Route::get('/reports/class-status/select-city','ReportController@showCities');
     Route::get('/reports','ReportController@showReports');
@@ -81,8 +84,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/reports/attendance-report','ReportController@showAttendanceReport');
 
     Route::get('/city-change/city-select','CityChangeController@showCitySelect');
-    Route::get('/city-change/city/{city_id}','CityChangeController@showWingmanSelect');
-    Route::get('/city-change/wingman/{wingman_id}','CityChangeController@changeToWingman');
+    Route::get('/city-change/city/{city_id}','CityChangeController@showFellowSelect');
+    Route::get('/city-change/fellow/{fellow_id}','CityChangeController@changetoFellow');
     Route::get('/city-change/back-to-national','CityChangeController@backToNational');
 
 });

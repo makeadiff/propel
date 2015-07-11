@@ -2,6 +2,7 @@
 
 class CalendarController extends BaseController
 {
+    private $asvGroupName = "Propel ASV";
 
     public function showStudents($wingman_id)
     {
@@ -43,11 +44,8 @@ class CalendarController extends BaseController
     {
 
         $this->setGroup();
-
-        //$cal = new CalendarLib("daily");
-
         $city = Wingman::find($wingman_id)->city()->first();
-        $volunteers  = Volunteer::where('city_id','=',$city->id)->get();
+        $volunteers = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->get();
         $subjects = Wingman::find($wingman_id)->city()->first()->subject()->get();
         $wingman_modules = WingmanModule::all();
         /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
@@ -267,6 +265,75 @@ class CalendarController extends BaseController
 
     }
 
+    public function rescheduleEvent(){
+        if(Input::get('reschedule_event_type') == "")
+            return Redirect::to(URL::to('/calendar/' . Input::get('reschedule_wingman_id') . '/' . Input::get('reschedule_student_id')));
+
+        if(Input::get('reschedule_subject') == "" && Input::get('reschedule_type')  == 'volunteer_time')
+            return Redirect::to(URL::to('/calendar/' . Input::get('reschedule_wingman_id') . '/' . Input::get('reschedule_student_id')))->with('error', 'Subject not selected.');
+
+        $id = Input::get('rescheduleCalendar_id');
+        
+        $existing_ce = CalendarEvent::where('id','=',$id)->first();
+        if(!empty($existing_ce)) {
+            WingmanTime::where('calendar_event_id','=',$existing_ce->id)->delete();
+            VolunteerTime::where('calendar_event_id','=',$existing_ce->id)->delete();
+            CancelledCalendarEvent::where('calendar_event_id','=',$existing_ce->id)->delete();
+        }
+        
+        $existing_ce->type = Input::get('reschedule_event_type');
+        //return Input::get('edit_start_date').' '.Input::get('edit_start_time');
+        $existing_ce->start_time = new DateTime(Input::get('reschedule_start_date') . ' ' . Input::get('reschedule_start_time'));
+        $existing_ce->end_time = new DateTime(Input::get('reschedule_end_date') . ' ' . Input::get('reschedule_end_time'));
+        $existing_ce->student_id = Input::get('reschedule_student_id');
+        $existing_ce->status = 'approved';
+        $existing_ce->save();
+
+        switch($existing_ce->type) {
+            case 'wingman_time' :
+                $wt = new WingmanTime;
+                $wt->wingman_id = Input::get('reschedule_wingman_id');
+                $wt->wingman_module_id = Input::get('reschedule_wingman_module');
+                $wt->calendar_event_id = $existing_ce->id;
+                $wt->save();
+                break;
+
+            case 'volunteer_time' :
+                $vt = new VolunteerTime;
+                $vt->volunteer_id = Input::get('reschedule_volunteer');
+                $vt->subject_id = Input::get('reschedule_subject');
+                $vt->calendar_event_id = $existing_ce->id;
+                $vt->save();
+
+                //Send SMS to the volunteer informing them about the class
+
+                $volunteer = Volunteer::find(Input::get('reschedule_volunteer'));
+
+                //To get the first name
+                list($volunteer_name) = explode(" ",$volunteer->name);
+                $user = Volunteer::find($_SESSION['user_id']);
+                list($user_name) = explode(" ", $user->name);
+
+                //To get correctly formatted date and time
+                $on_date = date("d-M", strtotime(Input::get('on_date')));
+                $on_time = Input::get('start_time');
+
+                $student = Student::find($existing_ce->student_id);
+                $center_name = $student->center()->first()->name;
+
+                $sms = new SMSController();
+                $sms->message = "Hi $volunteer_name,\n\nYou hav e been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
+                $sms->number = $volunteer->phone;
+                $sms->send();
+
+                break;
+        }
+
+        return Redirect::to(URL::to('/calendar/' . Input::get('reschedule_wingman_id') . '/' . Input::get('reschedule_student_id')));
+
+
+    }
+
     public function cancelEvent()
     {
         $existing_ce = CalendarEvent::where('id','=',Input::get('calendar_event_id'))->first();
@@ -360,11 +427,15 @@ class CalendarController extends BaseController
 
     public function selectAsv()
     {
+
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
+        $city = $fellow->city()->first();
 
         $asvs = $fellow->city()->first()->volunteer()->where('status','=','1')->orderBy('name','ASC')->get();
         //return $asvs;
+        //If the below line doesn't work assign asvGroupName to a local variable and then try again. Very weird bug.
+        $asvs = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->get();
         return View::make('calendar.select-asv')->with('asvs',$asvs);
     }
 

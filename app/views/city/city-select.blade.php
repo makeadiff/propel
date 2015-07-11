@@ -16,11 +16,11 @@
 
 
         <div class="row">
-            <div class="col-md-offset-2 col-md-8">
                 @foreach($cities as $city)
-                    <a href="{{{URL::to('/city-change/city/'. $city->id)}}}" class="white">{{{$city->name}}}</a><br>
+                    <div style="padding:10px" class="col-md-4 col-sm-6">
+                        <a href="{{{URL::to('/city-change/city/'. $city->id)}}}" class="btn btn-primary btn-dash transparent"><img  src="{{{URL::to('/img/cities.png')}}}"><br/>{{{$city->name}}}</a><br>
+                    </div>
                 @endforeach
-            </div>
         </div>
     </div>
 </div>

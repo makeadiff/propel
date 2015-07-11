@@ -5087,11 +5087,10 @@ DayGrid.mixin({
 		}
 
 		if(seg.isEnd || seg.isStart){ //Check the new Date function for the error
-			var timeS = $.datepicker.formatDate('mm-dd-yy',new Date(event.start))+' '+timeFormat(event.start);
-			var timeE = $.datepicker.formatDate('mm-dd-yy',new Date(event.end))+' '+timeFormat(event.end);
-			var timeStart = $.datepicker.formatDate('dd-mm-yy',new Date(event.start))+' '+timeFormat(event.start);
-			var timeEnd = $.datepicker.formatDate('dd-mm-yy',new Date(event.end))+' '+timeFormat(event.end);
-				
+			var timeS = $.datepicker.formatDate('dd-mm-yy',new Date(event.start))+' '+timeFormat(event.start);
+			var timeE = $.datepicker.formatDate('dd-mm-yy',new Date(event.end))+' '+timeFormat(event.end);
+			var timeStart = $.datepicker.formatDate('mm-dd-yy',new Date(event.start))+' '+timeFormat(event.start);
+			var timeEnd = $.datepicker.formatDate('mm-dd-yy',new Date(event.end))+' '+timeFormat(event.end);
 		}
 
 		titleHtml =
@@ -5132,7 +5131,7 @@ DayGrid.mixin({
 					''
 					)+
 				(event.start?
-					'start="'+htmlEscape(timeS)+'" end="'+htmlEscape(timeE)+'"':
+					'start="'+timeStart+'" end="'+timeEnd+'"':
 					''
 					)+
 				(event.title?

@@ -9,7 +9,7 @@
     <div class="row">
         @if(!empty($datalist))
         <h2 class="sub-title">Approve Calendar</h2>
-        <p style="text-align:center; color:#FFF">(Pending Approval) <br/>Select mutliple wingmen to approve multiple calendars at once.</p>
+        <p style="text-align:center; color:#FFF">(Pending Approval) <br/>Select multiple calendars to approve it at once.</p>
         <br>
         <div class="col-md-offset-2 col-md-8">
             <div class="alert alert-danger" id="errorMessageApproval" style="display:none;" role="alert"></div>

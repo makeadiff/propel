@@ -78,30 +78,8 @@ class SettingController extends BaseController
     }
 
 
-    public function selectStudents()
-    {
-        $user_id = $_SESSION['user_id'];
-        $city_id = Volunteer::find($user_id)->city_id;
 
-        $selected_student = Wingman::find($user_id)->student()->get();
-
-        $selected_student_id = array();
-        foreach($selected_student as $student)
-            $selected_student_id[] = $student->id;
-
-        $all_centers = City::find($city_id)->center()->get();
-        $all_students = array();
-        foreach($all_centers as $center) {
-            $students = $center->student()->lists('name', 'id');
-            foreach ($students as $key => $value) $all_students[$key] = $value;
-        }
-        
-        return View::make('settings/select-students')->with('selected_student_id',$selected_student_id)->with('all_students',$all_students)->with('selected_student',$selected_student);
-    }
-
-    //Fellow selects Wingman's students
-
-    public function selectWingmanStudents($wingman_id)
+    public function selectStudents($wingman_id)
     {
         $user_id = $wingman_id;
         $city_id = Volunteer::find($user_id)->city_id;
@@ -122,19 +100,10 @@ class SettingController extends BaseController
         return View::make('settings/select-students')->with('selected_student',$selected_student)->with('wingman',$wingman)->with('student_list',$student_list);
     }
 
-    public function saveStudents() {
-        $user_id = $_SESSION['user_id'];
-        $wingmen = Wingman::find($user_id);
-
-        $selected_students = Input::get("students");
-        return $selected_students;
-        $wingmen->student()->sync($selected_students);
-        
-        return Redirect::to(URL::to('/') . "/settings/students")->with('success', 'Students Set');
-    }
 
 
-    public function saveWingmanStudents($wingman_id) {
+
+    public function saveStudents($wingman_id) {
         $user_id = $wingman_id;
         $wingmen = Wingman::find($user_id);
         

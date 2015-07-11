@@ -50,10 +50,8 @@
         <br>
         </div>
         @else
-        <p style="text-align:center; color:#FFF">Attendance has been marked</p><br/><br/>
-        <div class="centered">
-            <a class="btn btn-default" href="{{{URL::to('/attendance/select-wingman')}}}">Go Back</a>
-        </div>
+        <p style="text-align:center; color:#FFF">No attendance entries to mark</p><br/><br/>
+
         @endif
     </div>
 </div>

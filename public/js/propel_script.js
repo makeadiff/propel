@@ -3,6 +3,7 @@ function validate_data(){
 	var module_feedback = document.getElementById('moduleFeedback').value.trim();
 	var student_id = document.getElementById('student').value.trim();
 	var title = document.getElementById('title').value.trim();
+    var pick_date = document.getElementById('pickdate').value.trim();
 	if(child_feedback=="" && module_feedback==""){
 		$('#errorMessage').html('<strong>Error</strong>: Feedback field is EMPTY');
 		$('#errorMessage').fadeIn('slow');
@@ -21,6 +22,12 @@ function validate_data(){
 		$('html,body').animate({ scrollTop: 0 },1000);
 		return false;
 	}
+    else if(pick_date==""){
+        $('#errorMessage').html('<strong>Error</strong>: Date is not selected');
+        $('#errorMessage').fadeIn('slow');
+        $('html,body').animate({ scrollTop: 0 },1000);
+        return false;
+    }
 	else{	
 		$('#errorMessage').fadeOut('slow');
 	}
