@@ -432,7 +432,7 @@ class CalendarController extends BaseController
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
 
-        $asvs = $fellow->city()->first()->volunteer()->get();
+        $asvs = $fellow->city()->first()->volunteer()->orderBy('name','ASC')->where('status','=',1)->get();
 
         return View::make('calendar.select-asv')->with('asvs',$asvs);
     }

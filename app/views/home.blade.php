@@ -99,7 +99,7 @@
                 <a href='feedback/{{{$user->id}}}' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/reports.png')}}}"><br>Student<br>Feedback</a>
             </div>
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='settings/students' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/students.png')}}}"><br>Assign<br>Students</a>
+                <a href='settings/{{{$user->id}}}/students' class='btn btn-primary btn-dash transparent'><img src="{{{URL::to('/img/students.png')}}}"><br>Assign<br>Students</a>
             </div>
         @endif
 
