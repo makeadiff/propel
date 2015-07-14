@@ -14,7 +14,7 @@
         <div class="col-md-offset-2 col-md-8">
             <div class="alert alert-danger" id="errorMessageApproval" style="display:none;" role="alert"></div>
             <p class="white"><input type="checkbox" onclick="select_all()" id="select_all">&nbsp;Select All<br/></p>
-            <form id="approve-calendar" role="form" method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/bulk-approve/')}}}" onsubmit="return validate_calendar_approval()">
+            <form id="approve-calendar" role="form" method="post" enctype="multipart/form-data" action="{{URL::to('/calendar/bulk-approve/')}}" onsubmit="return validate_calendar_approval()">
             <table class="table table-bordered table-responsive white footable">
                 <thead>
                 <tr>
@@ -77,7 +77,7 @@
         <h2 class="sub-title">All Events Approved</h2>
         <p style="text-align:center; color:#FFF">There is no unapproved event in the calendar.</p><br/><br/>
         <div class="centered">
-            <a class="btn btn-default" href="{{{URL::to('/')}}}">Go Back</a>
+            <a class="btn btn-default" href="{{URL::to('/')}}">Go Back</a>
         </div>
         @endif
         

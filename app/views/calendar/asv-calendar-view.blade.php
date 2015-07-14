@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('head')
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.css" id="theme_base">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.date.css" id="theme_date">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.time.css" id="theme_date">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/calendar.css" id="theme_date">
-<link href='{{{URL::to("/")}}}/css/fullcalendar.css' rel='stylesheet' />
-<link href='{{{URL::to("/")}}}/css/fullcalendar.print.css' rel='stylesheet' media='print' />
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.css" id="theme_base">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.date.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.time.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/calendar.css" id="theme_date">
+<link href='{{URL::to("/")}}/css/fullcalendar.css' rel='stylesheet' />
+<link href='{{URL::to("/")}}/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
 <style>
 
@@ -28,8 +28,8 @@
     end_date;
     event_id;
 </script>
-<script src='{{{URL::to("/")}}}/js/lib/moment.min.js'></script>
-<script src='{{{URL::to("/")}}}/js/fullcalendar.js'></script>
+<script src='{{URL::to("/")}}/js/lib/moment.min.js'></script>
+<script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -188,14 +188,14 @@
                 <h4 class="modal-title">Create Event</h4>
             </div>
             <div class="modal-body">
-                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/asv/createEvent')}}}">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{URL::to('/calendar/asv/createEvent')}}">
 
 
                     <div class="form-group">
                         <label for="student" class="control-label">Students : </label>
                         <select multiple class="form-control" name="student_id[]">
                             @foreach($students as $student)
-                                <option value="{{{$student->id}}}">{{{$student->name}}}</option>
+                                <option value="{{$student->id}}">{{$student->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -204,7 +204,7 @@
                         <label for="subject" class="control-label">Subject</label>
                         <select class="form-control" id="subject" name="subject">
                             @foreach($subjects as $subject)
-                            <option value="{{{$subject->id}}}">{{{$subject->name}}}</option>
+                            <option value="{{$subject->id}}">{{$subject->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -227,7 +227,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="volunteer_id" value="{{{$volunteer_id}}}">
+                    <input type="hidden" name="volunteer_id" value="{{$volunteer_id}}">
                     <input type="hidden" name="type" value="volunteer_time">
                     <input type="hidden" id="on_date" name="on_date">
                     <input type="hidden" id="end_date" name="end_date">
@@ -252,7 +252,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Cancel Class</h4>
             </div>
-            <form method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/asv/cancelEvent')}}}">
+            <form method="post" enctype="multipart/form-data" action="{{URL::to('/calendar/asv/cancelEvent')}}">
             <div class="modal-body">
                     <div class="form-group">
                         <label for="type" class="control-label">Reason : </label>
@@ -267,7 +267,7 @@
                         <label for="comment" class="control-label">Comment : </label>
                         <textarea class="form-control" id="comment" name="comment"></textarea>
                     </div>
-                    <input type="hidden" name="volunteer_id" value="{{{$volunteer_id}}}">
+                    <input type="hidden" name="volunteer_id" value="{{$volunteer_id}}">
                     <input type="hidden" id="calendar_event_id" name="calendar_event_id">
                     <input type="hidden" id="cancel_on_date" name="cancel_on_date">
 
@@ -355,9 +355,9 @@
 
 </script>
 
-<script src="{{{URL::to('/')}}}/js/picker.js"></script>
-<script src="{{{URL::to('/')}}}/js/picker.date.js"></script>
-<script src="{{{URL::to('/')}}}/js/picker.time.js"></script>
+<script src="{{URL::to('/')}}/js/picker.js"></script>
+<script src="{{URL::to('/')}}/js/picker.date.js"></script>
+<script src="{{URL::to('/')}}/js/picker.time.js"></script>
 <script>
 
 

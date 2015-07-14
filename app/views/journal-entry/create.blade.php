@@ -15,13 +15,13 @@
             <div class="col-md-8 col-md-offset-2">
                 <h2 class="sub-title">New Wingman Journal</h2><br>
                 <div class="alert alert-danger" id="errorMessage" style="display:none;" role="alert"></div>
-                <form id="journal-entry" role="form" method="post" enctype="multipart/form-data" action="{{{URL::to('/')}}}/journal-entry" onsubmit="return validate_data()">
+                <form id="journal-entry" role="form" method="post" enctype="multipart/form-data" action="{{URL::to('/')}}/journal-entry" onsubmit="return validate_data()">
 
                     <h4 class="sub-title">Student</h4>
                     <div class="form-group">
                         <select id="student" class="form-control" placeholder="Student" name="student" style="width: 25%">
                             @foreach($students as $student)
-                                <option value="{{{$student->id}}}">{{{$student->name}}}</option>
+                                <option value="{{$student->id}}">{{$student->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <select id="student" class="form-control" placeholder="Module" name="module" style="width: 25%">
                             @foreach($modules as $module)
-                                <option value="{{{$module->id}}}">{{{$module->name}}}</option>
+                                <option value="{{$module->id}}">{{$module->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -71,8 +71,8 @@
         $('#pickdate').pickadate();
     });
 </script>
-<script src="{{{URL::to('/')}}}/js/picker.js"></script>
-<script src="{{{URL::to('/')}}}/js/picker.date.js"></script>
+<script src="{{URL::to('/')}}/js/picker.js"></script>
+<script src="{{URL::to('/')}}/js/picker.date.js"></script>
 
 
 @stop

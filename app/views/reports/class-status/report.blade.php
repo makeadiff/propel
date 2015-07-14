@@ -17,15 +17,15 @@
                     </tr>
                     @foreach($wingmen as $wingman)
                         <tr>
-                            <td>{{{$wingman->name}}}</td>
-                            <td>{{{$wingman->classes_attended}}} / {{{$wingman->total_classes}}}</td>
+                            <td>{{$wingman->name}}</td>
+                            <td>{{$wingman->classes_attended}} / {{$wingman->total_classes}}</td>
                         </tr>
                     @endforeach
 
                     @foreach($volunteers as $volunteer)
                     <tr>
-                        <td>{{{$volunteer->name}}}</td>
-                        <td>{{{$volunteer->classes_attended}}} / {{{$volunteer->total_classes}}}</td>
+                        <td>{{$volunteer->name}}</td>
+                        <td>{{$volunteer->classes_attended}} / {{$volunteer->total_classes}}</td>
                     </tr>
                     @endforeach
                 </table>

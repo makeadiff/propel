@@ -24,17 +24,17 @@
                 <tbody>
                     @foreach($attended as $entry)
                         <tr>
-                        <td>{{{date_format(date_create($entry->start_time),'l, jS F Y')}}}</td>
-                        <td>{{{ ucwords(str_replace('_',' ',$entry->type)) }}}</td>
+                        <td>{{date_format(date_create($entry->start_time),'l, jS F Y')}}</td>
+                        <td>{{ ucwords(str_replace('_',' ',$entry->type)) }}</td>
                         @if($entry->type == "volunteer_time")
-                        <td>{{{$entry->volunteerTime()->first()->volunteer()->first()->name}}}</td>
+                        <td>{{$entry->volunteerTime()->first()->volunteer()->first()->name}}</td>
                         @elseif($entry->type == "wingman_time")
-                        <td>{{{$entry->wingmanTime()->first()->wingman()->first()->name}}}</td>
+                        <td>{{$entry->wingmanTime()->first()->wingman()->first()->name}}</td>
                         @endif
 
                         <td>
-                        <input {{{($entry->status == "attended" ? 'checked' : "")}}} type="checkbox" value="1" name="attended[{{{$entry->id}}}]" />
-                        <input type="hidden" value="1" name="calender_entry[{{{$entry->id}}}]" />
+                        <input {{($entry->status == "attended" ? 'checked' : "")}} type="checkbox" value="1" name="attended[{{$entry->id}}]" />
+                        <input type="hidden" value="1" name="calender_entry[{{$entry->id}}]" />
                         </td>
                         </tr>
                     @endforeach
@@ -61,7 +61,7 @@
         if (confirm('Really delete?')) {
                 $.ajax({
                 type: "DELETE",
-                url: '{{{URL::to('/')}}}' + '/attendence-entry/' + id,
+                url: '{{URL::to('/')}}' + '/attendence-entry/' + id,
                 complete: function(result) {
                     location.reload(true);
             }
