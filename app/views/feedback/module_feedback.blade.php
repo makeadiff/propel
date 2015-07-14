@@ -43,10 +43,10 @@
                 <tbody>
                     @foreach($entries as $entry)
                         <tr class="tableRows {{$entry->module_id}}">
-                        <td><a class="white" href="../../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
-                        <td>{{{$entry->wingman_name}}}</td>
-                        <td>{{{$entry->city_name}}}</td>
-                        <td>{{{date_format(date_create($entry->on_date),'l, jS F Y')}}}</td>
+                        <td><a class="white" href="../../journal-entry/{{$entry->id}}">{{$entry->title}}</a></td>
+                        <td>{{$entry->wingman_name}}</td>
+                        <td>{{$entry->city_name}}</td>
+                        <td>{{date_format(date_create($entry->on_date),'l, jS F Y')}}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -78,7 +78,7 @@
         if (confirm('Really delete?')) {
                 $.ajax({
                 type: "DELETE",
-                url: '{{{URL::to('/')}}}' + '/journal-entry/' + id,
+                url: '{{URL::to('/')}}' + '/journal-entry/' + id,
                 complete: function(result) {
                     location.reload(true);
             }

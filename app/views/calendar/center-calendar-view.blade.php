@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('head')
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.css" id="theme_base">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.date.css" id="theme_date">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.time.css" id="theme_date">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/calendar.css" id="theme_date">
-<link href='{{{URL::to("/")}}}/css/fullcalendar.css' rel='stylesheet' />
-<link href='{{{URL::to("/")}}}/css/fullcalendar.print.css' rel='stylesheet' media='print' />
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.css" id="theme_base">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.date.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.time.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/calendar.css" id="theme_date">
+<link href='{{URL::to("/")}}/css/fullcalendar.css' rel='stylesheet' />
+<link href='{{URL::to("/")}}/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
 <style>
 
@@ -18,8 +18,8 @@
 
 </style>
 
-<script src='{{{URL::to("/")}}}/js/lib/moment.min.js'></script>
-<script src='{{{URL::to("/")}}}/js/fullcalendar.js'></script>
+<script src='{{URL::to("/")}}/js/lib/moment.min.js'></script>
+<script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
 <script type="text/javascript">
 
     $(document).ready(function() {

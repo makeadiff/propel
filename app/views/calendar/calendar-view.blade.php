@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('head')
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.css" id="theme_base">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.date.css" id="theme_date">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/default.time.css" id="theme_date">
-<link rel="stylesheet" href="{{{URL::to('/')}}}/css/calendar.css" id="theme_date">
-<link href='{{{URL::to("/")}}}/css/fullcalendar.css' rel='stylesheet' />
-<link href='{{{URL::to("/")}}}/css/fullcalendar.print.css' rel='stylesheet' media='print' />
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.css" id="theme_base">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.date.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.time.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/calendar.css" id="theme_date">
+<link href='{{URL::to("/")}}/css/fullcalendar.css' rel='stylesheet' />
+<link href='{{URL::to("/")}}/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
 <style>
 
@@ -28,8 +28,8 @@
     end_date;
     event_id;
 </script>
-<script src='{{{URL::to("/")}}}/js/lib/moment.min.js'></script>
-<script src='{{{URL::to("/")}}}/js/fullcalendar.js'></script>
+<script src='{{URL::to("/")}}/js/lib/moment.min.js'></script>
+<script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -200,7 +200,7 @@
                 <h4 class="modal-title">Create Event</h4>
             </div>
             <div class="modal-body">
-                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/createEvent')}}}">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{URL::to('/calendar/createEvent')}}">
                     <div class="form-group">
                         <label for="type" class="control-label">Type</label>
                         <select class="form-control" id="type" name="type">
@@ -216,7 +216,7 @@
                         <label for="volunteer" class="control-label">Volunteer</label>
                         <select class="form-control" id="volunteer" name="volunteer_id">
                             @foreach($volunteers as $volunteer)
-                                <option value="{{{$volunteer->id}}}">{{ucwords(strtolower($volunteer->name))}}</option>
+                                <option value="{{$volunteer->id}}">{{ucwords(strtolower($volunteer->name))}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -225,7 +225,7 @@
                         <label for="subject" class="control-label">Subject</label>
                         <select class="form-control" id="subject" name="subject">
                             @foreach($subjects as $subject)
-                                <option value="{{{$subject->id}}}">{{{$subject->name}}}</option>
+                                <option value="{{$subject->id}}">{{$subject->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -234,7 +234,7 @@
                         <label for="wingman_module" class="control-label">Wingman Module : </label>
                         <select class="form-control" id="wingman_module" name="wingman_module">
                             @foreach($wingman_modules as $wingman_module)
-                                <option value="{{{$wingman_module->id}}}">{{{$wingman_module->name}}}</option>
+                                <option value="{{$wingman_module->id}}">{{$wingman_module->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -255,8 +255,8 @@
 
                     <input type="hidden" id="on_date" name="on_date">
                     <input type="hidden" id="end_date" name="end_date">
-                    <input type="hidden" name="student_id" value="{{{$student_id}}}">
-                    <input type="hidden" name="wingman_id" value="{{{$wingman_id}}}">
+                    <input type="hidden" name="student_id" value="{{$student_id}}">
+                    <input type="hidden" name="wingman_id" value="{{$wingman_id}}">
 
 
             </div>
@@ -277,7 +277,7 @@
                 <h4 class="modal-title">Edit Event</h4>
             </div>
             <div class="modal-body">
-                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/editEvent')}}}">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{URL::to('/calendar/editEvent')}}">
                     <div class="form-group">
                         <label for="type" class="control-label">Type</label>
                         <select class="form-control" id="edit_type" name="edit_type">
@@ -293,7 +293,7 @@
                         <label for="volunteer" class="control-label">Volunteer</label>
                         <select class="form-control" id="edit_volunteer" name="edit_volunteer">
                             @foreach($volunteers as $volunteer)
-                                <option value="{{{$volunteer->id}}}">{{ucwords(strtolower($volunteer->name))}}</option>
+                                <option value="{{$volunteer->id}}">{{ucwords(strtolower($volunteer->name))}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -302,7 +302,7 @@
                         <label for="subject" class="control-label">Subject</label>
                         <select class="form-control" id="edit_subject" name="edit_subject">
                             @foreach($subjects as $subject)
-                                <option value="{{{$subject->id}}}">{{{$subject->name}}}</option>
+                                <option value="{{$subject->id}}">{{$subject->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -311,7 +311,7 @@
                         <label for="wingman_module" class="control-label">Wingman Module : </label>
                         <select class="form-control" id="edit_wingman_module" name="edit_wingman_module">
                             @foreach($wingman_modules as $wingman_module)
-                                <option value="{{{$wingman_module->id}}}">{{{$wingman_module->name}}}</option>
+                                <option value="{{$wingman_module->id}}">{{$wingman_module->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -338,8 +338,8 @@
 
                     <input type="hidden" id="on_date" name="on_date">
                     <input type="hidden" id="end_date" name="end_date">
-                    <input type="hidden" name="edit_student_id" value="{{{$student_id}}}">
-                    <input type="hidden" name="edit_wingman_id" value="{{{$wingman_id}}}">
+                    <input type="hidden" name="edit_student_id" value="{{$student_id}}">
+                    <input type="hidden" name="edit_wingman_id" value="{{$wingman_id}}">
                     <input type="hidden" id="calendar_id" name="calendar_id">
 
             </div>
@@ -360,7 +360,7 @@
                 <h4 class="modal-title">Reschedule Event</h4>
             </div>
             <div class="modal-body">
-                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{{URL::to('/calendar/rescheduleEvent')}}}">
+                <form method="post" name="propel_calender" enctype="multipart/form-data" action="{{URL::to('/calendar/rescheduleEvent')}}">
                     
                     <div class="form-group">
                         <label for="start_time" class="control-label">Start Time : </label>
@@ -390,8 +390,8 @@
 
                     <input type="hidden" id="reschedule_on_date" name="on_date">
                     <input type="hidden" id="reschedule_on_date" name="end_date">
-                    <input type="hidden" name="reschedule_student_id" value="{{{$student_id}}}">
-                    <input type="hidden" name="reschedule_wingman_id" value="{{{$wingman_id}}}">
+                    <input type="hidden" name="reschedule_student_id" value="{{$student_id}}">
+                    <input type="hidden" name="reschedule_wingman_id" value="{{$wingman_id}}">
                     <input type="hidden" id="rescheduleCalendar_id" name="rescheduleCalendar_id">
 
             </div>
@@ -412,7 +412,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Cancel Class</h4>
             </div>
-            <form method="post" enctype="multipart/form-data" action="{{{URL::to('/calendar/cancelEvent')}}}">
+            <form method="post" enctype="multipart/form-data" action="{{URL::to('/calendar/cancelEvent')}}">
             <div class="modal-body">
                     <div class="form-group">
                         <label for="type" class="control-label">Reason : </label>
@@ -429,8 +429,8 @@
                     </div>
                     <input type="hidden" id="calendar_event_id" name="calendar_event_id">
                     <input type="hidden" id="cancel_on_date" name="cancel_on_date">
-                    <input type="hidden" name="student_id" value="{{{$student_id}}}">
-                    <input type="hidden" name="wingman_id" value="{{{$wingman_id}}}">
+                    <input type="hidden" name="student_id" value="{{$student_id}}">
+                    <input type="hidden" name="wingman_id" value="{{$wingman_id}}">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -598,9 +598,9 @@
 
 </script>
 
-<script src="{{{URL::to('/')}}}/js/picker.js"></script>
-<script src="{{{URL::to('/')}}}/js/picker.date.js"></script>
-<script src="{{{URL::to('/')}}}/js/picker.time.js"></script>
+<script src="{{URL::to('/')}}/js/picker.js"></script>
+<script src="{{URL::to('/')}}/js/picker.date.js"></script>
+<script src="{{URL::to('/')}}/js/picker.time.js"></script>
 <script>
     $(function(){
         $("#type").change(function () {
@@ -636,8 +636,8 @@
       var date = new Date (month);
       var monthValue = parseInt(date.getMonth())+1;
       var yearValue = parseInt(date.getFullYear());
-      var student_id = {{{$student_id}}};
-      var href = "{{{URL::to('/')}}}/calendar/approve/" + student_id + '/' + monthValue + '/' + yearValue;
+      var student_id = {{$student_id}};
+      var href = "{{URL::to('/')}}/calendar/approve/" + student_id + '/' + monthValue + '/' + yearValue;
       window.location.assign(href);
     }
 
