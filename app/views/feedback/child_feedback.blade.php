@@ -35,11 +35,11 @@
                         <tr>
 
                         
-                        <td><a class="white" href="../../journal-entry/{{$entry->id}}">{{$entry->title}}</a></td>
-                        <td>{{$entry->wingman_name}}</td>
-                        <td>{{date_format(date_create($entry->on_date),'l, jS F Y')}}</td>
-                        <!--<td><a href="{{URL::to('/journal-entry/' . $entry->id . '/edit')}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
-                            <a href="javascript:checkDelete({{$entry->id}})"><span class="glyphicon glyphicon-remove white"></span></a>
+                        <td><a class="white" href="../../journal-entry/{{{$entry->id}}}">{{{$entry->title}}}</a></td>
+                        <td>{{{$entry->wingman_name}}}</td>
+                        <td>{{{date_format(date_create($entry->on_date),'l, jS F Y')}}}</td>
+                        <!--<td><a href="{{{URL::to('/journal-entry/' . $entry->id . '/edit')}}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
+                            <a href="javascript:checkDelete({{{$entry->id}}})"><span class="glyphicon glyphicon-remove white"></span></a>
                         </td>-->
                         </tr>
                     @endforeach
@@ -72,7 +72,7 @@
         if (confirm('Really delete?')) {
                 $.ajax({
                 type: "DELETE",
-                url: '{{URL::to('/')}}' + '/journal-entry/' + id,
+                url: '{{{URL::to('/')}}}' + '/journal-entry/' + id,
                 complete: function(result) {
                     location.reload(true);
             }

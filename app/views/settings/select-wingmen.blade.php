@@ -58,7 +58,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Add/Edit Wingman</h4>
             </div>
-            <form method="post" enctype="multipart/form-data" action="{{URL::to('/settings/wingmen')}}">
+            <form method="post" enctype="multipart/form-data" action="{{{URL::to('/settings/wingmen')}}}">
             <div class="modal-body">
                     <div class="form-group">
 
@@ -88,7 +88,7 @@
 </div>
 
 
-<script type="text/javascript" src="{{URL::to('/')}}/js/section/select-students.js"></script>
+<script type="text/javascript" src="{{{URL::to('/')}}}/js/section/select-students.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $('#assignStudents').click(function(){

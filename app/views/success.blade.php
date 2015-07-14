@@ -19,11 +19,11 @@
         <h1 class="title">Success!</h1>
         <br>
         <div class="row">
-            <p class="success">{{Session::get('message')}}</p>
+            <p class="success">{{{Session::get('message')}}}</p>
         </div>
         <br>
         <div class="row">
-            <a href={{URL::to('/review')}} class='btn btn-primary btn-lg transparent'>Back to Review</a>
+            <a href={{{URL::to('/review')}}} class='btn btn-primary btn-lg transparent'>Back to Review</a>
         </div>
     </div>
 </div>

@@ -12,7 +12,7 @@
             <div class="col-md-offset-3 col-md-6">
 
                 @foreach($cities as $city)
-                    <a class="white" href="{{URL::to('/')}}/reports/class-status/city/{{$city->id}}">{{$city->name}}</a><br>
+                    <a class="white" href="{{{URL::to('/')}}}/reports/class-status/city/{{{$city->id}}}">{{{$city->name}}}</a><br>
                 @endforeach
 
             </div>
