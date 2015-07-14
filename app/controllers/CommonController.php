@@ -11,6 +11,7 @@ class CommonController extends BaseController
 
     public function showError()
     {
+        session_start();
         return View::make('error');
     }
 

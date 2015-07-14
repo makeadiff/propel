@@ -16,7 +16,7 @@
         </div>
         <br>
         <div class="row">
-            <a href='.' class='btn btn-primary btn-lg transparent'>Back to Home</a>
+            <a href='javascript:history.back()' class='btn btn-primary btn-lg transparent'>Back</a>
         </div>
     </div>
 </div>
