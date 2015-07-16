@@ -39,7 +39,7 @@
             <span class="data">{{$journal_entry->mom}}</span>
 
             <div class="centered">
-                <a href="{{URL::to('/wingman-journal/'.$journal_entry->wingman_id)}}" class="btn btn-primary text-center">Back</a>
+                <a href="javascript:history.back()" class="btn btn-primary text-center">Back</a>
             </div>
 
         </div>
