@@ -15,7 +15,7 @@
 
                 @foreach($wingmen as $wingman)
                     <div style="padding:10px" class="col-md-4 col-sm-6 text-center">
-                        <a href="{{{URL::to('/settings/'. $wingman->id . '/students')}}}" class='btn btn-primary btn-dash transparent'><img  src="{{{URL::to('/img/profile.png')}}}"><br/>{{{$wingman->name}}}</a>
+                        <a href="{{URL::to('/settings/'. $wingman->id . '/students')}}" class='btn btn-primary btn-dash transparent'><img  src="{{URL::to('/img/profile.png')}}"><br/>{{$wingman->name}}</a>
                     </div>
                 @endforeach
             
@@ -25,8 +25,5 @@
     </div>
 
 </div>
-
-
-
 
 @stop

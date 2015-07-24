@@ -7,6 +7,8 @@ class AttendanceController extends BaseController
     {
         $wingmans_kids = Wingman::find($user_id)->student()->get();
 
+
+
         if(empty($wingmans_kids[0]))
             return Redirect::to('error')->with('message','There are no students assigned to the wingman');
 
@@ -23,6 +25,7 @@ class AttendanceController extends BaseController
     public function showAttendanceToFellow($wingman_id)
     {
         $wingmans_kids = Wingman::find($wingman_id)->student()->get();
+
 
         if(empty($wingmans_kids[0]))
             return Redirect::to('error')->with('message','There are no students assigned to the wingman');

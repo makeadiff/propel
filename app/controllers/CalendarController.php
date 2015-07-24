@@ -435,7 +435,8 @@ class CalendarController extends BaseController
         $asvs = $fellow->city()->first()->volunteer()->where('status','=','1')->orderBy('name','ASC')->get();
         //return $asvs;
         //If the below line doesn't work assign asvGroupName to a local variable and then try again. Very weird bug.
-        $asvs = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->get();
+        $asvs = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->where('status','=',1)->orderBy('name','ASC')->get();
+
         return View::make('calendar.select-asv')->with('asvs',$asvs);
     }
 

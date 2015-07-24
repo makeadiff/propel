@@ -28,5 +28,5 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{{URL::to('/')}}}/js/section/select-students.js"></script>
+<script type="text/javascript" src="{{URL::to('/')}}/js/section/select-students.js"></script>
 @stop

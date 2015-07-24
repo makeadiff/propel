@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
             @if(count($selected_student)!=0)
-            <p style="text-align:center; color:#FFF; font-size:16px">Students assigned to {{{$wingman->name}}}</p>
+            <p style="text-align:center; color:#FFF; font-size:16px">Students assigned to {{$wingman->name}}</p>
             <table class="table table-bordered table-responsive white footable">
                 <thead>
                 <tr>
@@ -44,7 +44,7 @@
             </table>
             <button type="button" id="assignStudents" class="btn btn-primary">Edit Assignment</button>
             @else
-            <p style="text-align:center; color:#FFF">No students assigned to {{{$wingman->name}}}.</p>
+            <p style="text-align:center; color:#FFF">No students assigned to {{$wingman->name}}.</p>
             <button type="button" class="btn btn-primary" id="assignStudents">Assign Students</button>
             @endif
             </div>
@@ -62,7 +62,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title">Add/Edit Students</h4>
             </div>
-            <form method="post" enctype="multipart/form-data" action="{{{URL::to('/settings/'.$wingman->id.'/students')}}}">
+            <form method="post" enctype="multipart/form-data" action="{{URL::to('/settings/'.$wingman->id.'/students')}}">
             <div class="modal-body">
                     <div class="form-group">
 
@@ -92,7 +92,7 @@
 </div><!-- /.modal -->
 
 
-<script type="text/javascript" src="{{{URL::to('/')}}}/js/section/select-students.js"></script>
+<script type="text/javascript" src="{{URL::to('/')}}/js/section/select-students.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
