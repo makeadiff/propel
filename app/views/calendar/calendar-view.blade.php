@@ -89,20 +89,20 @@
 
                     //alert(unapproved);
 
-                    if((start_timestamp < today_date)){
-                        $('#errorCalendar').html('Error loading <strong>Time Machine</strong>: Cannot create events in past!');
-                        $('#errorCalendar').fadeIn('slow');
-                        $('html,body').animate({ scrollTop: 0 },1000);
-                    }
-                    else if(monthstatus && user_group=='Propel Wingman' && unapproved!=0){
-                        $('#errorCalendar').html('<strong>Error</strong>: Month is already approved');
-                        $('#errorCalendar').fadeIn('slow');
-                        $('html,body').animate({ scrollTop: 0 },1000);
-                    }
-                    else{
+                    //Cannot Create Events in Past -- if((start_timestamp < today_date)){
+                        //$('#errorCalendar').html('Error loading <strong>Time Machine</strong>: Cannot create events in past!');
+                        //$('#errorCalendar').fadeIn('slow');
+                        //$('html,body').animate({ scrollTop: 0 },1000);
+                    //}
+                    //Approved Calender Error -- else if(monthstatus && user_group=='Propel Wingman' && unapproved!=0){
+                        //$('#errorCalendar').html('<strong>Error</strong>: Month is already approved');
+                        //$('#errorCalendar').fadeIn('slow');
+                        //$('html,body').animate({ scrollTop: 0 },1000);
+                    //}
+                    //else{
                         $('#errorCalendar').fadeOut('fast');
                         $("#createModal").modal('show');
-                    }
+                    //}
                     $('#start_time').val(start_time);
                     $('#end_time').val(end_time);
                     var time = end_date + ' ' + end_time;
