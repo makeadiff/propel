@@ -16,9 +16,16 @@
         margin-bottom:50px;
     }
 
+    /*.hiddenEvent{display: none;}
+    .fc-other-month .fc-day-number { display:none;}
+
+    td.fc-other-month .fc-day-number {
+         visibility: hidden;
+    }*/
+
+
 </style>
 <script type="text/javascript">
-    event_type;
     volunteer_id;
     module_id;
     subject_id;
@@ -27,12 +34,17 @@
     start_date;
     end_date;
     event_id;
+    today;
+    today_date;
+    monthstatus;
+    user_group;
 </script>
 <script src='{{URL::to("/")}}/js/lib/moment.min.js'></script>
 <script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
+
             
             $('#calendar').fullCalendar({
                 header: {
@@ -49,10 +61,10 @@
                 selectHelper: true,
                 select: function(start, end) {
                     var title=' ';
-                    
+                    monthstatus = true;
                     var start_timestamp = new Date(start);
                     var end_timestamp = new Date(end);
-
+                    
                     //End day returned by function is one day ahead, hence subtracting one day
                     end_timestamp.setDate(end_timestamp.getDate()-1);
                     var cur_date = $.datepicker.formatDate('yy-mm-dd',start_timestamp);
@@ -61,7 +73,36 @@
                     $("#end_date").val(end_date);
                     var start_time = timeFormat(start_timestamp);
                     var end_time = timeFormat(end_timestamp);
-                    $("#createModal").modal('show');
+                    var unapproved = 0;
+                    var events = document.getElementsByClassName('fc-event');
+                    var length = events.length;
+                    //alert(length);
+
+                    for(var i=0; i<length; i++){
+                        if(events.item(i).getAttribute('status')=='created'){
+                            monthstatus = false;
+                        }
+                        else if(events.item(i).getAttribute('status')=='approved' || events.item(i).getAttribute('status')=='cancelled'){
+                            unapproved++;
+                        }
+                    }
+
+                    //alert(unapproved);
+
+                    if((start_timestamp < today_date)){
+                        $('#errorCalendar').html('Error loading <strong>Time Machine</strong>: Cannot create events in past!');
+                        $('#errorCalendar').fadeIn('slow');
+                        $('html,body').animate({ scrollTop: 0 },1000);
+                    }
+                    else if(monthstatus && user_group=='Propel Wingman' && unapproved!=0){
+                        $('#errorCalendar').html('<strong>Error</strong>: Month is already approved');
+                        $('#errorCalendar').fadeIn('slow');
+                        $('html,body').animate({ scrollTop: 0 },1000);
+                    }
+                    else{
+                        $('#errorCalendar').fadeOut('fast');
+                        $("#createModal").modal('show');
+                    }
                     $('#start_time').val(start_time);
                     $('#end_time').val(end_time);
                     var time = end_date + ' ' + end_time;
@@ -86,7 +127,6 @@
 
                 eventClick: function(calEvent, jsEvent, view) {
                     var id = this.id;
-                    var user_group = "<?php echo $user_group; ?>";
                     var data = document.getElementById(id.toString());
                     $('#calendar_event_id').val(id);
                     var string = '<strong>'+ data.name + '</strong>'
@@ -129,10 +169,22 @@
                     module_id = (data.getAttribute('module_id')?data.getAttribute('module_id'):'');
                     subject_id = (data.getAttribute('subject_id')?data.getAttribute('subject_id'):'');
                 },
-                eventRender: function(event, element) {
+                eventRender: function(event, element,view) {
                     $(element).tooltip();
-                }
-            });
+                    /*$('td.fc-other-month').css({
+                        borderLeft:'none',
+                        borderRight:'none',
+                    });  
+                    $('td.fc-other-month').html('');
+                            //if(event.start.getMonth() !== view.start.getMonth()) { return false; }*/
+                    }
+                });
+            
+            today = document.getElementsByClassName('fc-today').item(0);
+            today_date = new Date(today.getAttribute('data-date'));
+            user_group = "<?php echo $user_group; ?>";
+                
+
 
         });
         
@@ -174,10 +226,14 @@
         <br>
 
         <h2 class="sub-title">Calendar</h2>
+
         <br>
         
         <div class="row">
             <div class="col-md-12">
+                <div class="alert alert-danger" id="errorCalendar" style="display:none; max-width:400px; margin:auto" role="alert"></div>
+                <br/>
+        
                 <div class="form-group" style="max-width:900px; margin:auto">
                     <span class="" style="min-width:50px; padding:0 5px; float:left; color:#FFF"><strong>Student Name: {{$student_name}}</strong></span>
                     <span class="fc-event legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px;">Not Approved Event</span>

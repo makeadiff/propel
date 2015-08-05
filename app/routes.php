@@ -4,7 +4,7 @@ Route::filter('login_check',function()
 {
     session_start();
 
-    $_SESSION['user_id']=48286; //48032 //47642 //22730 //50671
+    $_SESSION['user_id']=11752; //50671; //48032 //47642 //22730 //50671 //48286
 
     if(empty($_SESSION['user_id'])){
 

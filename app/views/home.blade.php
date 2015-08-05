@@ -102,6 +102,7 @@
 
                 <a href='settings/{{$user->id}}/students' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/students.png')}}"><br>Assign<br>Students</a>
             </div>
+            
         @endif
 
 

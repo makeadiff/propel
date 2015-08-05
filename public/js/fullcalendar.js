@@ -3470,7 +3470,7 @@ var Grid = fc.Grid = RowRenderer.extend({
 		else {
 			classes.push('fc-future');
 		}
-
+		
 		return classes;
 	}
 
@@ -5102,7 +5102,7 @@ DayGrid.mixin({
 				(event.status.toUpperCase())+') '+
 				(event.title? event.title:'')+' '
 				+(event.comment? event.comment:'')
-				+(event.start?' ('+htmlEscape(timeStart)+' - '+htmlEscape(timeEnd)+') ':'')
+				+(event.start?' ('+htmlEscape(timeS)+' - '+htmlEscape(timeE)+') ':'')
 				+(event.volunteer_name?
 					'Volunteer Name: '+htmlEscape(event.volunteer_name)+' Subject: '+htmlEscape(event.subject_name)+'':
 					''
@@ -10290,11 +10290,13 @@ var BasicView = fcViews.basic = View.extend({
 
 		classes = this.dayGrid.getDayClasses(date);
 		classes.unshift('fc-day-number');
-
+		var past = $.inArray('fc-other-month',classes);
+		//if(past==-1){
 		return '' +
 			'<td class="' + classes.join(' ') + '" data-date="' + date.format() + '">' +
 				date.date() +
 			'</td>';
+		//}
 	},
 
 	// Generates an HTML attribute string for setting the width of the week number column, if it is known
