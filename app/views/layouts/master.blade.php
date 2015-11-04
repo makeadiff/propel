@@ -57,6 +57,7 @@
                 <!--<li><a href="{{URL::to('/')}}/calendar">Calendar</a></li>
                 <li><a href="{{URL::to('/')}}/attendance">Attendance</a></li>
                 <li><a href="{{URL::to('/')}}/wingman-journal">Wingman Journal</a></li>-->
+                
                 @if(!empty($_SESSION['original_id']) && $_SESSION['user_id'] != $_SESSION['original_id'])
                     <li class=""><a href="{{URL::to('/city-change/back-to-national')}}">Back to National</a></li>
                 @endif

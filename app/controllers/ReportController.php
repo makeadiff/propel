@@ -153,8 +153,70 @@ class ReportController extends BaseController
     }
 
 
-    public function showCalendarReport(){
+    public function showChildReport(){
+        //echo $cities;
+        $child_data = Student::join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id')->get();
+
+        $total_classes=count($child_data);
+
+        $city_data = Student::join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('E.name as city_name','E.id as city_id',DB::raw('count(B.id) as Count' ))->groupby('E.id')->orderby('E.name','ASC')->get();
+
+         $city_data;
         
+        //echo '<b>Total Kids in Propel: '.count($child_data).'</b><br/><br/>';
+
+        /*foreach ($child_data as $child){
+            echo $child->name.' - '.$child->wingman_name.' | '.$child->center_name.' | '.$child->city_name.'<br/>';
+        }*/
+
+        return View::make('reports.child-report.city-data')->with('city_data',$city_data)->with('total_classes',$total_classes);
+
+    }
+
+    public function showCityReport($city_id){
+
+        $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
+        $centers = Center::where('city_id','=',$city_id)->where('status','=',1)->orderby('name','ASC')->get();        
+
+        $child_data = DB::table('Student')->join('propel_student_wingman as B','Student.id','=','B.student_id')->leftjoin('User as C','C.id','=','B.wingman_id')->leftjoin('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id')->distinct()->where('E.id','=',$city_id)->orderby('D.name','ASC')->get();
+
+        
+        //print"<pre>";
+        //var_dump($child_data);
+        //print"</pre>";
+        //return $child_data;
+    
+        return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id','0');
+
+    }
+
+    public function showCenterReport($city_id,$center_id){
+
+        $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
+        $centers = Center::where('city_id','=',$city_id)->where('status','=',1)->orderby('name','ASC')->get();        
+
+        $child_data = DB::table('Student')->join('propel_student_wingman as B','Student.id','=','B.student_id')->leftjoin('User as C','C.id','=','B.wingman_id')->leftjoin('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id')->distinct()->where('E.id','=',$city_id)->where('D.id','=',$center_id)->orderby('D.name','ASC')->get();
+
+        
+        //print"<pre>";
+        //var_dump($child_data);
+        //print"</pre>";
+        //return $child_data;
+    
+        return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id',$center_id);
+
+    }
+
+    public function showCityReportForm(){
+        $city_id = Input::get('city');
+        $center_id = Input::get('centers');
+        //return $city_id;
+        if($center_id=="0"){
+            return Redirect::to(URL::to('/reports/child-report/').'/'.$city_id);
+        }
+        else{
+            return Redirect::to(URL::to('/reports/child-report/').'/'.$city_id.'/'.$center_id);
+        }
     }
 
 }

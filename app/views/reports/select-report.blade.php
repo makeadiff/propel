@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="col-md-4 col-sm-6 text-center">
-                     <a href='reports/calendar-report' class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar<br/>Summary</a>
+                     <a href='reports/child-report' class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/kids.png')}}"><br><br>Child Data</a>
                 </div>
 
                 <!--<a class="btn btn-primary" href="reports/wingman-journal-report">Wingman Journal</a><br><br>
