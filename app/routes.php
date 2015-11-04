@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-//$_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286
+    $_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896
 
     if(empty($_SESSION['user_id'])){
 
@@ -81,6 +81,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/reports/class-status/city/{city_id}','ReportController@showClassStatus');
     Route::get('/reports/wingman-journal-report','ReportController@showWingmanJournalReport');
     Route::get('/reports/attendance-report','ReportController@showAttendanceReport');
+    Route::get('/reports/class-cancelled-report','ReportController@showCancellationReport');
+    Route::get('/reports/calendar-report','ReportController@showCalendarReport');
 
     Route::get('/city-change/city-select','CityChangeController@showCitySelect');
     Route::get('/city-change/city/{city_id}','CityChangeController@showFellowSelect');

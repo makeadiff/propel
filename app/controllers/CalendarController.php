@@ -46,6 +46,8 @@ class CalendarController extends BaseController
         $this->setGroup();
         $city = Wingman::find($wingman_id)->city()->first();
         $volunteers = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->get();
+        
+        return $volunteers;
         $subjects = Wingman::find($wingman_id)->city()->first()->subject()->get();
         $wingman_modules = WingmanModule::all();
         /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();

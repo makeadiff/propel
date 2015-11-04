@@ -65,10 +65,9 @@ class ReportController extends BaseController
                                 LEFT OUTER JOIN propel_cancelledCalendarEvents as cce
                                 ON cce.calendar_event_id = ce.id");
 
-        $report = json_decode(json_encode($report),true);
+//        $report = json_decode(json_encode($report),true);
 
-        /*var_dump($report);
-        exit;*/
+        return $report;
 
         Excel::create('Attendance-Report', function($excel) use($report) {
 
@@ -140,6 +139,22 @@ class ReportController extends BaseController
 
     }
 
+    public function showCancellationReport(){
+        $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
 
+        $classes = CancelledCalendarEvent::all();
+        $total_classes = CalendarEvent::where('status','=','approved')->get();
+
+        $cancelled_classes = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name')->distinct()->orderby('E.name','ASC')->get();
+
+        //return $cancelled_classes;
+
+        return View::make('reports.class-status.cancellation-report')->with('cities',$cities)->with('classes',$classes)->with('total_classes',$total_classes)->with('cancelled_classes',$cancelled_classes);
+    }
+
+
+    public function showCalendarReport(){
+        
+    }
 
 }
