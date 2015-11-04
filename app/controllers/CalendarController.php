@@ -428,6 +428,8 @@ class CalendarController extends BaseController
     public function selectAsv()
     {
 
+        echo 'SELECT ASV SECCTION';
+
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
         $city = $fellow->city()->first();
@@ -436,6 +438,7 @@ class CalendarController extends BaseController
         //return $asvs;
         //If the below line doesn't work assign asvGroupName to a local variable and then try again. Very weird bug.
         $asvs = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->where('status','=',1)->orderBy('name','ASC')->get();
+        return $asvs;
 
         return View::make('calendar.select-asv')->with('asvs',$asvs);
     }
