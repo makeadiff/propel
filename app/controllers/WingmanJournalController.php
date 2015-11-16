@@ -63,7 +63,7 @@ class WingmanJournalController extends BaseController
         $modules = WingmanModule::all();
         //return $modules;
 
-        $entries = DB::table('propel_wingmanJournals as A')->join('User as B','B.id','=','A.wingman_id')->join('Student as C','C.id','=','A.student_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as id','A.title as title','B.name as wingman_name','E.name as city_name','A.on_date as on_date','A.module_id as module_id')->distinct()->where('type','=','module_feedback')->get();
+        $entries = DB::table('propel_wingmanJournals as A')->join('User as B','B.id','=','A.wingman_id')->join('Student as C','C.id','=','A.student_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as id','A.title as title','B.name as wingman_name','E.name as city_name','A.on_date as on_date','A.module_id as module_id')->distinct()->where('A.type','=','module_feedback')->get();
         return View::make('feedback/module_feedback')->with('entries',$entries)->with('modules',$modules);
     }
 
