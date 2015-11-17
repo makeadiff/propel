@@ -82,6 +82,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/reports/wingman-journal-report','ReportController@showWingmanJournalReport');
     Route::get('/reports/attendance-report','ReportController@showAttendanceReport');
     Route::get('/reports/class-cancelled-report','ReportController@showCancellationReport');
+    Route::post('/reports/class-cancelled-report','ReportController@CancellationFilter');
     Route::get('/reports/child-report','ReportController@showChildReport');
     Route::get('/reports/child-report/{city_id}','ReportController@showCityReport');
     Route::post('/reports/child-report/city-report','ReportController@showCityReportForm');

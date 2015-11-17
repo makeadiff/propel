@@ -2,6 +2,15 @@
 
 @section('body')
 
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.css" id="theme_base">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.date.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/default.time.css" id="theme_date">
+<link rel="stylesheet" href="{{URL::to('/')}}/css/calendar.css" id="theme_date">
+<script src='{{URL::to("/")}}/js/lib/moment.min.js'></script>
+<script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
+<script type="text/javascript">
+
+ 
 <script type="text/javascript">
     $(function () {
         $('.footable').footable({
@@ -42,23 +51,7 @@
     });
 </script>
 
-<script type="text/javascript">
 
-    $(function () {
-
-        $('.clear-filter').click(function (e) {
-            e.preventDefault();
-            $('table').trigger('footable_clear_filter');
-        });
-
-
-
-
-
-
-    });
-
-</script>
 
 <div class="container-fluid">
     <div class="centered">
@@ -66,56 +59,106 @@
 
         <h2 class="sub-title">Class Cancellation Report</h2>
         
-        <h4 class="white">(Classes cancelled Nationally: {{count($cancelled_classes)}}/{{count($total_classes)}})</h4>
-
+        <!--<h4 class="white">(Classes cancelled Nationally: {{count($cancelled_classes)}}/{{count($total_classes)}})</h4>
+    -->
         <br>
         <div class="row">
-            <!--<div class="col-md-12">
+            <div class="center">
+       
+                <div class="col-md-12 col-sm-12">
+                    <form class="form-inline text-center">
+                        <label for="filter">Filter :&nbsp;</label>
+                        <input type="text" id="filter" data-filter=#filter class="form-control input-sm">
+                        <a href="#clear" class="clear-filter" title="clear filter" id="filter-clear">[clear]</a>
+                    </form>
+                </div>
 
-                @foreach($cities as $city)
-                    <div style="padding:10px" class="col-md-3 col-sm-8">
-                        <a href="{{URL::to('/')}}/reports/class-status/city/{{$city->id}}" class="btn btn-primary btn-dash transparent"><img  src="{{URL::to('/img/cities.png')}}"><br/>{{$city->name}}</a><br>
-                    </div>
-                @endforeach
 
-            </div>-->
-            <div class="col-md-12 col-sm-12">
-                <form class="form-inline text-center">
-                    <label for="filter">Filter :&nbsp;</label>
-                    <input type="text" id="filter" data-filter=#filter class="form-control input-sm">
-                    <a href="#clear" class="clear-filter" title="clear filter" id="filter-clear">[clear]</a>
-                </form>
-
-                <form class="search_parameters">
-                    <label for="reason">Reason: </label>
-                    <select name="reason" class="">
-                        <option value="">--Select Reason--</option>
-                        <option value="student_not_available">Student not available</option>
-                        <option value="volunteer_not_available">Volunteer not available</option>
+            <div class="col-md-4 col-sm-12 center">
+                <form class="search_parameters text-center" method="post" action="{{{URL::to('/reports/class-cancelled-report')}}}">
+                    <select name="reason" class="form-control">
+                        <option value="0">--Select Reason--</option>
+                        <option value="student_not_available" <?php
+                            if(isset($reason)){
+                                if($reason=='student_not_available'){
+                                    echo 'selected';
+                                }
+                            }
+                        ?>
+                        >Student not available</option>
+                        <option value="volunteer_not_available" <?php
+                            if(isset($reason)){
+                                if($reason=='volunteer_not_available'){
+                                    echo 'selected';
+                                }
+                            } 
+                        ?>
+                        >Volunteer not available</option>
                     </select>
                     &nbsp; &nbsp;
+            </div>
 
-                    <label for="reason">City: </label>
-                    <select name="city">
-                        <option value="">--Select City--</option>
+            <div class="col-md-4 col-sm-12">
+                    <select name="city" class="form-control">
+                        <option value="0">--Select City--</option>
                         <?php
                             foreach ($cities as $city){
                                 echo '<option value="'.$city->id.
-                                '">'.$city->name.'</option>';
+                                '" ';
+                                if(isset($city_id)){
+                                    if($city->id==$city_id){
+                                        echo 'selected';
+                                    }
+                                }
+                                echo' >'.$city->name.'</option>';
                             }
                         ?>
                     </select>
+            </div>
+
+            <div class="col-md-4 col-sm-12">
+                    <div class='col-md-6 col-sm-12'>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <input type="text" id='start_date' name="start_date" class="form-control" placeholder="Start Date (From)"
+                                    <?php
+                                        if(isset($start_date)){
+                                            echo 'value="'.$start_date.'"';
+                                        }
+                                    ?>
+
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-6 col-sm-12'>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <input type="text" id='end_date' name="end_date" class="form-control"  placeholder="End Date (Till)"
+                                    <?php
+                                        if(isset($end_date)){
+                                            echo 'value="'.$end_date.'"';
+                                        }
+                                    ?>
+                                >
+                            </div>
+                        </div>
+                    </div>
+
                     <br/>
+                    
+            </div>
+
+            <div class="col-md-12 col-sm-12">
                     <input type="submit" value="Filter Results" />
-                </form>
-
-
-            <br>
+                </form>    
+            <br><br/><br/>
+                @if(!empty($cancelled_classes))
                 <table data-filter="#filter" class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
                         <th style="text-decoration:underline">Student Name</th>
-                        <th data-sort-initial="true" style="text-decoration:underline">Wingman Name</th>
+                        <th data-sort-initial="true" style="text-decoration:underline">Class Type</th>
                         <th data-hide="phone" style="text-decoration:underline">Center</th>
                         <th data-hide="phone" style="text-decoration:underline">City</th>
                         <th style="text-decoration:underline">Class Time</th>
@@ -123,11 +166,12 @@
                         <th data-hide="all">Reason</th>
                     </tr>
                     </thead>
+                    <tbody>
                     <?php
                         foreach ($cancelled_classes as $class) {
                             echo '<tr>'.
                             '<td>'.$class->student_name.'</td>'.
-                            '<td>'.$class->wingman_name.'</td>'.
+                            '<td>'.ucwords(str_replace('_',' ',$class->event_type)).'</td>'.
                             '<td>'.$class->center_name.'</td>'.
                             '<td>'.$class->city_name.'</td>'.
                             '<td>'.$class->start_time.'</td>'.
@@ -137,15 +181,65 @@
 
                         }
                     ?>
-                    <tbody>
+                    
                         
                     </tbody>
                 </table>
-            </div>
+                @else
+                <div class="alert alert-warning" role="alert">No Class Cancelled for Selected Filters</div>
+                @endif
 
+            </div>
+            </div>
             <br>
         </div>
     </div>
 </div>
+
+<script src="{{URL::to('/')}}/js/picker.js"></script>
+<script src="{{URL::to('/')}}/js/picker.date.js"></script>
+<script src="{{URL::to('/')}}/js/picker.time.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#start_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#end_date').pickadate({
+            format: 'dd-mm-yyyy'
+        });
+
+         $('.list_popover').popover({'html' : true});
+    }); 
+
+
+
+    $(function () {
+
+
+        $('.clear-filter').click(function (e) {
+            e.preventDefault();
+            $('table').trigger('footable_clear_filter');
+        });
+
+
+        /*$(function () {
+            $('#datetimepicker6').datepicker();
+            $('#datetimepicker7').datepicker({
+                useCurrent: false //Important! See issue #1075
+            });
+            $("#datetimepicker6").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
+        });*/
+
+    });
+
+
+</script>
 
 @stop
