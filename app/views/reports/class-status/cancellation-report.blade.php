@@ -57,10 +57,34 @@
     <div class="centered">
         <br>
 
+        <h4 class="sub-title">Calendar Summary</h4>
+        <div class="row">
+            <div style="padding:10px" class="col-md-4 col-sm-12">
+                <img  src="{{URL::to('/img/calendar.png')}}"><br/><br/>
+                <button class="btn btn-primary" type="button">
+                   Classes Scheduled <span class="badge"> {{count($total_classes)}}</span>
+                </button>
+            </div>
+            <div style="padding:10px" class="col-md-4 col-sm-12">
+                <h2 class="center white">{{round((count($cancelled_classes)/count($total_classes))*100,2)}}%</h2>
+                <p class="center white">Classes Cancelled</p>
+            </div>
+            <div style="padding:10px" class="col-md-4 col-sm-12">
+                <img  src="{{URL::to('/img/calendar.png')}}"><br/><br/>
+                <button class="btn btn-primary" type="button">
+                    Classes Cancelled <span class="badge"> {{count($cancelled_classes)}}</span>
+                </button>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+            </div>
+        </div>
+
         <h2 class="sub-title">Class Cancellation Report</h2>
         
-        <!--<h4 class="white">(Classes cancelled Nationally: {{count($cancelled_classes)}}/{{count($total_classes)}})</h4>
-    -->
         <br>
         <div class="row">
             <div class="center">

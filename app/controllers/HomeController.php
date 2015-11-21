@@ -14,7 +14,7 @@ class HomeController extends BaseController
 
 
         foreach($groups as $group) {
-            if($group->id == '272' || $group->id == '348' || $group->id == '359' || $group->id == '212') {
+            if($group->id == '272' || $group->id == '348' || $group->id == '359' || $group->id == '212' || $group->id == '365') {
                 $flag = true;
             }
 
@@ -36,6 +36,7 @@ class HomeController extends BaseController
 
         $fellow = false;
         $wingman = false;
+        $after_care_wingman = false;
         $strat = false;
         $director = false;
 
@@ -46,6 +47,8 @@ class HomeController extends BaseController
                 $wingman = true;
             elseif($group->id == '359')
                 $strat = true;
+            elseif($group->id == '365')
+                $after_care_wingman = true;
             elseif($group->id == '212'){
                 $director = true;
                 $_SESSION['original_id'] = $_SESSION['user_id'];
@@ -57,6 +60,8 @@ class HomeController extends BaseController
         }
         elseif($strat == true)
             View::share('user_group','Propel Strat');
+        elseif($after_care_wingman == true)
+            View::share('user_group','After Care Wingman');
         elseif($fellow == true)
             View::share('user_group','Propel Fellow');
         elseif($wingman == true)
