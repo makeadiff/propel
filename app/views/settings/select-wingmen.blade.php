@@ -70,7 +70,7 @@
                                 $i = 0;
                                 foreach($all_wingmen as $wingman){
                                     echo '<input name="wingmen[]" type="checkbox" id="group'.$i.'" value="'.$wingman->id.'" '.(is_numeric($wingman->phone)?'':$wingman->phone).'/>
-                                    <label for="group'.$i.'">'.ucwords(strtolower($wingman->name)).'</label><br/>';
+                                    <label for="group'.$i.'">'.ucwords(strtolower($wingman->name)).' '.$wingman->group_id.'</label><br/>';
                                 $i++;
                                 }
                             ?>
