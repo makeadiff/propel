@@ -131,7 +131,7 @@
                     <?php
                         foreach ($child_data as $child) {
                             echo '<tr>'.
-                            '<td><a href="../../../profile/'.$child->id.'">'.$child->name.'</td>'.
+                            '<td><a href="../../profile/'.$child->id.'">'.$child->name.'</td>'.
                             '<td>'.$child->wingman_name.'</td>'.
                             '<td>'.$child->center_name.'</td>'.
                             '<td>'.$child->journal_count.'</td>'.
