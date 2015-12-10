@@ -182,7 +182,9 @@
             
             today = document.getElementsByClassName('fc-today').item(0);
             today_date = new Date(today.getAttribute('data-date'));
-            user_group = "<?php echo $user_group; ?>";
+            user_group = "<?php 
+                        if(isset($user_group)) { echo $user_group; 
+                        } ?>";
                 
 
 
@@ -245,9 +247,11 @@
                 </div>
             </div>
             <div class="col-md-12">
+                @if(isset($user_group))
                 @if($user_group!='Propel Wingman')
                     <button type="submit" class="btn btn-default" onclick="getMonthCal()">Approve Calendar</button>
                     <br/><br/>
+                @endif
                 @endif
             </div>
         </div>

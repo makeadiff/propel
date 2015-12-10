@@ -142,7 +142,7 @@ class ReportController extends BaseController
     public function showCancellationReport(){
         $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
 
-        $total_classes = CalendarEvent::where('status','=','approved')->orwhere('status','=','attended')->get();
+        $total_classes = CalendarEvent::where('status','=','approved')->orwhere('status','=','attended')->orwhere('status','=','cancelled')->get();
 
 
     	$tables = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id');
@@ -163,8 +163,7 @@ class ReportController extends BaseController
     	
     	$cities = City::where('id','<=','25')->orderby('name','ASC')->get();
     	//return Input::get('start_date');
-    	$total_classes = CalendarEvent::where('status','=','approved')->orwhere('status','=','attended')->get();
-        
+    	
     	$tables = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id');
 
         if($city!='0' && $reason!='0' && !empty(Input::get('start_date')) && !empty(Input::get('end_date'))){

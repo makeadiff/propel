@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 class CalendarController extends BaseController
 {
@@ -53,22 +53,16 @@ class CalendarController extends BaseController
         /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
         */
         $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')->leftJoin('propel_wingmanModules as V','V.id','=','R.wingman_module_id')->leftJoin('propel_subjects as W','W.id','=','S.subject_id')->select('P.id','P.type as title','P.start_time as start','P.end_time as end','P.status','Q.reason as reason','Q.comment as comment','U.name as wingman_name','T.name as volunteer_name','S.volunteer_id as volunteer_id','R.wingman_id as wingman_id','V.id as module_id','W.id as subject_id','V.name as module_name','W.name as subject_name')->where('student_id','=',$student_id)->get();
+        
         foreach ($calendarEvents as $calendarEvent) {
-            /*if($calendarEvent->title == 'wingman_time'){
-                $calendarEvent->title = 'Wigman Time';
-            }
-            elseif ($calendarEvent->title == 'child_busy') {
-                $calendarEvent->title = 'Child Busy';
-            }
-            elseif ($calendarEvent->title == 'volunteer_time') {
-                $calendarEvent->title = 'Volunteer Time';
-            }*/
+            
             $calendarEvent->title = str_replace('_', ' ',$calendarEvent->title);
             $calendarEvent->title = ucwords($calendarEvent->title);
             $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
             $calendarEvent->reason = ucwords($calendarEvent->reason);
 
         }
+        
         $calendarEvents = json_encode($calendarEvents);
         $student_name = Student::where('id','=',$student_id)->first();
         $GLOBALS['student_id'] = $student_id;

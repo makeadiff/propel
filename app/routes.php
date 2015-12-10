@@ -73,6 +73,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
 
     Route::get('/settings/select-wingman','SettingController@selectWingman');
 
+    Route::get('/profile/{student_id}','ProfileController@childProfileIndex');
+
     Route::get('/settings/{wingman_id}/students','SettingController@selectStudents');
     Route::post('/settings/{wingman_id}/students','SettingController@saveStudents');
 
