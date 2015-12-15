@@ -55,17 +55,17 @@ class HomeController extends BaseController
             }
 
         }
-        if($director == true){
+        if($director == true)
             View::share('user_group','Program Director, Propel');
-        }
         elseif($strat == true)
             View::share('user_group','Propel Strat');
-        elseif($after_care_wingman == true)
-            View::share('user_group','After Care Wingman');
         elseif($fellow == true)
             View::share('user_group','Propel Fellow');
         elseif($wingman == true)
             View::share('user_group','Propel Wingman');
+        elseif($after_care_wingman == true)
+            View::share('user_group','After Care Wingman');
+
     }
 
 

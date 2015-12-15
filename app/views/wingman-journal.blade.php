@@ -71,7 +71,7 @@
             <p style="text-align:center; color:#FFF">No journal entry for the selected wingman.</p>
             @endif
 
-            @if($user_group == 'Propel Wingman')
+            @if($user_group == 'Propel Wingman' || $user_group == 'After Care Wingman' || $user_group == 'Propel Fellow')
                 <a href="../journal-entry/create" class="btn btn-primary">New Journal Entry</a>
             @endif
             </div>
