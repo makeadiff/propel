@@ -140,8 +140,22 @@
                             '</tr>';
                         }
                     ?>
-                        
                     </tbody>
+                    <tfoot>
+                        <tr class="text-center">
+                            <td valign="center" colspan='3' rowspan="2" class="center" ><strong>Total</strong></td>
+                            <td data-hide="phone" ><strong>{{$total['journal_count']}}</strong></td>
+                            <td data-hide="phone" ><strong>{{$total['wingman_session_count']}}</strong></td>
+                            <td data-hide="phone" ><strong>{{$total['asv_session_count']}}</strong></td>
+                        </tr>
+                        <tr>
+                            <td data-hide="phone"><strong>Total Classes</strong></td>
+                            <td data-hide="phone" colspan="2" class="text-center">
+                                <strong>{{$total['wingman_session_count']+$total['asv_session_count']}}</strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+
                 </table>
                 @else
                 <div class="alert alert-warning" role="alert">No data for the selected City and Center</div>

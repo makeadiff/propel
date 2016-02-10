@@ -3,11 +3,10 @@
 Route::filter('login_check',function()
 {
     session_start();
-    //$_SESSION['user_id']=48286; //11752; //48032 //47642 //22730 //50671 //48286 //85896
+    //$_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896
 
     if(empty($_SESSION['user_id'])){
-
-        if(App::environment('local'))
+       if(App::environment('local'))
             return Redirect::to('http://localhost/makeadiff.in/home/makeadiff/public_html/madapp/index.php/auth/login/' . base64_encode(Request::url()));
         else
             return Redirect::to('http://makeadiff.in/madapp/index.php/auth/login/' . base64_encode(Request::url()));

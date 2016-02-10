@@ -309,23 +309,29 @@ class ReportController extends BaseController
 
         $child_data = $tables->select('Student.id as id','Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id')->distinct()->where('E.id','=',$city_id)->orderby('D.name','ASC')->get();
 
-        //$child_data = $tables->select('Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id','F.id','F.id as journal_count','G.id as event_count')->distinct()->where('E.id','=',$city_id)->where('F.type','=','child_feedback')->orderby('D.name','ASC')->get(); //Test Query
-
         $child_data = (array) $child_data;
+        $total = array();
         
+        $total['wingman_session_count'] = 0;
+        $total['asv_session_count'] = 0;
+        $total['journal_count'] = 0;
+
         foreach ($child_data as $child){
         	$calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','wingman_time')->get();
         	$child->wingman_session_count = count($calendarEvent);
+            $total['wingman_session_count'] += $child->wingman_session_count;
         	
         	$calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','volunteer_time')->get();
         	$child->asv_session_count = count($calendarEvent);
-        	
+            $total['asv_session_count'] += $child->asv_session_count;
+
         	$journalEntry = WingmanJournal::where('student_id','=',$child->id)->where('type','=','child_feedback')->get();
         	$child->journal_count = count($journalEntry);
+            $total['journal_count'] += $child->journal_count;
           }
   		     
     
-        return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id','0');
+        return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id','0')->with('total',$total);
 
     }
 
@@ -341,20 +347,28 @@ class ReportController extends BaseController
         //$child_data = $tables->select('Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id','F.id','F.id as journal_count','G.id as event_count')->distinct()->where('E.id','=',$city_id)->where('F.type','=','child_feedback')->orderby('D.name','ASC')->get(); //Test Query
 
         $child_data = (array) $child_data;
+        $total = array();
         
+        $total['wingman_session_count'] = 0;
+        $total['asv_session_count'] = 0;
+        $total['journal_count'] = 0;
+
         foreach ($child_data as $child){
-        	$calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','wingman_time')->get();
-        	$child->wingman_session_count = count($calendarEvent);
-        	
-        	$calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','volunteer_time')->get();
-        	$child->asv_session_count = count($calendarEvent);
-        	
-        	$journalEntry = WingmanJournal::where('student_id','=',$child->id)->where('type','=','child_feedback')->get();
-        	$child->journal_count = count($journalEntry);
+            $calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','wingman_time')->get();
+            $child->wingman_session_count = count($calendarEvent);
+            $total['wingman_session_count'] += $child->wingman_session_count;
+            
+            $calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','volunteer_time')->get();
+            $child->asv_session_count = count($calendarEvent);
+            $total['asv_session_count'] += $child->asv_session_count;
+
+            $journalEntry = WingmanJournal::where('student_id','=',$child->id)->where('type','=','child_feedback')->get();
+            $child->journal_count = count($journalEntry);
+            $total['journal_count'] += $child->journal_count;
           }
-        //$entries = DB::table('propel_wingmanJournals as A')->join('User as B','B.id','=','A.wingman_id')->select('A.id as id','A.on_date as on_date','B.name as wingman_name','A.title as title')->distinct()->where('A.student_id','=',$student_id)->where('A.type','=','child_feedback')->get();
+             
     
-        return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id',$center_id);
+        return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id','0')->with('total',$total);
 
     }
 
