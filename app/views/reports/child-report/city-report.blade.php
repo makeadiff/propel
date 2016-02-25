@@ -17,9 +17,6 @@
                 phone: 555
 
             },
-
-          
-
         });
     });
 </script>
@@ -119,8 +116,8 @@
                     <thead >
                     <tr>
                         <th width="20%" style="text-decoration:underline">Propeller Name</th>
-                        <th width="20%" data-sort-initial="true" style="text-decoration:underline">Wingman Name</th>
-                        <th width="30%" data-sort-initial="true" style="text-decoration:underline">Center</th>
+                        <th width="20%" style="text-decoration:underline">Wingman Name</th>
+                        <th width="28%" style="text-decoration:underline">Center</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Journals Filled</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Wingman Sessions Scheduled</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">ASV Sessions Scheduled</th>
@@ -129,6 +126,7 @@
                     </thead>
                     <tbody>
                     <?php
+                        $i=1;
                         foreach ($child_data as $child) {
                             echo '<tr>'.
                             '<td><a href="../../profile/'.$child->id.'">'.$child->name.'</td>'.
@@ -138,6 +136,7 @@
                             '<td>'.$child->wingman_session_count.'</td>'.
                             '<td>'.$child->asv_session_count.'</td>'.
                             '</tr>';
+                            $i++;
                         }
                     ?>
                     </tbody>

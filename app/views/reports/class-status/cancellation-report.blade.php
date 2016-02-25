@@ -182,7 +182,7 @@
                     <thead >
                     <tr>
                         <th style="text-decoration:underline">Student Name</th>
-                        <th data-sort-initial="true" style="text-decoration:underline">Class Type</th>
+                        <th style="text-decoration:underline">Class Type</th>
                         <th data-hide="phone" style="text-decoration:underline">Center</th>
                         <th data-hide="phone" style="text-decoration:underline">City</th>
                         <th style="text-decoration:underline">Class Time</th>
@@ -192,6 +192,7 @@
                     </thead>
                     <tbody>
                     <?php
+                        $i=1;
                         foreach ($cancelled_classes as $class) {
                             echo '<tr>'.
                             '<td>'.$class->student_name.'</td>'.
@@ -202,7 +203,7 @@
                             '<td>'.$class->cancelled_time.'</td>'.
                             '<td>'.ucfirst(str_replace('_', ' ', $class->reason)).', '.$class->comment.'</td>'.
                             '</tr>';
-
+                            $i++;
                         }
                     ?>
                     

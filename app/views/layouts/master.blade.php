@@ -12,7 +12,6 @@
     <script src="{{URL::to('/')}}/js/bootstrap.min.js"></script>
     <script src="{{URL::to('/')}}/js/footable.min.js"></script>
     <script src="{{URL::to('/')}}/js/footable.filter.min.js"></script>
-    <script src="{{URL::to('/')}}/js/footable.paginate.min.js"></script>
     <script src="{{URL::to('/')}}/js/footable.sort.min.js"></script>
     <script src="{{URL::to('/')}}/js/uservoice.js"></script>
     <script src="{{URL::to('/')}}/js/propel_script.js"></script>
