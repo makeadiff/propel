@@ -9,7 +9,7 @@ Class CityChangeController extends BaseController
 
     public function showFellowSelect($city_id) {
 
-        $fellowName = "Propel Multiplier";
+        $fellowName = "Propel Fellow";
 
         $fellows = Group::where('name','=',$fellowName)->first()->fellow()->where('city_id','=',$city_id)->get();
         return View::make('city.select-fellow')->with('fellows',$fellows);

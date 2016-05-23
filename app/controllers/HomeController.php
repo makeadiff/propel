@@ -14,7 +14,7 @@ class HomeController extends BaseController
 
 
         foreach($groups as $group) {
-            if($group->id == '272' || $group->id == '348' || $group->id == '359' || $group->id == '212' || $group->id == '365') {
+            if($group->id == '1' || $group->id == '272' || $group->id == '348' || $group->id == '359' || $group->id == '212' || $group->id == '365' || $group->id = '349') {
                 $flag = true;
             }
 
@@ -34,6 +34,7 @@ class HomeController extends BaseController
 
         $groups = $user->group()->get();
 
+        $asv = false;
         $fellow = false;
         $wingman = false;
         $after_care_wingman = false;
@@ -45,11 +46,13 @@ class HomeController extends BaseController
                 $fellow = true;
             elseif($group->id == '348')
                 $wingman = true;
+            elseif($group->id == '349')
+                $asv = true;
             elseif($group->id == '359')
                 $strat = true;
             elseif($group->id == '365')
                 $after_care_wingman = true;
-            elseif($group->id == '212'){
+            elseif($group->id == '212' || $group->id == '1'){
                 $director = true;
                 $_SESSION['original_id'] = $_SESSION['user_id'];
             }
@@ -65,6 +68,8 @@ class HomeController extends BaseController
             View::share('user_group','Propel Wingman');
         elseif($after_care_wingman == true)
             View::share('user_group','After Care Wingman');
+        elseif($asv == true)
+            View::share('user_group','Propel ASV');
 
     }
 
@@ -80,5 +85,13 @@ class HomeController extends BaseController
         return View::make('home')->with('user',$user);
     }
 
+    public function get_year() { /* Function get_year(): Source: madapp/system/helper/misc_helper.php Line 123 */
+        $this_month = intval(date('m'));
+        $months = array();
+        $start_month = 5; // April
+        $start_year = date('Y');
+        if($this_month < $start_month) $start_year = date('Y')-1;
+        return $start_year;
+    }
 
 }

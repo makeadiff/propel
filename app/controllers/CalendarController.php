@@ -502,6 +502,18 @@ class CalendarController extends BaseController
         }
     }
 
+    public function approvalSummary(){
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+        $wingmen = $fellow->wingman()->get();
+        //$current_date = new DateTime()
+        $current_month = date('c', strtotime("+1 month"));
+        $i=0;
+        $datalist = DB::table('User as A')->join('propel_fellow_wingman as B','A.id','=','B.fellow_id')->join('propel_student_wingman as C','C.wingman_id','=','B.wingman_id')->join('User as D','D.id','=','B.wingman_id')->join('Student as E','E.id','=','C.student_id')->join('propel_calendarEvents as F','F.student_id','=','C.student_id')->select('B.wingman_id as wingman_id','A.name as fellow_name','D.id as wingman_id','D.name as wingman_name','E.id as student_id','E.name as student_name','F.start_time as month')->where('A.id','=',$user_id)->where('F.status','!=','approved')->where('F.status','!=','cancelled')->orderBy('student_id')->orderBy('month')->where('F.start_time','<=',$current_month)->get();
+
+        return $datalist;
+    }
+
     public function approveSelected()
     {
         $wingman_id = $_SESSION['user_id'];
@@ -526,5 +538,9 @@ class CalendarController extends BaseController
             }
         }
         return Redirect::to(URL::to('/calendar/approve-calendar/'));
+    }
+
+    public function calendarApproval(){
+        
     }
 }

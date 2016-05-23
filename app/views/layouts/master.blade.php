@@ -64,9 +64,10 @@
                 <?php
                     $i = 0;
                     $id = $_SESSION['user_id'];
+                    $home = new HomeController;
                     $name = DB::table('User')->select('name')->where('id',$id)->first();
                     echo $name->name.' (';
-                    $groups = DB::table('UserGroup')->join('Group','Group.id','=','UserGroup.group_id')->select('Group.name')->where('user_id',$id)->get();
+                    $groups = DB::table('UserGroup')->join('Group','Group.id','=','UserGroup.group_id')->select('Group.name')->where('user_id',$id)->where('year',$home->get_year())->get();
                     $result = array();
                     foreach ($groups as $group){
                         $result[$i]=$group->name;
