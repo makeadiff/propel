@@ -22,7 +22,7 @@
                     <th>
                         Title
                     </th>
-                    <th data-sort-ignore="true">
+                    <th >
                         Date
                     </th>
                     <th data-sort-ignore="true">
@@ -48,7 +48,7 @@
                             ?>
                         </td>
                         <td><a class="white" href="../journal-entry/{{$entry->id}}">{{$entry->title}}</a></td>
-                        <td>{{date_format(date_create($entry->on_date),'l, jS F Y')}}</td>
+                        <td data-value={{date_format(date_create($entry->on_date),'U')}}>{{date_format(date_create($entry->on_date),'l, jS F Y')}}</td>
                         <td><a href="{{URL::to('/journal-entry/' . $entry->id . '/edit')}}" ><span class="glyphicon glyphicon-edit white"></span> </a>&nbsp; &nbsp;
                             <a href="javascript:checkDelete({{$entry->id}})"><span class="glyphicon glyphicon-remove white"></span></a>
                         </td>

@@ -32,10 +32,10 @@
                     <th>
                         Wingman Name
                     </th>
-                    <th data-sort-ignore="true">
+                    <th >
                         City
                     </th>
-                    <th data-sort-ignore="true">
+                    <th >
                         Date
                     </th>
                 </tr>
@@ -46,7 +46,7 @@
                         <td><a class="white" href="../journal-entry/{{$entry->id}}">{{$entry->title}}</a></td>
                         <td>{{$entry->wingman_name}}</td>
                         <td>{{$entry->city_name}}</td>
-                        <td>{{date_format(date_create($entry->on_date),'l, jS F Y')}}</td>
+                        <td data-value={{date_format(date_create($entry->on_date),'U')}}>{{date_format(date_create($entry->on_date),'l, jS F Y')}}</td>
                         </tr>
                     @endforeach
                 </tbody>
