@@ -12,12 +12,12 @@
             <div class="col-md-offset-3 col-md-6">
 
             <form action="" method="post">
-            {{
-                Form::select('subjects[]',
+                <?php
+                echo Form::select('subjects[]',
                 $all_subjects->lists('name', 'id'), 
                 $selected_subjects_id,
-                array('multiple'=>true, 'size'=>10, 'class'=>'form-control'));
-            }}<br><br>
+                array('multiple'=>true, 'size'=>10, 'class'=>'form-control'));?>
+            <br><br>
             <input type="submit" name="action" class="btn btn-primary" value="Save" />
             </form>
 

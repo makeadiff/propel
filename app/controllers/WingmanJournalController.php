@@ -12,7 +12,7 @@ class WingmanJournalController extends BaseController
         $groups = $user->group()->get();
 
         foreach($groups as $group) {
-            if($group->name == 'Propel Multiplier')
+            if($group->name == 'Propel Multiplier' || $group->name == 'Propel Fellow')
                 $user_group = 'Propel Fellow';
             elseif($group->name == 'Propel Wingman')
                 $user_group = 'Propel Wingman';
