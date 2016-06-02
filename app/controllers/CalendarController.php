@@ -167,7 +167,7 @@ class CalendarController extends BaseController
                         $center_name = $student->center()->first()->name;
 
                         $sms = new SMSController();
-                        $sms->message = "Hi $volunteer_name,\n\nYou have been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
+                        $sms->message = "Hi $volunteer_name,\n\nYou have a class scheduled at $center_name on $on_date($on_time).\n\nPlease contact $user_name($user->phone) for more details.";
                         $sms->number = $volunteer->phone;
                         $sms->send();
                     }
@@ -248,7 +248,7 @@ class CalendarController extends BaseController
                 $center_name = $student->center()->first()->name;
 
                 $sms = new SMSController();
-                $sms->message = "Hi $volunteer_name,\n\nYou have been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
+                $sms->message = "Hi $volunteer_name,\n\nYou have a class scheduled at $center_name on $on_date($on_time).\n\nPlease contact $user_name($user->phone) for more details.";
                 $sms->number = $volunteer->phone;
                 $sms->send();
 
@@ -318,7 +318,7 @@ class CalendarController extends BaseController
                 $center_name = $student->center()->first()->name;
 
                 $sms = new SMSController();
-                $sms->message = "Hi $volunteer_name,\n\nYou hav e been scheduled a class for $center_name on $on_date at $on_time.\n\nPlease contact $user_name($user->phone) for more details.";
+                $sms->message = "Hi $volunteer_name,\n\nYou have a class scheduled at $center_name on $on_date($on_time).\n\nPlease contact $user_name($user->phone) for more details.";
                 $sms->number = $volunteer->phone;
                 $sms->send();
 
