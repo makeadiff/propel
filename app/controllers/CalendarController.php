@@ -541,6 +541,49 @@ class CalendarController extends BaseController
     }
 
     public function calendarApproval(){
+
+        $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id');
+
+        
+        $month = Date('m');
+        
+        $data = $query->select('A.id','D.name','D.id','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->orderBy('D.name','ASC')->get();
+        
+        //$approved_events = $query->select('A.id','D.name','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->orderBy('D.name','ASC')->get();
+
+        /* All events are events which are a collection of all the events types except cancelled */
+        
+        $datas = array();
+        
+        $city_id = 0;
+
+        foreach ($data as $calendar_data) {
+            
+            if($calendar_data->id!=$city_id){
+                $datas[$city_id]['city_id'] = $calendar_data->id;
+                $datas[$city_id]['city_name'] = $calendar_data->name;
+                if($calendar_data->status == 'approved'){
+                    $datas[$city_id]['approved'] = $calendar_data->event_count;
+                }
+                if($calendar_data->status == 'created'){
+                    $datas[$city_id]['created'] = $calendar_data->event_count;
+                }
+                if($calendar_data->status == 'attended'){
+                    $datas[$city_id]['attended'] = $calendar_data->event_count;
+                }
+
+                $city_id = $calendar_data->id;
+
+            }
+        }
+
+
+        $data_all = CalendarEvent::join('Student as B','B.id','=','propel_calendarEvents.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->select('propel_calendarEvents.status','D.name')->where('propel_calendarEvents.status','<>','cancelled')->get();
+
+        //return $approved_events;
+        return $data;
+
+        //return View::make('reports.calendar-approval')->with('data',$data);
         
     }
 }

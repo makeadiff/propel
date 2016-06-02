@@ -12,7 +12,6 @@ class CalendarEvent extends Eloquent
     public function volunteerTime()
     {
         return $this->hasOne('VolunteerTime');
-
     }
 
     public function wingmanTime()

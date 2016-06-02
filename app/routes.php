@@ -89,7 +89,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/reports/child-report/{city_id}','ReportController@showCityReport');
     Route::post('/reports/child-report/city-report','ReportController@showCityReportForm');
     Route::get('/reports/child-report/{city_id}/{center_id}','ReportController@showCenterReport');
-    Route::get('/reports/calendar-approval','CalendarController@calendar-approval');
+    Route::get('/reports/calendar-approval','CalendarController@calendarApproval');
 
     Route::get('/city-change/city-select','CityChangeController@showCitySelect');
     Route::get('/city-change/city/{city_id}','CityChangeController@showFellowSelect');
