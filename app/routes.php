@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-    //$_SESSION['user_id']=57184; //11752; //48032 //47642 //22730 //50671 //48286 //85896
+    //$_SESSION['user_id']=48286; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))
@@ -53,8 +53,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/calendar/rescheduleEvent','CalendarController@rescheduleEvent');
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
     Route::post('/calendar/asv/cancelEvent','CalendarController@cancelEvent');
-    Route::get('/calendar/approval-summary','CalendarController@approvalSummary');
-
+    
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
 
@@ -90,6 +89,9 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/reports/child-report/city-report','ReportController@showCityReportForm');
     Route::get('/reports/child-report/{city_id}/{center_id}','ReportController@showCenterReport');
     Route::get('/reports/calendar-approval','CalendarController@calendarApproval');
+    Route::post('/reports/calendar-approval','CalendarController@calendarApproval');
+    Route::get('/reports/calendar-approval/{city_id}/{start_date?}/{end_date?}','CalendarController@cityCalendarApproval');
+    Route::post('/reports/city-calendar','CalendarController@cityApproval');
 
     Route::get('/city-change/city-select','CityChangeController@showCitySelect');
     Route::get('/city-change/city/{city_id}','CityChangeController@showFellowSelect');

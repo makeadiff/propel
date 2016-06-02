@@ -47,9 +47,23 @@
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <form class="search_parameters" method="post" action="{{{URL::to('/reports/calendar-approval')}}}">
-                    <p class="white">Select Time Duration</p>
-
+                <form class="search_parameters" method="post" action="{{{URL::to('/reports/city-calendar')}}}">
+                    <p class="white">Select City &amp; Time Period</p>
+                @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
+                    <div class="row center">
+                        <div class="center col-md-12">
+                            <select name="city" class="form-control" onchange="">
+                                <?php
+                                    foreach ($cities as $city){
+                                        echo '<option value="'.$city->id.
+                                        '" '.($city->id==$city_id?"selected":"").' >'.$city->name.'</option>';
+                                    }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                @endif
+                <br/>
                 <div class="row">
                     <div class='col-md-6 col-sm-12'>
                         <div class="form-group">
@@ -80,6 +94,7 @@
                     </div>
                 </div>
                 <br/>
+                
                     <input type="submit" value="Filer Values`" />
                 </form>
                 
@@ -94,7 +109,8 @@
                 <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
-                        <th width="40%" style="text-decoration:underline">City Name</th>
+                        <th width="40%" style="text-decoration:underline">Wingman Name</th>
+                        <th width="20%" style="text-decoration:underline">Student Name</th>
                         <th width="20%" style="text-decoration:underline">Events Created</th>
                         <th width="20%" style="text-decoration:underline">Events Approved</th>
                         <th width="20%" style="text-decoration:underline">% Events Approved</th>
@@ -120,24 +136,9 @@
                             $created = (int)$data['created'] + $approved;
                             $percent_approved = round((float)($approved/$created * 100),2);
 
-                            if(isset($start_date)){
-                                $start = '/'.$start_date; 
-                            }
-                            else{
-                                $start = null;
-                            }
-
-                            if(isset($end_date)){
-                                $end = '/'.$end_date; 
-                            }
-                            else{
-                                $end = null;
-                            }
-
-                            //echo $start; echo $end;
-
                             echo '<tr>'.
-                            '<td><a href="/reports/calendar-approval/'.$data['city_id'].$start.$end.'">'.$data['city_name'].'</td>'.
+                            '<td>'.$data['wingman_name'].'</td>'.
+                            '<td>'.$data['student_name'].'</td>'.
                             '<td>'.$created.'</td>'.
                             '<td>'.$approved.'</td>'.
                             '<td>'.$percent_approved.'</td>'.

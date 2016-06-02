@@ -58,7 +58,7 @@
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='calendar/approval-summary' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar Approval<br/> Summary</a>
+                <a href='reports/calendar-approval/{{$_SESSION["city_id"]}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar Approval<br/> Summary</a>
             </div>
 
         @endif

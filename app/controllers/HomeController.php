@@ -6,6 +6,9 @@ class HomeController extends BaseController
     public static function checkPropel(){
         $user_id = $_SESSION['user_id'];
 
+        $city_id = DB::table('User')->select('city_id')->where('id',$user_id)->first();
+        $_SESSION['city_id'] = $city_id->city_id;
+
         $user = Volunteer::find($user_id);
 
         $groups = $user->group()->get();
