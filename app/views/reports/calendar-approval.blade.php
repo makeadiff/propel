@@ -103,13 +103,27 @@
                     <?php
                         $i=1;
                         foreach ($datas as $data) {
+                            
+                            if(!isset($data['attended'])){
+                                $data['attended'] = 0;
+                            }
+                            if(!isset($data['created'])){
+                                $data['created'] = 0;
+                            }
+                            if(!isset($data['approved'])){
+                                $data['approved'] = 0;
+                            }
+
+                            $approved = (int)$data['approved'] + (int)$data['attended'];
+                            $created = (int)$data['created'] + $approved;
+                            $percent_approved = round((float)($approved/$created * 100),2);
+
                             echo '<tr>'.
-                            '<td><a href="../../profile/'.$data['city_id'].'">'.$data['city_name'].'</td>'.
-                            '<td>'.$data['created'] + $data['approved'] + $data['attended'].'</td>'.
-                            '<td>'.$data['approved'] + isset($data['attended'])?$data['attended'].'</td>'.
-                            '<td>'.(($data['approved'] + $data['attended'])/($data['created'] + $data['approved'] + $data['attended'])).'</td>'.
-                            '</tr>'.PHP_EOL;
-                            $i++;
+                            '<td><a href="">'.$data['city_name'].'</td>'.
+                            '<td>'.$created.'</td>'.
+                            '<td>'.$approved.'</td>'.
+                            '<td>'.$percent_approved.'</td>'.
+                            '</tr>';
                         }
                     ?>
                     </tbody>
