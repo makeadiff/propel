@@ -88,7 +88,7 @@
             <div class="col-md-8 col-md-offset-2     white">
 
             <br>
-                @if(count($data)!=0)
+                @if(count($datas)!=0)
                 <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
@@ -104,11 +104,11 @@
                         $i=1;
                         foreach ($datas as $data) {
                             echo '<tr>'.
-                            '<td><a href="../../profile/'.$data->city_id.'">'.$data->city_name.'</td>'.
-                            '<td>'.$data->created + $data->approved + $data->attended.'</td>'.
-                            '<td>'.$data->approved + $data->attended.'</td>'.
-                            '<td>'.(($data->approved + $data->attended)/($data->created + $data->approved + $data->attended))*100.'</td>'.
-                            '</tr>';
+                            '<td><a href="../../profile/'.$data['city_id'].'">'.$data['city_name'].'</td>'.
+                            '<td>'.$data['created'] + $data['approved'] + $data['attended'].'</td>'.
+                            '<td>'.$data['approved'] + isset($data['attended'])?$data['attended'].'</td>'.
+                            '<td>'.(($data['approved'] + $data['attended'])/($data['created'] + $data['approved'] + $data['attended'])).'</td>'.
+                            '</tr>'.PHP_EOL;
                             $i++;
                         }
                     ?>
