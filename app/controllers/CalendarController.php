@@ -560,6 +560,8 @@ class CalendarController extends BaseController
         foreach ($data as $calendar_data) {
             
             if($calendar_data->id!=$city_id){
+                $city_id = $calendar_data->id;
+
                 $datas[$city_id]['city_id'] = $calendar_data->id;
                 $datas[$city_id]['city_name'] = $calendar_data->name;
                 if($calendar_data->status == 'approved'){
@@ -572,8 +574,19 @@ class CalendarController extends BaseController
                     $datas[$city_id]['attended'] = $calendar_data->event_count;
                 }
 
-                $city_id = $calendar_data->id;
+            }
+            else{
+                if($calendar_data->status == 'approved'){
+                    $datas[$city_id]['approved'] = $calendar_data->event_count;
+                }
+                if($calendar_data->status == 'created'){
+                    $datas[$city_id]['created'] = $calendar_data->event_count;
+                }
+                if($calendar_data->status == 'attended'){
+                    $datas[$city_id]['attended'] = $calendar_data->event_count;
+                }
 
+                $city_id = $calendar_data->id;                
             }
         }
 
@@ -581,9 +594,9 @@ class CalendarController extends BaseController
         $data_all = CalendarEvent::join('Student as B','B.id','=','propel_calendarEvents.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->select('propel_calendarEvents.status','D.name')->where('propel_calendarEvents.status','<>','cancelled')->get();
 
         //return $approved_events;
-        return $data;
+        //return $datas;
 
-        //return View::make('reports.calendar-approval')->with('data',$data);
+        return View::make('reports.calendar-approval')->with('datas',$datas);
         
     }
 }
