@@ -49,7 +49,6 @@
             <div class="col-md-6 col-md-offset-3">
                 <form class="search_parameters" method="post" action="{{{URL::to('/reports/city-calendar')}}}">
                     <p class="white">Select City &amp; Time Period</p>
-                @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
                     <div class="row center">
                         <div class="center col-md-12">
                             <select name="city" class="form-control" onchange="">
@@ -62,7 +61,6 @@
                             </select>
                         </div>
                     </div>
-                @endif
                 <br/>
                 <div class="row">
                     <div class='col-md-6 col-sm-12'>

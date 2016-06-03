@@ -644,10 +644,10 @@ class CalendarController extends BaseController
         $temp_start = $start_date;
         $temp_end = $end_date;
   
-        if(isset($start_date)){
+        if(isset($start_date) && $start_date!="null"){
             $start = true;
         }
-        if(isset($end_date)){
+        if(isset($end_date) && $end_date!="null"){
             $end = true;
         }
 
@@ -716,8 +716,8 @@ class CalendarController extends BaseController
 
     public function cityApproval(){
 
-        $start = null;
-        $end = null;
+        $start = "/null";
+        $end = "/null";
 
         $city_id = Input::get('city');
         if(Input::get('start_date')!=""){

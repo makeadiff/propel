@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-    //$_SESSION['user_id']=48286; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
+    //$_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))
@@ -81,13 +81,17 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/reports','ReportController@showReports');
     Route::get('/reports/class-status/city/{city_id}','ReportController@showClassStatus');
     Route::get('/reports/wingman-journal-report','ReportController@showWingmanJournalReport');
-    Route::get('/reports/attendance-report','ReportController@showAttendanceReport');
+    Route::get('/reports/attendance','ReportController@attendanceHome');
+    Route::get('/reports/attendance-report/{city_id?}/{type?}/{start_date?}/{end_date?}','ReportController@showAttendanceReport');
+    
     Route::get('/reports/class-cancelled-report','ReportController@showCancellationReport');
     Route::post('/reports/class-cancelled-report','ReportController@CancellationFilter');
+    
     Route::get('/reports/child-report','ReportController@showChildReport');
     Route::get('/reports/child-report/{city_id}','ReportController@showCityReport');
     Route::post('/reports/child-report/city-report','ReportController@showCityReportForm');
     Route::get('/reports/child-report/{city_id}/{center_id}','ReportController@showCenterReport');
+
     Route::get('/reports/calendar-approval','CalendarController@calendarApproval');
     Route::post('/reports/calendar-approval','CalendarController@calendarApproval');
     Route::get('/reports/calendar-approval/{city_id}/{start_date?}/{end_date?}','CalendarController@cityCalendarApproval');

@@ -44,40 +44,146 @@ class ReportController extends BaseController
             })->export('csv');
     }
 
-    public function showAttendanceReport() {
-        $report = DB::select("SELECT DATE(ce.start_time) as Date, ce.type as Type, s.name as Student, IFNULL(w.name,'N/A') as Wingman,IFNULL(wm.name,'N/A') as WingmanModule, IFNULL(v.name,'N/A') as Volunteer, c.name as Center, cy.name as City, ce.status as Status, IFNULL(cce.reason,'N/A') as CancelReason FROM `propel_calendarEvents` as ce
-                                INNER JOIN Student as s
-                                ON s.id = ce.student_id
-                                INNER JOIN Center as c
-                                ON c.id = s.center_id
-                                INNER JOIN City as cy
-                                ON cy.id = c.city_id
-                                LEFT OUTER JOIN propel_wingmanTimes as wt
-                                ON wt.calendar_event_id = ce.id
-                                LEFT OUTER JOIN User as w
-                                ON wt.wingman_id = w.id
-                                LEFT OUTER JOIN propel_wingmanModules as wm
-                                ON wt.wingman_module_id = wm.id
-                                LEFT OUTER JOIN propel_volunteerTimes as vt
-                                ON vt.calendar_event_id = ce.id
-                                LEFT OUTER JOIN User as v
-                                ON vt.volunteer_id = v.id
-                                LEFT OUTER JOIN propel_cancelledCalendarEvents as cce
-                                ON cce.calendar_event_id = ce.id");
 
-//        $report = json_decode(json_encode($report),true);
+    public function attendanceHome(){
+        return View::make('reports.attendance.home');
+    }
 
-        return $report;
+    public function showAttendanceReport($city_id = null,$event_type = null,$start_date = null, $end_date = null) {
 
-        Excel::create('Attendance-Report', function($excel) use($report) {
+        $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
 
-                $excel->sheet('Report', function($sheet) use($report)  {
+        if(isset($event_type) && $event_type=="wingman_time"){
 
-                        $sheet->fromArray($report);
+            if($city_id =='null'){
+                
+                $tables = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.wingman_id')->join('City as D','D.id','=','C.city_id');
 
-                    });
+                $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
 
-            })->export('csv');
+                $data_collection = $query->get();
+
+                $datas = array();
+                $id = 0;
+
+                foreach ($data_collection as $data) {
+                    
+                    if($data->id!=$city_id){
+                        $id = $data->city_id;
+
+                        $datas[$id]['city_id'] = $data->city_id;
+                        $datas[$id]['city_name'] = $data->city_name;
+                        if($data->status == 'approved'){
+                            $datas[$id]['approved'] = $data->event_count;
+                        }
+                        if($data->status == 'attended'){
+                            $datas[$id]['attended'] = $data->event_count;
+                        }
+
+                    }
+                    else{
+                        if($data->status == 'approved'){
+                            $datas[$id]['approved'] = $data->event_count;
+                        }
+                        if($data->status == 'attended'){
+                            $datas[$id]['attended'] = $data->event_count;
+                        }
+
+                        $id = $data->id;                
+                    }
+                }
+
+                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type);   
+            }
+            else{
+
+                $tables = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.wingman_id')->join('City as D','D.id','=','C.city_id');
+
+                $query = $tables->select('C.id as wingman_id','C.name as wingman_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
+
+                $data_collection = $query->get();
+
+                $datas = array();
+                $id = 0;
+
+                foreach ($data_collection as $data) {
+                    
+                    if($data->wingman_id!=$id){
+                        $id = $data->wingman_id;
+
+                        $datas[$id]['wingman_id'] = $data->wingman_id;
+                        $datas[$id]['city_name'] = $data->city_name;
+                        if($data->status == 'approved'){
+                            $datas[$id]['approved'] = $data->event_count;
+                        }
+                        if($data->status == 'attended'){
+                            $datas[$id]['attended'] = $data->event_count;
+                        }
+
+                    }
+                    else{
+                        if($data->status == 'approved'){
+                            $datas[$id]['approved'] = $data->event_count;
+                        }
+                        if($data->status == 'attended'){
+                            $datas[$id]['attended'] = $data->event_count;
+                        }
+
+                        $id = $data->id;                
+                    }
+                }
+
+
+
+                return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id);
+            }   
+        }
+        else if(isset($event_type) && $event_type=="volunteer_time"){
+            
+            $tables = DB::table('propel_calendarEvents as A')->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.volunteer_id')->join('City as D','D.id','=','C.city_id');
+
+            $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
+
+            $data_collection = $query->get();
+
+            $datas = array();
+            $id = 0;
+
+            foreach ($data_collection as $data) {
+                
+                if($data->id!=$city_id){
+                    $id = $data->city_id;
+
+                    $datas[$id]['city_id'] = $data->city_id;
+                    $datas[$id]['city_name'] = $data->city_name;
+                    if($data->status == 'approved'){
+                        $datas[$id]['approved'] = $data->event_count;
+                    }
+                    if($data->status == 'attended'){
+                        $datas[$id]['attended'] = $data->event_count;
+                    }
+
+                }
+                else{
+                    if($data->status == 'approved'){
+                        $datas[$id]['approved'] = $data->event_count;
+                    }
+                    if($data->status == 'attended'){
+                        $datas[$id]['attended'] = $data->event_count;
+                    }
+
+                    $id = $data->id;                
+                }
+            }
+
+            return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type);      
+        }
+        //Academic Support Volunteer Session
+
+
+
+
+
     }
 
     public function showClassStatus($city_id)

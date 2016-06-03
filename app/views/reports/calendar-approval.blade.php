@@ -51,12 +51,12 @@
                     <p class="white">Select Time Duration</p>
 
                 <div class="row">
-                    <div class='col-md-6 col-sm-12'>
+                    <div class='col-md-4 col-sm-12'>
                         <div class="form-group">
                             <div class="form-group">
                                 <input type="text" id='start_date' name="start_date" class="form-control" placeholder="Start Date (From)"
                                     <?php
-                                        if(isset($start_date)){
+                                        if(isset($start_date) && $start_date!="null"){
                                             echo 'value="'.$start_date.'"';
                                         }
                                     ?>
@@ -65,12 +65,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class='col-md-6 col-sm-12'>
+                    <div class='col-md-4 col-sm-12'>
                         <div class="form-group">
                             <div class="form-group">
                                 <input type="text" id='end_date' name="end_date" class="form-control"  placeholder="End Date (Till)"
                                     <?php
-                                        if(isset($end_date)){
+                                        if(isset($end_date) && $end_date!="null"){
                                             echo 'value="'.$end_date.'"';
                                         }
                                     ?>
@@ -78,6 +78,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class='col-md-4 col-sm-12'>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <input type="text" id='month' name="month" class="form-control"  placeholder="End Date (Till)"
+                                    <?php
+                                        if(isset($end_date) && $end_date!="null"){
+                                            echo 'value="'.$end_date.'"';
+                                        }
+                                    ?>
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
                 <br/>
                     <input type="submit" value="Filer Values`" />
@@ -120,18 +135,18 @@
                             $created = (int)$data['created'] + $approved;
                             $percent_approved = round((float)($approved/$created * 100),2);
 
-                            if(isset($start_date)){
+                            if(isset($start_date) && $start_date!=""){
                                 $start = '/'.$start_date; 
                             }
                             else{
-                                $start = null;
+                                $start = "/null";
                             }
 
-                            if(isset($end_date)){
+                            if(isset($end_date) && $end_date !=""){
                                 $end = '/'.$end_date; 
                             }
                             else{
-                                $end = null;
+                                $end = "/null";
                             }
 
                             //echo $start; echo $end;
@@ -165,11 +180,19 @@
     
     $(document).ready(function(){
         $('#start_date').pickadate({
-            format: 'dd-mm-yyyy'
+            format: 'dd-mm-yyyy',
         });
 
         $('#end_date').pickadate({
             format: 'dd-mm-yyyy'
+        });
+
+        $('#month').pickadate({
+            format: 'mm-yyyy',
+            viewMode: 'months',
+            minViewMode: 'months',
+            selectMonths: true,
+            selectYears: true
         });
 
          $('.list_popover').popover({'html' : true});

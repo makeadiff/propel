@@ -11,7 +11,7 @@
         <div class="row">
 
                 <div class="col-md-3 col-sm-6 text-center">
-                     <a href='reports/attendance-report' class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/attendance.png')}}"><br>Attendance</a>
+                     <a href='reports/attendance' class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/attendance.png')}}"><br>Attendance</a>
                 </div>
 
                 <div class="col-md-3 col-sm-6 text-center">
