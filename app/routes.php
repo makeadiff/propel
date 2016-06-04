@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-    $_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
+    //$_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))
@@ -73,6 +73,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/settings/select-wingman','SettingController@selectWingman');
 
     Route::get('/profile/{student_id}','ProfileController@childProfileIndex');
+    Route::get('/modules/{student_id}','ProfileController@childWingmanModules');
 
     Route::get('/settings/{wingman_id}/students','SettingController@selectStudents');
     Route::post('/settings/{wingman_id}/students','SettingController@saveStudents');

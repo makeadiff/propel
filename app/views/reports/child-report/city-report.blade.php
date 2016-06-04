@@ -117,10 +117,11 @@
                     <tr>
                         <th width="20%" style="text-decoration:underline">Propeller Name</th>
                         <th width="20%" style="text-decoration:underline">Wingman Name</th>
-                        <th width="28%" style="text-decoration:underline">Center</th>
+                        <th width="20%" style="text-decoration:underline">Center</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Journals Filled</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Wingman Sessions Scheduled</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">ASV Sessions Scheduled</th>
+                        <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Wingman Modules Covered</th>
                         
                     </tr>
                     </thead>
@@ -135,6 +136,7 @@
                             '<td>'.$child->journal_count.'</td>'.
                             '<td>'.$child->wingman_session_count.'</td>'.
                             '<td>'.$child->asv_session_count.'</td>'.
+                            '<td><a href="'.URL::to('modules/'.$child->id).'">'.$child->wingman_module_attended.'</a></td>'.
                             '</tr>';
                             $i++;
                         }

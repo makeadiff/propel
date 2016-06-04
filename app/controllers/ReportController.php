@@ -431,7 +431,10 @@ class ReportController extends BaseController
         	$calendarEvent = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->where('A.student_id','=',$child->id)->get();
         	$child->wingman_session_count = count($calendarEvent);
             $total['wingman_session_count'] += $child->wingman_session_count;
-        	
+
+            $calendarEvent = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->where('A.student_id','=',$child->id)->where('A.status','=','attended')->get();
+            $child->wingman_module_attended = count($calendarEvent);
+            
         	$calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('type','=','volunteer_time')->get();
         	$child->asv_session_count = count($calendarEvent);
             $total['asv_session_count'] += $child->asv_session_count;
@@ -468,6 +471,9 @@ class ReportController extends BaseController
             $calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','wingman_time')->get();
             $child->wingman_session_count = count($calendarEvent);
             $total['wingman_session_count'] += $child->wingman_session_count;
+
+            $calendarEvent = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->where('A.student_id','=',$child->id)->where('A.status','=','attended')->get();
+            $child->wingman_module_attended = count($calendarEvent);
             
             $calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','volunteer_time')->get();
             $child->asv_session_count = count($calendarEvent);
