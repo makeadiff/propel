@@ -12,4 +12,6 @@ class ProfileController extends BaseController
 
         return View::make('profile.child-profile')->with('student',$student)->with('wingman',$wingman[0]); 
 	}
+
+	
 }

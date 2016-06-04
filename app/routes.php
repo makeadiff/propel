@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-    //$_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
+    $_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))
@@ -92,6 +92,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/reports/child-report/city-report','ReportController@showCityReportForm');
     Route::get('/reports/child-report/{city_id}/{center_id}','ReportController@showCenterReport');
 
+    Route::get('reports/calendar-summary','ReportController@calendarSummary');
     Route::get('/reports/calendar-approval','CalendarController@calendarApproval');
     Route::post('/reports/calendar-approval','CalendarController@calendarApproval');
     Route::get('/reports/calendar-approval/{city_id}/{start_date?}/{end_date?}','CalendarController@cityCalendarApproval');

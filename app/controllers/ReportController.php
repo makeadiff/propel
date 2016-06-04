@@ -428,7 +428,7 @@ class ReportController extends BaseController
         $total['journal_count'] = 0;
 
         foreach ($child_data as $child){
-        	$calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('type','=','wingman_time')->get();
+        	$calendarEvent = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->where('A.student_id','=',$child->id)->get();
         	$child->wingman_session_count = count($calendarEvent);
             $total['wingman_session_count'] += $child->wingman_session_count;
         	
@@ -493,6 +493,10 @@ class ReportController extends BaseController
         else{
             return Redirect::to(URL::to('/reports/child-report/').'/'.$city_id.'/'.$center_id);
         }
+    }
+
+    public function calendarSummary(){
+        return View::make('reports.calendar-summary');
     }
 
 }
