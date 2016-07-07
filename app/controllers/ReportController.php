@@ -54,8 +54,11 @@ class ReportController extends BaseController
 
         $start = "/null";
         $end = "/null";
+        $city_id = "/null";
         $event_type = '/'.Input::get('event_type');
-        $city_id = Input::get('city');
+        if(Input::get('city')!=""){
+            $start = '/'.Input::get('city');
+        }
         if(Input::get('start_date')!=""){
             $start = '/'.Input::get('start_date');
         }
@@ -63,7 +66,7 @@ class ReportController extends BaseController
             $end = '/'.Input::get('end_date');
         }
 
-        return Redirect::away('/reports/attendance-report/'.$city_id.$event_type.$start.$end);
+        return Redirect::away('/reports/attendance-report'.$city_id.$event_type.$start.$end);
     }
 
     public function showAttendanceReport($city_id = null,$event_type = null,$start_date = null, $end_date = null) {
@@ -79,6 +82,7 @@ class ReportController extends BaseController
                 $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
 
                 $data_collection = $query->get();
+
 
                 $datas = array();
                 $id = 0;
