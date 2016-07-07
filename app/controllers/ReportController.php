@@ -63,7 +63,7 @@ class ReportController extends BaseController
             $end = '/'.Input::get('end_date');
         }
 
-        return Redirect::to('/reports/attendance-report/'.$city_id.$event_type.$start.$end);
+        return Redirect::away('/reports/attendance-report/'.$city_id.$event_type.$start.$end);
     }
 
     public function showAttendanceReport($city_id = null,$event_type = null,$start_date = null, $end_date = null) {
