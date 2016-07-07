@@ -49,6 +49,23 @@ class ReportController extends BaseController
         return View::make('reports.attendance.home');
     }
 
+
+    public function attendanceReport(){
+
+        $start = "/null";
+        $end = "/null";
+        $event_type = '/'.Input::get('event_type');
+        $city_id = Input::get('city');
+        if(Input::get('start_date')!=""){
+            $start = '/'.Input::get('start_date');
+        }
+        if(Input::get('end_date')!=""){
+            $end = '/'.Input::get('end_date');
+        }
+
+        return Redirect::to('/reports/attendance-report/'.$city_id.$event_type.$start.$end);
+    }
+
     public function showAttendanceReport($city_id = null,$event_type = null,$start_date = null, $end_date = null) {
 
         $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
@@ -99,9 +116,11 @@ class ReportController extends BaseController
 
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.wingman_id')->join('City as D','D.id','=','C.city_id');
 
-                $query = $tables->select('C.id as wingman_id','C.name as wingman_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
+                $query = $tables->select('C.id as wingman_id','C.name as wingman_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('C.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
 
                 $data_collection = $query->get();
+
+                //return $data_collection;
 
                 $datas = array();
                 $id = 0;
@@ -111,7 +130,7 @@ class ReportController extends BaseController
                     if($data->wingman_id!=$id){
                         $id = $data->wingman_id;
 
-                        $datas[$id]['wingman_id'] = $data->wingman_id;
+                        $datas[$id]['wingman_name'] = $data->wingman_name   ;
                         $datas[$id]['city_name'] = $data->city_name;
                         if($data->status == 'approved'){
                             $datas[$id]['approved'] = $data->event_count;

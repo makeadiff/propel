@@ -48,39 +48,40 @@
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <form class="search_parameters" method="post" action="{{{URL::to('/reports/calendar-approval')}}}">
+                <form class="search_parameters" method="post" action="{{{URL::to('/reports/attendanceReport')}}}">
+                    <input type="hidden" name="event_type" value="{{$event_type}}"/>
                     <p class="white">Select Time Duration</p>
 
-                <div class="row">
-                    <div class='col-md-6 col-sm-12'>
-                        <div class="form-group">
+                    <div class="row">
+                        <div class='col-md-6 col-sm-12'>
                             <div class="form-group">
-                                <input type="text" id='start_date' name="start_date" class="form-control" placeholder="Start Date (From)"
-                                    <?php
-                                        if(isset($start_date) && $start_date!="null"){
-                                            echo 'value="'.$start_date.'"';
-                                        }
-                                    ?>
+                                <div class="form-group">
+                                    <input type="text" id='start_date' name="start_date" class="form-control" placeholder="Start Date (From)"
+                                        <?php
+                                            if(isset($start_date) && $start_date!="null"){
+                                                echo 'value="'.$start_date.'"';
+                                            }
+                                        ?>
 
-                                >
+                                    >
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class='col-md-6 col-sm-12'>
-                        <div class="form-group">
+                        <div class='col-md-6 col-sm-12'>
                             <div class="form-group">
-                                <input type="text" id='end_date' name="end_date" class="form-control"  placeholder="End Date (Till)"
-                                    <?php
-                                        if(isset($end_date) && $end_date!="null"){
-                                            echo 'value="'.$end_date.'"';
-                                        }
-                                    ?>
-                                >
+                                <div class="form-group">
+                                    <input type="text" id='end_date' name="end_date" class="form-control"  placeholder="End Date (Till)"
+                                        <?php
+                                            if(isset($end_date) && $end_date!="null"){
+                                                echo 'value="'.$end_date.'"';
+                                            }
+                                        ?>
+                                    >
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <br/>
+                    <br/>
                     <input type="submit" value="Filer Values`" />
                 </form>
                 
@@ -96,9 +97,9 @@
                     <thead >
                     <tr>
                         <th width="40%" style="text-decoration:underline">City Name</th>
-                        <th width="20%" style="text-decoration:underline">Events Approved</th>
-                        <th width="20%" style="text-decoration:underline">Events Attended</th>
-                        <th width="20%" style="text-decoration:underline">% Events Attended</th>
+                        <th width="20%" style="text-decoration:underline">Sessions Approved</th>
+                        <th width="20%" style="text-decoration:underline">Sessions Attended</th>
+                        <th width="20%" style="text-decoration:underline">%Attendance</th>
                         
                     </tr>
                     </thead>

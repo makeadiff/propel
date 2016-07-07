@@ -110,9 +110,9 @@
                     <thead >
                     <tr>
                         <th width="40%" style="text-decoration:underline">City Name</th>
-                        <th width="20%" style="text-decoration:underline">Events Created</th>
-                        <th width="20%" style="text-decoration:underline">Events Approved</th>
-                        <th width="20%" style="text-decoration:underline">% Events Approved</th>
+                        <th width="20%" style="text-decoration:underline">Calendars Created</th>
+                        <th width="20%" style="text-decoration:underline">Calendars Approved</th>
+                        <th width="20%" style="text-decoration:underline">% Calendars Approved</th>
                         
                     </tr>
                     </thead>

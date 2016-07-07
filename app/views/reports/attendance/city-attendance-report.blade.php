@@ -43,11 +43,12 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Calendar Approval Summary</h2>
+        <h2 class="sub-title">City Attendance Report - {{ucwords(str_replace('_',' ',$event_type))}}</h2>
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <form class="search_parameters" method="post" action="{{{URL::to('/reports/city-calendar')}}}">
+                <form class="search_parameters" method="post" action="{{{URL::to('/reports/attendanceReport')}}}">
+                    <input type="hidden" name="event_type" value="{{$event_type}}"/>
                     <p class="white">Select City &amp; Time Period</p>
                     <div class="row center">
                         <div class="center col-md-12">
@@ -73,7 +74,7 @@
                                         }
                                     ?>
 
-                                >
+                                />
                             </div>
                         </div>
                     </div>
@@ -107,11 +108,10 @@
                 <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
-                        <th width="40%" style="text-decoration:underline">Wingman Name</th>
-                        <th width="20%" style="text-decoration:underline">Student Name</th>
-                        <th width="20%" style="text-decoration:underline">Events Created</th>
-                        <th width="20%" style="text-decoration:underline">Events Approved</th>
-                        <th width="20%" style="text-decoration:underline">% Events Approved</th>
+                        <th width="40%" style="text-decoration:underline">City Name</th>
+                        <th width="20%" style="text-decoration:underline">Sessions Approved</th>
+                        <th width="20%" style="text-decoration:underline">Sessions Attended</th>
+                        <th width="20%" style="text-decoration:underline">%Attendance</th>
                         
                     </tr>
                     </thead>
@@ -123,23 +123,37 @@
                             if(!isset($data['attended'])){
                                 $data['attended'] = 0;
                             }
-                            if(!isset($data['created'])){
-                                $data['created'] = 0;
-                            }
                             if(!isset($data['approved'])){
                                 $data['approved'] = 0;
                             }
 
-                            $approved = (int)$data['approved'] + (int)$data['attended'];
-                            $created = (int)$data['created'] + $approved;
-                            $percent_approved = round((float)($approved/$created * 100),2);
+                            $attended = (int)$data['attended'];
+                            $approved = (int)$data['approved'] + $attended;
+                            $percent_attended = round((float)($attended/$approved * 100),2);
+
+                            if(isset($start_date) && $start_date!=''){
+                                $start = '/'.$start_date; 
+                            }
+                            else{
+                                $start = "/null";
+                            }
+
+                            if(isset($end_date) && $end_date!=''){
+                                $end = '/'.$end_date; 
+                            }
+                            else{
+                                $end = "/null";
+                            }
+
+
+
+                            //echo $start; echo $end;
 
                             echo '<tr>'.
                             '<td>'.$data['wingman_name'].'</td>'.
-                            '<td>'.$data['student_name'].'</td>'.
-                            '<td>'.$created.'</td>'.
                             '<td>'.$approved.'</td>'.
-                            '<td>'.$percent_approved.'</td>'.
+                            '<td>'.$attended.'</td>'.
+                            '<td>'.$percent_attended.'</td>'.
                             '</tr>';
                         }
                     ?>

@@ -552,7 +552,13 @@ class CalendarController extends BaseController
         
         $month = Date('m');
         
-        $fetchQuery = $query->select('A.id','D.name','D.id as cityId','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26);
+        /*$fetchQuery = $query->select('A.id','D.name','D.id as cityId','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26);
+
+        return $fetchQuery->get();   */     
+
+        $fetchQuery = $query->select('A.id',DB::raw('count(A.student_id)'),'D.name','D.id as cityId','A.status',DB::raw('MONTH(A.start_time) as month'),DB::raw('count(D.id)'),DB::raw('count(A.start_time) as event_count'))->groupby('A.student_id')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26);        
+
+        //return $fetchQuery->orderBy('D.name','ASC')->orderBy('A.student_id','ASC')->get();
 
         if(count($input)>0){
 
