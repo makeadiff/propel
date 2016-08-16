@@ -11,7 +11,8 @@ Class CityChangeController extends BaseController
 
         $fellowName = "Propel Fellow";
 
-        $fellows = Group::where('name','=',$fellowName)->first()->fellow()->where('city_id','=',$city_id)->get();
+        $fellows = Group::where('name','=',$fellowName)->first()->fellow()->distinct()->where('city_id','=',$city_id)->where('status','=','1')->where('user_type','=','volunteer')->get();
+        //return $fellows;
         return View::make('city.select-fellow')->with('fellows',$fellows);
     }
 
