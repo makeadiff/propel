@@ -38,7 +38,7 @@ class SettingController extends BaseController
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
 
-        $wingmen = $fellow->wingman()->get();
+        $wingmen = $fellow->wingman()->where('status','=','1')->where('user_type','=','Volunteer')->get();
 
         return View::make('settings/select-wingman')->with('wingmen',$wingmen);
     }

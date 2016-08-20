@@ -9,7 +9,6 @@ class Group extends Eloquent
     {
         return $this->belongsToMany('Volunteer','UserGroup','group_id','user_id');
     }
-
     public function wingman()
     {
         return $this->belongsToMany('Wingman','UserGroup','group_id','user_id');
@@ -19,4 +18,5 @@ class Group extends Eloquent
     {
         return $this->belongsToMany('Fellow','UserGroup','group_id','user_id');
     }
+
 }

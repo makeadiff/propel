@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-    //$_SESSION['user_id']=11752; //11752; //48032 //47642 //22730 //50671 //48286 //85896//57184
+    //$_SESSION['user_id']=11752; //66804; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))

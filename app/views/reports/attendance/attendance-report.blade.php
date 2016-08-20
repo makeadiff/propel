@@ -138,7 +138,7 @@
                             //echo $start; echo $end;
 
                             echo '<tr>'.
-                            '<td><a href="/reports/attendance-report/'.$data['city_id'].'/'.$event_type.''.$start.$end.'">'.$data['city_name'].'</td>'.
+                            '<td><a href="'.URL::to("reports/attendance-report/".$data['city_id']."/".$event_type."".$start."".$end."").'">'.$data['city_name'].'</td>'.
                             '<td>'.$approved.'</td>'.
                             '<td>'.$attended.'</td>'.
                             '<td>'.$percent_attended.'</td>'.

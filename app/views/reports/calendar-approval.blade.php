@@ -152,7 +152,7 @@
                             //echo $start; echo $end;
 
                             echo '<tr>'.
-                            '<td><a href="/reports/calendar-approval/'.$data['city_id'].$start.$end.'">'.$data['city_name'].'</td>'.
+                            '<td><a href="'.URL::to("/reports/calendar-approval/".$data['city_id']."".$start.$end."").'">'.$data['city_name'].'</td>'.
                             '<td>'.$created.'</td>'.
                             '<td>'.$approved.'</td>'.
                             '<td>'.$percent_approved.'</td>'.

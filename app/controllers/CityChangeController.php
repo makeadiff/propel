@@ -10,8 +10,10 @@ Class CityChangeController extends BaseController
     public function showFellowSelect($city_id) {
 
         $fellowName = "Propel Fellow";
+        $home = new HomeController;
+        $year = $home->get_year();
 
-        $fellows = Group::where('name','=',$fellowName)->first()->fellow()->distinct()->where('city_id','=',$city_id)->where('status','=','1')->where('user_type','=','volunteer')->get();
+        $fellows = Group::where('name','=',$fellowName)->first()->fellow()->distinct()->where('city_id','=',$city_id)->where('year','=',$year)->where('status','=','1')->where('user_type','=','volunteer')->get();
         //return $fellows;
         return View::make('city.select-fellow')->with('fellows',$fellows);
     }
