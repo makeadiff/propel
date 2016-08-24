@@ -29,7 +29,9 @@ class JournalEntryController extends \BaseController {
         $je = new WingmanJournal();
         $moduleId = Input::get('module');
         $moduleName = WingmanModule::where('id','=',$moduleId)->get();
-        if(!empty(Input::get('moduleFeedback')) && !empty(Input::get('childFeedback'))){
+        $moduleFeedback = Input::get('moduleFeedback');
+        $childFeedback = Input::get('childFeedback');
+        if(!empty($moduleFeedback) && !empty($childFeedback)){
         	$je = new WingmanJournal();
             $je->type = 'module_feedback';
         	$je->title = $moduleName[0]->name;
@@ -49,7 +51,7 @@ class JournalEntryController extends \BaseController {
 	        $je->student_id = Input::get('student');
 	        $je->save();
         }
-        else if(!empty(Input::get('moduleFeedback'))){
+        else if(!empty($moduleFeedback)){
         	$je = new WingmanJournal();
         	$je->type = 'module_feedback';
         	$je->title = $moduleName[0]->name;
@@ -60,7 +62,7 @@ class JournalEntryController extends \BaseController {
 	        $je->student_id = Input::get('student');
 	        $je->save();
         }
-        else if(!empty(Input::get('childFeedback'))){
+        else if(!empty($childFeedback)){
         	$je = new WingmanJournal();
         	$je->type = 'child_feedback';
             $je->title = Input::get('title');

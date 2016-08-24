@@ -108,8 +108,13 @@
                 <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
-                        <th width="40%" style="text-decoration:underline">City Name</th>
+                        @if($event_type == "wingman_time")
+                        <th width="40%" style="text-decoration:underline">Wingman Name</th>
+                        @elseif($event_type == "volunteer_time")
+                        <th width="40%" style="text-decoration:underline">AS Name</th>
+                        @endif
                         <th width="20%" style="text-decoration:underline">Sessions Approved</th>
+
                         <th width="20%" style="text-decoration:underline">Sessions Attended</th>
                         <th width="20%" style="text-decoration:underline">%Attendance</th>
                         
@@ -148,13 +153,22 @@
 
 
                             //echo $start; echo $end;
-
-                            echo '<tr>'.
-                            '<td>'.$data['wingman_name'].'</td>'.
-                            '<td>'.$approved.'</td>'.
-                            '<td>'.$attended.'</td>'.
-                            '<td>'.$percent_attended.'</td>'.
-                            '</tr>';
+                            if($event_type == "wingman_time"){
+                                echo '<tr>'.
+                                '<td>'.$data['wingman_name'].'</td>'.
+                                '<td>'.$approved.'</td>'.
+                                '<td>'.$attended.'</td>'.
+                                '<td>'.$percent_attended.'</td>'.
+                                '</tr>';
+                            }
+                            else if($event_type == "volunteer_time"){
+                                echo '<tr>'.
+                                '<td>'.$data['asv_name'].'</td>'.
+                                '<td>'.$approved.'</td>'.
+                                '<td>'.$attended.'</td>'.
+                                '<td>'.$percent_attended.'</td>'.
+                                '</tr>';
+                            }
                         }
                     ?>
                     </tbody>
