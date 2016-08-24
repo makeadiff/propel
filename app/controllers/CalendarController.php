@@ -638,10 +638,10 @@ class CalendarController extends BaseController
     }
 
     public function cityCalendarApproval($city_id,$start_date = null,$end_date = null){
-        $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','B.id')->join('User as F','F.id','=','E.wingman_id');
+        $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','B.id')->join('User as F','F.id','=','E.wingman_id')->join('UserGroup as G','G.user_id','=','E.wingman_id')->join('Group as H','H.id','=','G.group_id');
 
        
-        $fetchQuery = $query->select('A.id','D.name as city_name','D.id as city_id','F.id as wingman_id','B.id as student_id','F.name as wingman_name','B.name as student_name','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('B.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','=',$city_id)->where('F.status','=','1')->where('F.user_type','=','volunteer');
+        $fetchQuery = $query->select('A.id','D.name as city_name','D.id as city_id','F.id as wingman_id','B.id as student_id','F.name as wingman_name','B.name as student_name','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('B.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','=',$city_id)->where('F.status','=','1')->where('F.user_type','=','volunteer')->whereIn('H.id',['348','365']);
 
 
         $start = false;
