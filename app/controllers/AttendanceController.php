@@ -7,8 +7,6 @@ class AttendanceController extends BaseController
     {
         $wingmans_kids = Wingman::find($user_id)->student()->get();
 
-
-
         if(empty($wingmans_kids[0]))
             return Redirect::to('error')->with('message','There are no students assigned to the wingman');
 
@@ -26,7 +24,6 @@ class AttendanceController extends BaseController
     {
         $wingmans_kids = Wingman::find($wingman_id)->student()->get();
 
-
         if(empty($wingmans_kids[0]))
             return Redirect::to('error')->with('message','There are no students assigned to the wingman');
 
@@ -36,7 +33,20 @@ class AttendanceController extends BaseController
 
         $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
                 $query->where('status','approved')->orWhere('status','attended');})->get();
-        //return $attended;
+        
+//      return $attended;
+        
+       /*foreach ($attended as $entry) {
+            if($entry->type = 'volunteer_time')
+            {
+                return $entry->volunteerTime()->first()->volunteer()->first()->name;
+            }
+            else if($entry->type = 'wingman_time')
+            {
+                return $entry->wingmanTime()->first()->wingman()->first()->name;
+            }
+        }*/
+
         return View::make('attendance.attended-list')->with('attended',$attended);
     }
 
