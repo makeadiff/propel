@@ -431,7 +431,7 @@ class CalendarController extends BaseController
         $fellow = Fellow::find($user_id);
         $city = $fellow->city()->first();
 
-        $asvs = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->where('status','=',1)->orderBy('name','ASC')->get();
+        $asvs = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->where('user_type','=','volunteer')->where('status','=',1)->orderBy('name','ASC')->groupby('id')->get();
         //return $asvs;
 
         return View::make('calendar.select-asv')->with('asvs',$asvs);
@@ -645,8 +645,6 @@ class CalendarController extends BaseController
 
 
         $start = false;
-        $end = false;
-
         $temp_start = $start_date;
         $temp_end = $end_date;
   

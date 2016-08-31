@@ -85,7 +85,7 @@
 
                 eventClick: function(calEvent, jsEvent, view) {
                     var id = this.id;
-                    var user_group = "<?php echo $user_group; ?>";
+                    var user_group = "<?php if(isset($user_group)) echo $user_group; ?>";
                     var data = document.getElementById(id.toString());
                     $('#calendar_event_id').val(id);
                     var string = '<strong>'+ data.name + '</strong>'

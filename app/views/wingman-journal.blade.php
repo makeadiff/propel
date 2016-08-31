@@ -68,7 +68,7 @@
             </table>
             <br>
             @else
-            <p style="text-align:center; color:#FFF">No journal entry for the selected wingman.</p>
+            <p style="text-align:center; color:#FFF">No journal entry for the selected wingman.{{$user_group}}</p>
             @endif
 
             @if($user_group == 'Propel Wingman' || $user_group == 'After Care Wingman' || $user_group == 'Propel Fellow')

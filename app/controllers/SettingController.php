@@ -38,7 +38,7 @@ class SettingController extends BaseController
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
 
-        $wingmen = $fellow->wingman()->where('status','=','1')->where('user_type','=','Volunteer')->get();
+        $wingmen = $fellow->wingman()->where('status','=','1')->where('user_type','=','volunteer')->get();
 
         return View::make('settings/select-wingman')->with('wingmen',$wingmen);
     }
@@ -52,22 +52,26 @@ class SettingController extends BaseController
         $selected_wingmen = Fellow::find($user_id)->wingman()->get();
 
         
-        $all_wingmen = DB::table('User as A')->join('City as B','A.city_id','=','B.id')->join('UserGroup as C','A.id','=','C.user_id')->select('A.id as id','A.name as name','A.phone as phone','C.group_id as group_id')->distinct()->where('B.id','=',$city_id)->where('C.group_id','=',348)->orwhere('C.group_id','=',365)->where('A.status','=',1)->where('A.status','=','Volunteer')->get();
+        $all_wingmen = DB::table('User as A')->join('City as B','A.city_id','=','B.id')->join('UserGroup as C','A.id','=','C.user_id')->select('A.id as id','A.name as name','A.phone as phone','C.group_id as group_id')->distinct()->where('B.id','=',$city_id)->wherein('C.group_id',[348,365])->where('A.status','=',1)->where('A.status','=','volunteer')->get();        
 
         foreach ($all_wingmen as $wingman) {
             foreach ($selected_wingmen as $selected) {
                 if($wingman->id == $selected->id){
-                    $wingman->phone="checked";
+                    $wingman->phone ="checked";
+                }
+                else{
+                    $wingman->phone = "";   
                 }
                 if($wingman->group_id == 365){
                     $wingman->group_id = "(Aftercare)";
                 }
                 elseif($wingman->group_id== 348){
-                    $wingman->group_id = "";
+                    $wingman->group_id = " ";
                 }
             }                
         }            
 
+        return $all_wingmen;
 
         return View::make('settings/select-wingmen')->with('selected_wingmen',$selected_wingmen)->with('all_wingmen',$all_wingmen);
     }
