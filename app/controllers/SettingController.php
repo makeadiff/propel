@@ -51,18 +51,14 @@ class SettingController extends BaseController
 
         $selected_wingmen = Fellow::find($user_id)->wingman()->get();
 
-        
         $all_wingmen = DB::table('User as A')->join('City as B','A.city_id','=','B.id')->join('UserGroup as C','A.id','=','C.user_id')->select('A.id as id','A.name as name','A.phone as phone','C.group_id as group_id')->distinct()->where('B.id','=',$city_id)->wherein('C.group_id',[348,365])->where('A.status','=',1)->where('A.user_type','=','volunteer')->get();        
 
-        //return $all_wingmen;        
+        //     
 
         foreach ($all_wingmen as $wingman) {
             foreach ($selected_wingmen as $selected) {
                 if($wingman->id == $selected->id){
                     $wingman->phone ="checked";
-                }
-                else{
-                    $wingman->phone = "";   
                 }
                 if($wingman->group_id == 365){
                     $wingman->group_id = "(Aftercare)";
@@ -73,7 +69,7 @@ class SettingController extends BaseController
             }                
         }            
 
-        //
+        //return $all_wingmen;   
 
         return View::make('settings/select-wingmen')->with('selected_wingmen',$selected_wingmen)->with('all_wingmen',$all_wingmen);
     }
