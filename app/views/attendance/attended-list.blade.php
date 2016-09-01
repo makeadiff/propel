@@ -23,20 +23,31 @@
                 </thead>
                 <tbody>
                     @foreach($attended as $entry)
-                        <tr>
-                        <td>{{date_format(date_create($entry->start_time),'l, jS F Y')}}</td>
-                        <td>{{ ucwords(str_replace('_',' ',$entry->type)) }}</td>
-                        @if($entry->type == "volunteer_time")
-                        <td>{{$entry->volunteerTime()->first()->volunteer()->first()->name}}</td>
-                        @elseif($entry->type == "wingman_time")
-                        <td>{{$entry->wingmanTime()->first()->wingman()->first()->name}}</td>
-                        @endif
+                        <?php 
+                            $type = $entry->type;
+                            if($type=='volunteer_time'){
+                                $variable = $entry->volunteerTime()->first();
+                            }
+                            elseif ($type=='wingman_time'){
+                                $variable = $entry->wingmanTime()->first();
+                            }                           
+                        ?>
+                        @if(!empty($variable))
+                            <tr>
+                            <td>{{date_format(date_create($entry->start_time),'l, jS F Y')}}</td>
+                            <td>{{ ucwords(str_replace('_',' ',$entry->type)) }}</td>
+                            @if($entry->type == "volunteer_time")
+                            <td>{{$entry->volunteerTime()->first()->volunteer()->first()->name}}</td>
+                            @elseif($entry->type == "wingman_time")
+                            <td>{{$entry->wingmanTime()->first()->wingman()->first()->name}}</td>
+                            @endif
 
-                        <td>
-                        <input {{($entry->status == "attended" ? 'checked' : "")}} type="checkbox" value="1" name="attended[{{$entry->id}}]" />
-                        <input type="hidden" value="1" name="calender_entry[{{$entry->id}}]" />
-                        </td>
-                        </tr>
+                            <td>
+                            <input {{($entry->status == "attended" ? 'checked' : "")}} type="checkbox" value="1" name="attended[{{$entry->id}}]" />
+                            <input type="hidden" value="1" name="calender_entry[{{$entry->id}}]" />
+                            </td>
+                            </tr>
+                        @endif
                     @endforeach
 
 
