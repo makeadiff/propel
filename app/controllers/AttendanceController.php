@@ -32,7 +32,7 @@ class AttendanceController extends BaseController
             $student_ids[] = $wk->id;
 
         $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
-                $query->where('status','approved')->orWhere('status','attended');})->get();
+                $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$this->year_time)->get();
         
         //return $attended;
         
