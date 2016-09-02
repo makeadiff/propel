@@ -66,13 +66,12 @@ class ReportController extends BaseController
             $end = '/'.Input::get('end_date');
         }
 
-        return Redirect::away('/reports/attendance-report'.$city_id.$event_type.$start.$end);
+        return Redirect::away(URL::to('/reports/attendance-report').$city_id.$event_type.$start.$end);
     }
 
     public function showAttendanceReport($city_id = null,$event_type = null,$start_date = null, $end_date = null) {
 
         $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
-        //return $cities;
 
         if(isset($event_type) && $event_type=="wingman_time"){
 
