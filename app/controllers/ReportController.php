@@ -79,11 +79,9 @@ class ReportController extends BaseController
                 
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.wingman_id')->join('City as D','D.id','=','C.city_id');
 
-                $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
+                $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26);
 
-                //->where('A.start_time','>=','year_time')                    
-
-                if($start_date!='null'){
+                if(isset($start_date) && $start_date!='null'){
                     $start = date('Y-m-d 00:00:00',strtotime($start_date));
                     $query = $query->where('A.start_time','>=',$start);
                 }
@@ -91,14 +89,13 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$this->year_time);
                 }
 
-                if($end_date!='null'){
+                if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
 
                 $data_collection = $query->get();
                 
-
                 $datas = array();
                 $id = 0;
 
@@ -137,7 +134,7 @@ class ReportController extends BaseController
 
                 $query = $tables->select('C.id as wingman_id','C.name as wingman_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('C.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
 
-                if($start_date!='null'){
+                if(isset($start_date) && $start_date!='null'){
                     $start = date('Y-m-d 00:00:00',strtotime($start_date));
                     $query = $query->where('A.start_time','>=',$start);
                 }
@@ -145,7 +142,7 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$this->year_time);
                 }
 
-                if($end_date!='null'){
+                if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
@@ -195,7 +192,7 @@ class ReportController extends BaseController
 
                 $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
 
-                if($start_date!='null'){
+                if(isset($start_date) && $start_date!='null'){
                     $start = date('Y-m-d 00:00:00',strtotime($start_date));
                     $query = $query->where('A.start_time','>=',$start);
                 }
@@ -203,7 +200,7 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$this->year_time);
                 }
 
-                if($end_date!='null'){
+                if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
@@ -248,7 +245,7 @@ class ReportController extends BaseController
 
                 $query = $tables->select('C.id as asv_id','C.name as asv_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('C.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
 
-                if($start_date!='null'){
+                if(isset($start_date) && $start_date!='null'){
                     $start = date('Y-m-d 00:00:00',strtotime($start_date));
                     $query = $query->where('A.start_time','>=',$start);
                 }
@@ -256,7 +253,7 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$this->year_time);
                 }
 
-                if($end_date!='null'){
+                if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
