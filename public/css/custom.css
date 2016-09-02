@@ -134,6 +134,9 @@ div.board
     margin:30px;
 }
 
+td.right{
+    text-align: right;
+}
 
 body.blue-red
 {

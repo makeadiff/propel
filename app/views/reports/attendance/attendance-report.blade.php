@@ -44,7 +44,7 @@
         <br>
 
         <h2 class="sub-title">Attendance Report - {{ucwords(str_replace('_',' ',$event_type))}}</h2>
-        
+        <p class="white">*Note: By default, the report shows data after {{date("F j, Y, g:i a",strtotime($year_time))}}. To change the Date Range, use filters. </p>
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
@@ -139,9 +139,9 @@
 
                             echo '<tr>'.
                             '<td><a href="'.URL::to("reports/attendance-report/".$data['city_id']."/".$event_type."".$start."".$end."").'">'.$data['city_name'].'</td>'.
-                            '<td>'.$approved.'</td>'.
-                            '<td>'.$attended.'</td>'.
-                            '<td>'.$percent_attended.'</td>'.
+                            '<td class="right">'.$approved.'</td>'.
+                            '<td class="right">'.$attended.'</td>'.
+                            '<td class="right">'.$percent_attended.'</td>'.
                             '</tr>';
                         }
                     ?>

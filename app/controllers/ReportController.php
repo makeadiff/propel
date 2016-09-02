@@ -57,7 +57,7 @@ class ReportController extends BaseController
         $city_id = "/null";
         $event_type = '/'.Input::get('event_type');
         if(Input::get('city')!=""){
-            $start = '/'.Input::get('city');
+            $city_id = '/'.Input::get('city');
         }
         if(Input::get('start_date')!=""){
             $start = '/'.Input::get('start_date');
@@ -81,11 +81,23 @@ class ReportController extends BaseController
 
                 $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
 
+                //->where('A.start_time','>=','year_time')                    
+
+                if($start_date!='null'){
+                    $start = date('Y-m-d 00:00:00',strtotime($start_date));
+                    $query = $query->where('A.start_time','>=',$start);
+                }
+                else{
+                    $query = $query->where('A.start_time','>=',$this->year_time);
+                }
+
+                if($end_date!='null'){
+                    $end = date('Y-m-d 00:00:00',strtotime($end_date));
+                    $query = $query->where('A.end_time','<=',$end);
+                }
+
                 $data_collection = $query->get();
-
-                //var_dump($data_collection);
-                //return '01';
-
+                
 
                 $datas = array();
                 $id = 0;
@@ -117,7 +129,7 @@ class ReportController extends BaseController
                     }
                 }
 
-                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type);   
+                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);   
             }
             else{
 
@@ -125,10 +137,20 @@ class ReportController extends BaseController
 
                 $query = $tables->select('C.id as wingman_id','C.name as wingman_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('C.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
 
-                $data_collection = $query->get();
+                if($start_date!='null'){
+                    $start = date('Y-m-d 00:00:00',strtotime($start_date));
+                    $query = $query->where('A.start_time','>=',$start);
+                }
+                else{
+                    $query = $query->where('A.start_time','>=',$this->year_time);
+                }
 
-                //var_dump($data_collection);
-                //return 'Hi';
+                if($end_date!='null'){
+                    $end = date('Y-m-d 00:00:00',strtotime($end_date));
+                    $query = $query->where('A.end_time','<=',$end);
+                }
+
+                $data_collection = $query->get();
 
                 $datas = array();
                 $id = 0;
@@ -156,13 +178,13 @@ class ReportController extends BaseController
                             $datas[$id]['attended'] = $data->event_count;
                         }
 
-                        $id = $data->id;                
+                        $id = $data->wingman_id;                
                     }
                 }
 
 
 
-                return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id);
+                return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
             }   
         }
         else if(isset($event_type) && $event_type=="volunteer_time"){
@@ -172,6 +194,19 @@ class ReportController extends BaseController
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.volunteer_id')->join('City as D','D.id','=','C.city_id');
 
                 $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
+
+                if($start_date!='null'){
+                    $start = date('Y-m-d 00:00:00',strtotime($start_date));
+                    $query = $query->where('A.start_time','>=',$start);
+                }
+                else{
+                    $query = $query->where('A.start_time','>=',$this->year_time);
+                }
+
+                if($end_date!='null'){
+                    $end = date('Y-m-d 00:00:00',strtotime($end_date));
+                    $query = $query->where('A.end_time','<=',$end);
+                }
 
                 $data_collection = $query->get();
 
@@ -205,7 +240,7 @@ class ReportController extends BaseController
                     }
                 }
 
-                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type);     
+                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);     
             }
             else{
 
@@ -213,10 +248,20 @@ class ReportController extends BaseController
 
                 $query = $tables->select('C.id as asv_id','C.name as asv_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('C.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
 
-                $data_collection = $query->get();
+                if($start_date!='null'){
+                    $start = date('Y-m-d 00:00:00',strtotime($start_date));
+                    $query = $query->where('A.start_time','>=',$start);
+                }
+                else{
+                    $query = $query->where('A.start_time','>=',$this->year_time);
+                }
 
-                //var_dump($data_collection);
-                //return 'Hi';
+                if($end_date!='null'){
+                    $end = date('Y-m-d 00:00:00',strtotime($end_date));
+                    $query = $query->where('A.end_time','<=',$end);
+                }
+
+                $data_collection = $query->get();
 
                 $datas = array();
                 $id = 0;
@@ -248,7 +293,7 @@ class ReportController extends BaseController
                     }
                 }
 
-                return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id);
+                return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
             }
               
         }
