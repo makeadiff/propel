@@ -97,9 +97,10 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('reports/calendar-summary','ReportController@calendarSummary');
     Route::get('/reports/calendar-approval','CalendarController@calendarApproval');
     Route::post('/reports/calendar-approval','CalendarController@calendarApproval');
-    Route::get('/reports/calendar-approval/{city_id}/{start_date?}/{end_date?}','CalendarController@cityCalendarApproval');
-    Route::post('/reports/city-calendar','CalendarController@cityApproval');
-
+    Route::post('/reports/calendarApproval/','CalendarController@calendarFilter');
+    Route::post('/reports/city-calendar','CalendarController@calendarFilter');
+    Route::get('/reports/calendar-approval/{city_id?}/{start_date?}/{end_date?}','CalendarController@calendarApproval');
+    
     Route::get('/city-change/city-select','CityChangeController@showCitySelect');
     Route::get('/city-change/city/{city_id}','CityChangeController@showFellowSelect');
     Route::get('/city-change/fellow/{fellow_id}','CityChangeController@changetoFellow');

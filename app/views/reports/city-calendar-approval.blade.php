@@ -44,6 +44,7 @@
         <br>
 
         <h2 class="sub-title">Calendar Approval Summary</h2>
+        <p class="white">*Note: By default, the report shows data after {{date("F j, Y, g:i a",strtotime($year_time))}}. To change the Date Range, use filters. </p>
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
@@ -51,7 +52,8 @@
                     <p class="white">Select Time Period</p>
                 @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
                     <div class="row center">
-                        <div class="center col-md-12">
+                        <div class='col-md-2 col-sm-12'></div>
+                        <div class="center col-md-8">
                             <select name="city" class="form-control" onchange="">
                                 <?php
                                     foreach ($cities as $city){
@@ -67,7 +69,8 @@
                 @endif
                 <br/>
                 <div class="row">
-                    <div class='col-md-6 col-sm-12'>
+                    <div class='col-md-2 col-sm-12'></div>
+                    <div class='col-md-4 col-sm-12'>
                         <div class="form-group">
                             <div class="form-group">
                                 <input type="text" id='start_date' name="start_date" class="form-control" placeholder="Start Date (From)"
@@ -81,7 +84,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class='col-md-6 col-sm-12'>
+                    <div class='col-md-4 col-sm-12'>
                         <div class="form-group">
                             <div class="form-group">
                                 <input type="text" id='end_date' name="end_date" class="form-control"  placeholder="End Date (Till)"
@@ -111,11 +114,11 @@
                 <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
-                        <th width="40%" style="text-decoration:underline">Wingman Name</th>
+                        <th width="20%" style="text-decoration:underline">Wingman Name</th>
                         <th width="20%" style="text-decoration:underline">Student Name</th>
-                        <th width="20%" style="text-decoration:underline">Events Created</th>
-                        <th width="20%" style="text-decoration:underline">Events Approved</th>
-                        <th width="20%" style="text-decoration:underline">% Events Approved</th>
+                        <th width="20%" style="text-decoration:underline">Calendars Created</th>
+                        <th width="20%" style="text-decoration:underline">Calendars Approved</th>
+                        <th width="20%" style="text-decoration:underline">%Approved</th>
                         
                     </tr>
                     </thead>
@@ -136,14 +139,17 @@
 
                             $approved = (int)$data['approved'] + (int)$data['attended'];
                             $created = (int)$data['created'] + $approved;
-                            $percent_approved = round((float)($approved/$created * 100),2);
+                            if($created!=0)
+                                $percent_approved = round((float)($approved/$created * 100),2);
+                            else
+                                $percent_approved = 'N/A';
 
                             echo '<tr>'.
-                            '<td>'.$data['wingman_name'].'</td>'.
-                            '<td>'.$data['student_name'].'</td>'.
-                            '<td>'.$created.'</td>'.
-                            '<td>'.$approved.'</td>'.
-                            '<td>'.$percent_approved.'</td>'.
+                            '<td>'.ucwords(strtolower($data['wingman_name'])).'</td>'.
+                            '<td>'.ucwords(strtolower($data['student_name'])).'</td>'.
+                            '<td class="right">'.$created.'</td>'.
+                            '<td class="right">'.$approved.'</td>'.
+                            '<td class="right">'.$percent_approved.'</td>'.
                             '</tr>';
                         }
                     ?>

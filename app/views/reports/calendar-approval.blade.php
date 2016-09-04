@@ -44,13 +44,15 @@
         <br>
 
         <h2 class="sub-title">Calendar Approval Summary</h2>
+        <p class="white">*Note: By default, the report shows data after {{date("F j, Y, g:i a",strtotime($year_time))}}. To change the Date Range, use filters. </p>
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <form class="search_parameters" method="post" action="{{{URL::to('/reports/calendar-approval')}}}">
+                <form class="search_parameters" method="post" action="{{{URL::to('/reports/calendarApproval')}}}">
                     <p class="white">Select Time Duration</p>
 
                 <div class="row">
+                    <div class="col-md-2 col-sm-12"></div>
                     <div class='col-md-4 col-sm-12'>
                         <div class="form-group">
                             <div class="form-group">
@@ -78,19 +80,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class='col-md-4 col-sm-12'>
+                    <!--<div class='col-md-4 col-sm-12'>
                         <div class="form-group">
                             <div class="form-group">
-                                <input type="text" id='month' name="month" class="form-control"  placeholder="End Date (Till)"
+                                <input type="text" id='month' name="month" class="form-control"  placeholder="Select Month"
                                     <?php
-                                        if(isset($end_date) && $end_date!="null"){
+                                        /*if(isset($end_date) && $end_date!="null"){
                                             echo 'value="'.$end_date.'"';
-                                        }
+                                        }*/
                                     ?>
                                 >
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
 
                 </div>
@@ -153,9 +155,9 @@
 
                             echo '<tr>'.
                             '<td><a href="'.URL::to("/reports/calendar-approval/".$data['city_id']."".$start.$end."").'">'.$data['city_name'].'</td>'.
-                            '<td>'.$created.'</td>'.
-                            '<td>'.$approved.'</td>'.
-                            '<td>'.$percent_approved.'</td>'.
+                            '<td class="right">'.$created.'</td>'.
+                            '<td class="right">'.$approved.'</td>'.
+                            '<td class="right">'.$percent_approved.'</td>'.
                             '</tr>';
                         }
                     ?>
@@ -188,11 +190,12 @@
         });
 
         $('#month').pickadate({
-            format: 'mm-yyyy',
+            format: 'mmmm, yyyy',
+            showMonthsShort: false,
             viewMode: 'months',
-            minViewMode: 'months',
+            selectYears: true,
             selectMonths: true,
-            selectYears: true
+
         });
 
          $('.list_popover').popover({'html' : true});

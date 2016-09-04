@@ -155,18 +155,18 @@
                             //echo $start; echo $end;
                             if($event_type == "wingman_time"){
                                 echo '<tr>'.
-                                '<td>'.$data['wingman_name'].'</td>'.
-                                '<td>'.$approved.'</td>'.
-                                '<td>'.$attended.'</td>'.
-                                '<td>'.$percent_attended.'</td>'.
+                                '<td class="right">'.$data['wingman_name'].'</td>'.
+                                '<td class="right">'.$approved.'</td>'.
+                                '<td class="right">'.$attended.'</td>'.
+                                '<td class="right">'.$percent_attended.'</td>'.
                                 '</tr>';
                             }
                             else if($event_type == "volunteer_time"){
                                 echo '<tr>'.
-                                '<td>'.$data['asv_name'].'</td>'.
-                                '<td>'.$approved.'</td>'.
-                                '<td>'.$attended.'</td>'.
-                                '<td>'.$percent_attended.'</td>'.
+                                '<td class="right">'.$data['asv_name'].'</td>'.
+                                '<td class="right">'.$approved.'</td>'.
+                                '<td class="right">'.$attended.'</td>'.
+                                '<td class="right">'.$percent_attended.'</td>'.
                                 '</tr>';
                             }
                         }

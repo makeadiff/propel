@@ -25,6 +25,11 @@
     }
 }
 
+#month_root table.picker__table, #month_root table.picker__footer{
+    display: none;
+}
+
+
 
 h2.sub-title
 {

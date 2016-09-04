@@ -1,4 +1,4 @@
-    <?php
+        <?php
 
 class CalendarController extends BaseController
 {
@@ -540,12 +540,205 @@ class CalendarController extends BaseController
         return Redirect::to(URL::to('/calendar/approve-calendar/'));
     }
 
+    public function calendarApproval($city_id = null,$start_date = null,$end_date = null){
+
+        $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
+
+        if($city_id == 'null' || !isset($city_id)){
+            
+            $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','A.student_id')->join('User as F','F.id','=','E.wingman_id');
+        
+            $month = Date('m');
+        
+            $fetchQuery = $query->select('A.id','D.name','D.id as cityId','A.status',DB::raw('MONTH(A.start_time) as month'),DB::raw('count(D.id)'),DB::raw('count(A.start_time) as event_count'),'A.student_id')->groupby('A.student_id')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26)->where('F.user_type','=','volunteer')->where('F.status','=',1);        
+
+            if($start_date!= 'null' && isset($start_date)){
+                $start = date('Y-m-d 00:00:00',strtotime($start_date));
+                $fetchQuery = $fetchQuery->where('A.start_time','>=',$start);
+            }
+            else{
+                $fetchQuery = $fetchQuery->where('A.start_time','>=',$this->year_time);
+            }
+            
+            if($end_date!= 'null' && isset($end_date)){
+                $end = date('Y-m-d 00:00:00',strtotime($end_date));   
+                $fetchQuery = $fetchQuery->where('A.end_time','<=',$end);
+            }
+
+            $data = $fetchQuery->orderBy('D.name','ASC')->orderBy('A.student_id','ASC')->orderBy('month','ASC')->get();   
+            
+            //Grouping Calendar's status with the student_ids and the month of the event to check the number of approved calendars
+            //return $data;
+
+            $datas = array();
+            
+            $city_id = 0;
+
+            foreach ($data as $calendar_data) {
+                
+                if($calendar_data->cityId!=$city_id){
+                    $city_id = $calendar_data->cityId;
+                    
+                    $month = 0; //Reset the month to 0 for a different city. 
+                    $student_id = 0; //Reset the student_id to 0 for a different city.
+                    $flag = true; //Reset the flag for a different city.
+
+                    $datas[$city_id]['approved'] = 0;
+                    $datas[$city_id]['created'] = 0;
+                
+                    $datas[$city_id]['city_id'] = $calendar_data->cityId;
+                    $datas[$city_id]['city_name'] = $calendar_data->name;
+                    
+                    $student_id = $calendar_data->student_id;
+                    $month = $calendar_data->month;
+
+                    if($calendar_data->status == "approved" || $calendar_data->status == "attended"){
+                        $datas[$city_id]['approved']++;
+                        $flag = false;
+                    }
+                    elseif($calendar_data->status == "created"){
+                        $datas[$city_id]['created']++;
+                    }
+                }
+                else{
+                    if($calendar_data->student_id==$student_id && $calendar_data->month==$month){
+                        if(($calendar_data->status == "approved" || $calendar_data->status == "attended") && $flag){
+                            if($datas[$city_id]['created']=0)
+                                $datas[$city_id]['approved']++;
+                        }
+                        elseif($calendar_data->status == "created"){
+                            $datas[$city_id]['created']++;
+                            if($datas[$city_id]['approved']!=0)
+                                $datas[$city_id]['approved']--;
+                        }
+                    }
+                    elseif($calendar_data->student_id==$student_id && $calendar_data->month!=$month){
+                        $flag=false; //Reset the flag for a different Month.
+                        $month = $calendar_data->month;
+                        if($calendar_data->status == "approved" || $calendar_data->status == "attended"){
+                            $datas[$city_id]['approved']++;
+                        }
+                        elseif($calendar_data->status == "created"){
+                            $datas[$city_id]['created']++;
+                        }
+                    }
+                    elseif($calendar_data->student_id!=$student_id){
+                        $flag=false; //Reset the flag for a different Student.
+                        $student_id = $calendar_data->student_id;
+                        $month = $calendar_data->month;
+                        if($calendar_data->status == "approved" || $calendar_data->status == "attended"){
+                            $datas[$city_id]['approved']++;
+                        }
+                        elseif($calendar_data->status == "created"){
+                            $datas[$city_id]['created']++;
+                        }
+                    }
+                    $city_id = $calendar_data->cityId;                
+                }
+            }
+
+            return View::make('reports.calendar-approval')->with('datas',$datas)->with('start_date',$start_date)->with('end_date',$end_date)->with('cities',$cities);
+
+        }
+        else {
+            
+            $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','B.id')->join('User as F','F.id','=','E.wingman_id')->join('UserGroup as G','G.user_id','=','E.wingman_id')->join('Group as H','H.id','=','G.group_id');
+
+           
+            $fetchQuery = $query->select('A.id','D.name as city_name','D.id as city_id','F.id as wingman_id','B.id as student_id','F.name as wingman_name','B.name as student_name','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'),DB::raw('MONTH(A.start_time) as month'),'A.start_time')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('B.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','=',$city_id)->where('F.status','=','1')->where('F.user_type','=','volunteer')->whereIn('H.id',['348','365'])->orderBy('B.id','ASC');
+
+
+            if($start_date!= 'null' && isset($start_date)){
+                $start = date('Y-m-d 00:00:00',strtotime($start_date));
+                $fetchQuery = $fetchQuery->where('A.start_time','>=',$start);
+            }
+            else{
+                $fetchQuery = $fetchQuery->where('A.start_time','>=',$this->year_time);
+            }
+            
+            if($end_date!= 'null' && isset($end_date)){
+                $end = date('Y-m-d 00:00:00',strtotime($end_date));   
+                $fetchQuery = $fetchQuery->where('A.end_time','<=',$end);
+            }
+
+            $data = $fetchQuery->orderBy('D.name','ASC')->orderBy('A.student_id','ASC')->orderBy('month','ASC')->get();    
+
+        //return $data;
+
+            $datas = array();
+
+            $student_id = 0;
+
+            foreach ($data as $calendar_data) {
+                
+                if($calendar_data->student_id!=$student_id){
+                    $student_id = $calendar_data->student_id;
+                    
+                    $month = 0; //Reset the month to 0 for a different city. 
+                    $flag = true; //Reset the flag for a different city.
+
+                    $datas[$student_id]['approved'] = 0;
+                    $datas[$student_id]['created'] = 0;
+                
+                    $datas[$student_id]['wingman_id'] = $calendar_data->wingman_id;
+                    $datas[$student_id]['wingman_name'] = $calendar_data->wingman_name;
+                    $datas[$student_id]['student_id'] = $calendar_data->student_id;
+                    $datas[$student_id]['student_name'] = $calendar_data->student_name;
+                    
+                    //$student_id = $calendar_data->student_id;
+                    $month = $calendar_data->month;
+
+                    if($calendar_data->status == "approved" || $calendar_data->status == "attended"){
+                        $datas[$student_id]['approved']++;
+                        $flag = false;
+                    }
+                    elseif($calendar_data->status == "created"){
+                        $datas[$student_id]['created']++;
+                    }
+                }
+                else{
+                    if($calendar_data->month==$month){
+                        if(($calendar_data->status == "approved" || $calendar_data->status == "attended") && $flag){
+                            if($datas[$student_id]['created']=0)
+                                $datas[$student_id]['approved']++;
+                        }
+                        elseif($calendar_data->status == "created"){
+                            $datas[$student_id]['created']++;
+                            if($datas[$student_id]['approved']!=0)
+                                $datas[$student_id]['approved']--;
+                        }
+                    }
+                    else{
+                        $flag=false; //Reset the flag for a different Month.
+                        $month = $calendar_data->month;
+                        if($calendar_data->status == "approved" || $calendar_data->status == "attended"){
+                            $datas[$student_id]['approved']++;
+                        }
+                        elseif($calendar_data->status == "created"){
+                            $datas[$student_id]['created']++;
+                        }
+                    }
+                    $student_id = $calendar_data->student_id;                
+                }
+            }
+
+            $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
+
+            $home = new HomeController;
+            $home->setGroup();  
+
+            //return $datas;      
+            
+            return View::make('reports.city-calendar-approval')->with('datas',$datas)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
+        }
+    }    
+
+    /*
     public function calendarApproval(){
 
         $input = Input::all();
         $start = false;
         $end = false;
-
 
         $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id');
 
@@ -556,11 +749,11 @@ class CalendarController extends BaseController
 
         return $fetchQuery->get();   */     
 
-        $fetchQuery = $query->select('A.id',DB::raw('count(A.student_id)'),'D.name','D.id as cityId','A.status',DB::raw('MONTH(A.start_time) as month'),DB::raw('count(D.id)'),DB::raw('count(A.start_time) as event_count'))->groupby('A.student_id')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26);        
+        //$fetchQuery = $query->select('A.id',DB::raw('count(A.student_id)'),'D.name','D.id as cityId','A.status',DB::raw('MONTH(A.start_time) as month'),DB::raw('count(D.id)'),DB::raw('count(A.start_time) as event_count'))->groupby('A.student_id')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26);        
 
         //return $fetchQuery->orderBy('D.name','ASC')->orderBy('A.student_id','ASC')->get();
 
-        if(count($input)>0){
+        /*if(count($input)>0){
 
             if(Input::get('start_date')!=""){
                 $start = true;
@@ -635,95 +828,17 @@ class CalendarController extends BaseController
             return View::make('reports.calendar-approval')->with('datas',$datas)->with('cities',$cities);   
         }
         
-    }
+    }*/
 
-    public function cityCalendarApproval($city_id,$start_date = null,$end_date = null){
-        $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','B.id')->join('User as F','F.id','=','E.wingman_id')->join('UserGroup as G','G.user_id','=','E.wingman_id')->join('Group as H','H.id','=','G.group_id');
-
-       
-        $fetchQuery = $query->select('A.id','D.name as city_name','D.id as city_id','F.id as wingman_id','B.id as student_id','F.name as wingman_name','B.name as student_name','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('B.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','=',$city_id)->where('F.status','=','1')->where('F.user_type','=','volunteer')->whereIn('H.id',['348','365']);
-
-
-        $start = false;
-        $temp_start = $start_date;
-        $temp_end = $end_date;
-  
-        if(isset($start_date) && $start_date!="null"){
-            $start = true;
-        }
-        if(isset($end_date) && $end_date!="null"){
-            $end = true;
-        }
-
-        $start_date = date('c',strtotime($start_date));
-        $end_date = date('c',strtotime($end_date));
-
-        if($start){
-            $data = $fetchQuery->where('A.start_time','>=',$start_date)->orderBy('D.name','ASC')->get();
-        }
-        else if($end){
-            $data = $fetchQuery->where('A.end_time','<=',$end_date)->orderBy('D.name','ASC')->get();
-        }
-        else if($start && $end){
-            $data = $fetchQuery->where('A.start_time','>=',$start_date)->where('A.end_time','<=',$end_date)->orderBy('D.name','ASC')->get();   
-        }
-        else{
-            $data = $fetchQuery->orderBy('D.name','ASC')->get();    
-        }   
-        
-        $datas = array();
-
-        $w_id = 0;
-
-        foreach ($data as $calendar_data) {
-            
-            if($calendar_data->id!=$city_id){
-                $w_id = $calendar_data->id;
-
-                $datas[$w_id]['wingman_id'] = $calendar_data->wingman_id;
-                $datas[$w_id]['wingman_name'] = $calendar_data->wingman_name;
-                $datas[$w_id]['student_id'] = $calendar_data->student_id;
-                $datas[$w_id]['student_name'] = $calendar_data->student_name;
-                if($calendar_data->status == 'approved'){
-                    $datas[$w_id]['approved'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'created'){
-                    $datas[$w_id]['created'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'attended'){
-                    $datas[$w_id]['attended'] = $calendar_data->event_count;
-                }
-
-            }
-            else{
-                if($calendar_data->status == 'approved'){
-                    $datas[$w_id]['approved'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'created'){
-                    $datas[$w_id]['created'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'attended'){
-                    $datas[$w_id]['attended'] = $calendar_data->event_count;
-                }
-
-                $w_id = $calendar_data->id;                
-            }
-        }
-
-        $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
-
-        $home = new HomeController;
-        $home->setGroup();        
-        
-        return View::make('reports.city-calendar-approval')->with('datas',$datas)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$temp_start)->with('end_date',$temp_end);
-    }    
-
-    public function cityApproval(){
+    public function calendarFilter(){
 
         $start = "/null";
         $end = "/null";
-
-        $city_id = Input::get('city');
+        $city_id = "null";
+        
+        if(Input::get('city')!=""){
+            $city_id = Input::get('city');
+        }
         if(Input::get('start_date')!=""){
             $start = '/'.Input::get('start_date');
         }
