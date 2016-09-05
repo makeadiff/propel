@@ -70,7 +70,7 @@ class HomeController extends BaseController
         elseif($wingman == true)
             View::share('user_group','Propel Wingman');
         elseif($after_care_wingman == true)
-            View::share('user_group','After Care Wingman');
+            View::share('user_group','Aftercare Wingman');
         elseif($asv == true)
             View::share('user_group','Propel ASV');
 
@@ -97,15 +97,5 @@ class HomeController extends BaseController
         return $start_year;
     }
 
-    public function __construct(){
-        $this_month = intval(date('m'));
-        $months = array();
-        $start_date = '01';
-        $start_month = '05'; // May
-        $start_year = date('Y');
-        if($this_month < $start_month) $start_year = date('Y')-1;
-        $time = strtotime($start_year.'-'.$start_month.'-'.$start_date);
-        return View::share('year_time',$time);
-    }
-
+    
 }

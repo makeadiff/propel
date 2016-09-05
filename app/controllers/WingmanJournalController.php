@@ -18,6 +18,8 @@ class WingmanJournalController extends BaseController
                 $user_group = 'Propel Wingman';
             elseif($group->name == 'Propel Strat')
                 $user_group = 'Propel Strat';
+            elseif($group->name == 'Aftercare Wingman')
+                $user_group = 'Aftercare Wingman';
             elseif($group->name == 'Program Director, Propel')
                 $user_group = 'Program Director, Propel';
         }
