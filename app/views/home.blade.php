@@ -21,7 +21,7 @@
                 <a href='wingman-journal/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/journal.png')}}"><br>Journals of<br>Wingmen</a>
             </div>
 
-        @elseif($user_group == "Propel Wingman" || $user_group == "After Care Wingman")
+        @elseif($user_group == "Propel Wingman" || $user_group == "Aftercare Wingman")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='wingman-journal/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/journal.png')}}"><br>Wingman<br>Journal</a>
             </div>
@@ -102,7 +102,7 @@
 
 
 
-        @elseif($user_group == "Propel Wingman" ||  $user_group == "After Care Wingman")
+        @elseif($user_group == "Propel Wingman" ||  $user_group == "Aftercare Wingman")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='feedback/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Student<br>Feedback</a>
             </div>
