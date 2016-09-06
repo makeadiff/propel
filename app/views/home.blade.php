@@ -30,7 +30,7 @@
 
         @if($user_group == "Propel ASV")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='calendar/asv/{{$_SESSION["user_id"]}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/asv.png')}}"><br>Calendars of<br>ASVs</a>
+                <a href='calendar/asv/{{$_SESSION["user_id"]}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/asv.png')}}"><br>ASV Calendar</a>
             </div>
         @endif
 
