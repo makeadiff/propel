@@ -834,7 +834,7 @@ class CalendarController extends BaseController
 
         $start = "/null";
         $end = "/null";
-        $city_id = "null";
+        $city_id = "/null";
         
         if(Input::get('city')!=""){
             $city_id = '/'.Input::get('city');
