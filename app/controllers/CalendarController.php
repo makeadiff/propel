@@ -846,7 +846,7 @@ class CalendarController extends BaseController
             $end = '/'.Input::get('end_date');
         }
 
-        return Redirect::away('/reports/calendar-approval/'.$city_id.$start.$end);
+        return Redirect::away(URL::to('/reports/calendar-approval/').$city_id.$start.$end);
     }
 
 }
