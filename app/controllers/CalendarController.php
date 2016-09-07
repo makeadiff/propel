@@ -837,7 +837,7 @@ class CalendarController extends BaseController
         $city_id = "null";
         
         if(Input::get('city')!=""){
-            $city_id = Input::get('city');
+            $city_id = '/'.Input::get('city');
         }
         if(Input::get('start_date')!=""){
             $start = '/'.Input::get('start_date');
@@ -846,7 +846,7 @@ class CalendarController extends BaseController
             $end = '/'.Input::get('end_date');
         }
 
-        return Redirect::away(URL::to('/reports/calendar-approval/').$city_id.$start.$end);
+        return Redirect::away(URL::to('/reports/calendar-approval').$city_id.$start.$end);
     }
 
 }
