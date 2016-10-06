@@ -93,10 +93,10 @@
                     </div>
                 </div>
                 <br/>
-                
-                    <input type="submit" value="Filer Values`" />
+
+                    <input type="submit" value="Filter Values" />
                 </form>
-                
+
             </div>
         </div>
 
@@ -117,14 +117,14 @@
 
                         <th width="20%" style="text-decoration:underline">Sessions Attended</th>
                         <th width="20%" style="text-decoration:underline">%Attendance</th>
-                        
+
                     </tr>
                     </thead>
                     <tbody>
                     <?php
                         $i=1;
                         foreach ($datas as $data) {
-                            
+
                             if(!isset($data['attended'])){
                                 $data['attended'] = 0;
                             }
@@ -137,14 +137,14 @@
                             $percent_attended = round((float)($attended/$approved * 100),2);
 
                             if(isset($start_date) && $start_date!=''){
-                                $start = '/'.$start_date; 
+                                $start = '/'.$start_date;
                             }
                             else{
                                 $start = "/null";
                             }
 
                             if(isset($end_date) && $end_date!=''){
-                                $end = '/'.$end_date; 
+                                $end = '/'.$end_date;
                             }
                             else{
                                 $end = "/null";
@@ -172,7 +172,7 @@
                         }
                     ?>
                     </tbody>
-                    
+
                 </table>
                 @else
                 <div class="alert alert-warning" role="alert">No data for the selected City and Center</div>
@@ -189,7 +189,7 @@
 
 
 <script type="text/javascript">
-    
+
     $(document).ready(function(){
         $('#start_date').pickadate({
             format: 'dd-mm-yyyy'
@@ -200,7 +200,7 @@
         });
 
          $('.list_popover').popover({'html' : true});
-    }); 
+    });
 
 </script>
 
