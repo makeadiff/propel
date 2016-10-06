@@ -76,7 +76,7 @@ class ReportController extends BaseController
         if(isset($event_type) && $event_type=="wingman_time"){
 
             if($city_id =='null'){
-
+                
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.wingman_id')->join('City as D','D.id','=','C.city_id');
 
                 $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26);
@@ -95,12 +95,12 @@ class ReportController extends BaseController
                 }
 
                 $data_collection = $query->get();
-
+                
                 $datas = array();
                 $id = 0;
 
                 foreach ($data_collection as $data) {
-
+                    
                     if($data->id!=$city_id){
                         $id = $data->city_id;
 
@@ -122,11 +122,11 @@ class ReportController extends BaseController
                             $datas[$id]['attended'] = $data->event_count;
                         }
 
-                        $id = $data->city_id;
+                        $id = $data->city_id;                
                     }
                 }
 
-                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);
+                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);   
             }
             else{
 
@@ -153,7 +153,7 @@ class ReportController extends BaseController
                 $id = 0;
 
                 foreach ($data_collection as $data) {
-
+                    
                     if($data->wingman_id!=$id){
                         $id = $data->wingman_id;
 
@@ -175,19 +175,19 @@ class ReportController extends BaseController
                             $datas[$id]['attended'] = $data->event_count;
                         }
 
-                        $id = $data->wingman_id;
+                        $id = $data->wingman_id;                
                     }
                 }
 
 
 
                 return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
-            }
+            }   
         }
         else if(isset($event_type) && $event_type=="volunteer_time"){
 
             if($city_id =='null'){
-
+                
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.volunteer_id')->join('City as D','D.id','=','C.city_id');
 
                 $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->orderby('D.name','ASC');
@@ -211,7 +211,7 @@ class ReportController extends BaseController
                 $id = 0;
 
                 foreach ($data_collection as $data) {
-
+                    
                     if($data->id!=$city_id){
                         $id = $data->city_id;
 
@@ -233,11 +233,11 @@ class ReportController extends BaseController
                             $datas[$id]['attended'] = $data->event_count;
                         }
 
-                        $id = $data->city_id;
+                        $id = $data->city_id;                
                     }
                 }
 
-                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);
+                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);     
             }
             else{
 
@@ -264,7 +264,7 @@ class ReportController extends BaseController
                 $id = 0;
 
                 foreach ($data_collection as $data) {
-
+                    
                     if($data->asv_id!=$id){
                         $id = $data->asv_id;
 
@@ -286,13 +286,13 @@ class ReportController extends BaseController
                             $datas[$id]['attended'] = $data->event_count;
                         }
 
-                        $id = $data->asv_id;
+                        $id = $data->asv_id;                
                     }
                 }
 
                 return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
             }
-
+              
         }
         //Academic Support Volunteer Session
 
@@ -365,7 +365,7 @@ class ReportController extends BaseController
         $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
 
         $tables = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id');
-
+        
         $total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
         $cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->distinct()->orderby('E.name','ASC')->get();
@@ -385,62 +385,62 @@ class ReportController extends BaseController
 
     	$start_date = date('c',strtotime(Input::get('start_date')));
     	$end_date = date('c',strtotime(Input::get('end_date')));
-
+    	
     	$cities = City::where('id','<=','25')->orderby('name','ASC')->get();
     	//return Input::get('start_date');
-
+    	
     	$tables = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id');
 
         if($city!='0' && $reason!='0' && !empty($start_date_value) && !empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('B.reason','=',$reason)->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
     	}//1111
     	else if($city!='0' && $reason!='0' && !empty($start_date_value) && empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('B.reason','=',$reason)->where('A.start_time','>=',$start_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','>=',$start_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
     	}//1110
     	else if($city!='0' && $reason!='0' && empty($start_date_value) && !empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('B.reason','=',$reason)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
-
+    	
     	}//1101
     	else if($city!='0' && $reason!='0' && empty($start_date_value) && empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('B.reason','=',$reason)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
-
+    	
     	}//1100
     	else if($city!='0' && $reason=='0' && !empty($start_date_value) && !empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
     	}//1011
     	else if($city!='0' && $reason=='0' && !empty($start_date_value) && empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','>=',$start_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
     	}//1010
     	else if($city!='0' && $reason=='0' && empty($start_date_value) && !empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
     	}//1001
     	else if($city!='0' && $reason=='0' && empty($start_date_value) && empty($end_date_value)){
-
+    		
             $cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->distinct()->orderby('E.name','ASC')->get();
 
     		$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('E.id','=',$city)->distinct()->where('A.status','<>','created')->get();
@@ -451,7 +451,7 @@ class ReportController extends BaseController
 
     	}//1000
     	else if($city=='0' && $reason!='0' && !empty($start_date_value) && !empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('B.reason','=',$reason)->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
@@ -459,28 +459,28 @@ class ReportController extends BaseController
 
     	}//0111
     	else if($city=='0' && $reason!='0' && !empty($start_date_value) && empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('B.reason','=',$reason)->where('A.start_time','>=',$start_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('A.start_time','>=',$start_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
     	}//0110
     	else if($city=='0' && $reason!='0' && empty($start_date_value) && !empty($end_date_value)){
-
+        	
         	$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('B.reason','=',$reason)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
     	}//0101
     	else if($city=='0' && $reason!=0 && empty($start_date_value) && empty($end_date_value)){
-
+    		
     		$cancelled_classes = $tables->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('B.reason','=',$reason)->distinct()->orderby('E.name','ASC')->get();
 
     		$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
 
     	}//0100
     	else if($city=='0' && $reason=='0' && !empty($start_date_value) && !empty($end_date_value)){
-
+        	
         	$cancelled_classes = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('A.start_time','>=',$start_date)->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
@@ -496,7 +496,7 @@ class ReportController extends BaseController
         	$cancelled_classes = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->get();
 
         	$total_classes = DB::table('propel_calendarEvents as A')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->where('A.start_time','<=',$end_date)->distinct()->orderby('E.name','ASC')->where('A.status','<>','created')->get();
-
+        	
     	}//0001
     	else{
     		$cancelled_classes = DB::table('propel_calendarEvents as A')->join('propel_cancelledCalendarEvents as B','B.calendar_event_id','=','A.id')->join('Student as C','C.id','=','A.student_id')->join('propel_student_wingman as F','F.student_id','=','C.id')->join('User as G','G.id','=','F.wingman_id')->join('Center as D','D.id','=','C.center_id')->join('City as E','E.id','=','D.city_id')->select('A.id as event_id','A.type as event_type','B.comment as comment','B.reason as reason','B.updated_at as cancelled_time','C.name as student_name','C.id as student_id','D.name as center_name','D.id as center_id','E.name as city_name','E.id as city_id','A.start_time as start_time','A.end_time as end_time','G.name as wingman_name','A.type as event_type')->distinct()->orderby('E.name','ASC')->get();
@@ -519,7 +519,7 @@ class ReportController extends BaseController
         $city_data = Student::join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('E.name as city_name','E.id as city_id',DB::raw('count(B.id) as Count' ))->groupby('E.id')->where('E.id','<=','25')->orderby('E.name','ASC')->get();
 
         $city_data;
-
+        
         //echo '<b>Total Kids in Propel: '.count($child_data).'</b><br/><br/>';
 
         /*foreach ($child_data as $child){
@@ -533,7 +533,7 @@ class ReportController extends BaseController
     public function showCityReport($city_id){
 
         $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
-        $centers = Center::where('city_id','=',$city_id)->where('status','=',1)->orderby('name','ASC')->get();
+        $centers = Center::where('city_id','=',$city_id)->where('status','=',1)->orderby('name','ASC')->get();        
 
         $tables = DB::table('Student')->join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id');
 
@@ -541,7 +541,7 @@ class ReportController extends BaseController
 
         $child_data = (array) $child_data;
         $total = array();
-
+        
         $total['wingman_session_count'] = 0;
         $total['asv_session_count'] = 0;
         $total['journal_count'] = 0;
@@ -553,7 +553,7 @@ class ReportController extends BaseController
 
             $calendarEvent = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->where('A.student_id','=',$child->id)->where('A.status','=','attended')->get();
             $child->wingman_module_attended = count($calendarEvent);
-
+            
         	$calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('type','=','volunteer_time')->get();
         	$child->asv_session_count = count($calendarEvent);
             $total['asv_session_count'] += $child->asv_session_count;
@@ -562,8 +562,8 @@ class ReportController extends BaseController
         	$child->journal_count = count($journalEntry);
             $total['journal_count'] += $child->journal_count;
           }
-
-
+  		     
+    
         return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id','0')->with('total',$total);
 
     }
@@ -571,7 +571,7 @@ class ReportController extends BaseController
     public function showCenterReport($city_id,$center_id){
 
         $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
-        $centers = Center::where('city_id','=',$city_id)->where('status','=',1)->orderby('name','ASC')->get();
+        $centers = Center::where('city_id','=',$city_id)->where('status','=',1)->orderby('name','ASC')->get();        
 
         $tables = DB::table('Student')->join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id');
 
@@ -581,7 +581,7 @@ class ReportController extends BaseController
 
         $child_data = (array) $child_data;
         $total = array();
-
+        
         $total['wingman_session_count'] = 0;
         $total['asv_session_count'] = 0;
         $total['journal_count'] = 0;
@@ -593,7 +593,7 @@ class ReportController extends BaseController
 
             $calendarEvent = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->where('A.student_id','=',$child->id)->where('A.status','=','attended')->get();
             $child->wingman_module_attended = count($calendarEvent);
-
+            
             $calendarEvent = CalendarEvent::where('student_id','=',$child->id)->where('status','<>','cancelled')->where('type','=','volunteer_time')->get();
             $child->asv_session_count = count($calendarEvent);
             $total['asv_session_count'] += $child->asv_session_count;
@@ -602,8 +602,8 @@ class ReportController extends BaseController
             $child->journal_count = count($journalEntry);
             $total['journal_count'] += $child->journal_count;
           }
-
-
+             
+    
         return View::make('reports.child-report.city-report')->with('child_data',$child_data)->with('cities',$cities)->with('city_id',$city_id)->with('centers',$centers)->with('center_id','0')->with('total',$total);
 
     }
@@ -618,10 +618,6 @@ class ReportController extends BaseController
         else{
             return Redirect::to(URL::to('/reports/child-report/').'/'.$city_id.'/'.$center_id);
         }
-    }
-
-    public function ASVcalendarSummary(){
-      
     }
 
     public function calendarSummary(){

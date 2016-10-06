@@ -26,7 +26,7 @@ class SMSController extends BaseController
 
 
         // Comment the line below to disable Messageing
-        //$data = $this->load($url);
+        $data = $this->load($url);
 
 
         return true;
