@@ -101,7 +101,7 @@
                     </div>
                 </div>
                 <br/><br/>
-                    <input type="submit" value="Filer Values`" />
+                    <input type="submit" value="Filter Values" />
                 </form>
 
             </div>

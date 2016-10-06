@@ -99,10 +99,10 @@
                     </div>
                 </div>
                 <br/>
-                
-                    <input type="submit" value="Filer Values" />
+
+                    <input type="submit" value="Filter Values" />
                 </form>
-                
+
             </div>
         </div>
 
@@ -119,14 +119,14 @@
                         <th width="20%" style="text-decoration:underline">Calendars Created</th>
                         <th width="20%" style="text-decoration:underline">Calendars Approved</th>
                         <th width="20%" style="text-decoration:underline">%Approved</th>
-                        
+
                     </tr>
                     </thead>
                     <tbody>
                     <?php
                         $i=1;
                         foreach ($datas as $data) {
-                            
+
                             if(!isset($data['attended'])){
                                 $data['attended'] = 0;
                             }
@@ -154,7 +154,7 @@
                         }
                     ?>
                     </tbody>
-                    
+
                 </table>
                 @else
                 <div class="alert alert-warning" role="alert">No data for the selected City and Center</div>
@@ -171,7 +171,7 @@
 
 
 <script type="text/javascript">
-    
+
     $(document).ready(function(){
         $('#start_date').pickadate({
             format: 'dd-mm-yyyy'
@@ -182,7 +182,7 @@
         });
 
          $('.list_popover').popover({'html' : true});
-    }); 
+    });
 
 </script>
 
