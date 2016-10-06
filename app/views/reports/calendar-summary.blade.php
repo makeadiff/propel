@@ -14,9 +14,9 @@
                      <a href="{{{URL::to('reports/calendar-approval')}}}" class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar Approval <br/> Summary</a>
                 </div>
 
-                <div class="col-md-4 col-sm-12 text-center">
+                <!--<div class="col-md-4 col-sm-12 text-center">
                      <a href="{{{URL::to('reports/asv-calendar-summary')}}}" class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br> ASV Calendar <br/>Summary</a>
-                </div>
+                </div>-->
                 <div class="col-md-2 col-sm-12 text-center"></div>
             <br>
 
