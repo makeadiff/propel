@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-    //$_SESSION['user_id']=57184;//62841;//78268;//57184;//36327;//11752; //66804; //48032 //47642 //22730 //50671 //48286 //85896//57184
+    //$_SESSION['user_id']=105354;//62841;//78268;//57184;//36327;//11752; //66804; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))
@@ -38,7 +38,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/feedback/select-student','WingmanJournalController@selectStudentsCity');
     Route::get('/feedback/{wingman_id}','WingmanJournalController@showStudents');
     Route::get('/feedback/{wingman_id}/{student_id}','WingmanJournalController@showFeedback');
-
+    
     Route::get('/calendar/select-wingman','CalendarController@selectWingman');
     Route::get('/calendar/approve-calendar','CalendarController@approveView');
     Route::get('/calendar/select-center','CalendarController@selectCenter');
@@ -53,12 +53,12 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/calendar/rescheduleEvent','CalendarController@rescheduleEvent');
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
     Route::post('/calendar/asv/cancelEvent','CalendarController@cancelEvent');
-
+    
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
 
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
-
+    
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
     Route::get('/attendance/wingman/{wingman_id}','AttendanceController@showAttendanceToFellow');
     Route::get('/attendance/{user_id}','AttendanceController@showAttendanceToWingman');
@@ -71,7 +71,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/settings/wingmen','SettingController@saveWingmen');
 
     Route::get('/settings/select-wingman','SettingController@selectWingman');
-as
+
     Route::get('/profile/{student_id}','ProfileController@childProfileIndex');
     Route::get('/modules/{student_id}','ProfileController@childWingmanModules');
 
@@ -85,23 +85,22 @@ as
     Route::get('/reports/attendance','ReportController@attendanceHome');
     Route::post('/reports/attendanceReport','ReportController@attendanceReport');
     Route::get('/reports/attendance-report/{city_id?}/{type?}/{start_date?}/{end_date?}','ReportController@showAttendanceReport');
-
+    
     Route::get('/reports/class-cancelled-report','ReportController@showCancellationReport');
     Route::post('/reports/class-cancelled-report','ReportController@CancellationFilter');
-
+    
     Route::get('/reports/child-report','ReportController@showChildReport');
     Route::get('/reports/child-report/{city_id}','ReportController@showCityReport');
     Route::post('/reports/child-report/city-report','ReportController@showCityReportForm');
     Route::get('/reports/child-report/{city_id}/{center_id}','ReportController@showCenterReport');
 
     Route::get('reports/calendar-summary','ReportController@calendarSummary');
-    Route::get('reports/asv-calendar-summary','ReportController@ASVcalendarSummary');
     Route::get('/reports/calendar-approval','CalendarController@calendarApproval');
     Route::post('/reports/calendar-approval','CalendarController@calendarApproval');
     Route::post('/reports/calendarApproval/','CalendarController@calendarFilter');
     Route::post('/reports/city-calendar','CalendarController@calendarFilter');
     Route::get('/reports/calendar-approval/{city_id?}/{start_date?}/{end_date?}','CalendarController@calendarApproval');
-
+    
     Route::get('/city-change/city-select','CityChangeController@showCitySelect');
     Route::get('/city-change/city/{city_id}','CityChangeController@showFellowSelect');
     Route::get('/city-change/fellow/{fellow_id}','CityChangeController@changetoFellow');
