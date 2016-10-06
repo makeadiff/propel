@@ -49,7 +49,7 @@
             <div class="col-md-6 col-md-offset-3">
                 <form class="search_parameters" method="post" action="{{{URL::to('/reports/child-report/city-report')}}}">
                     <p class="white">Select City &amp; Center</p>
-                        
+
                 <div class="col-md-6">
                     <select name="city" class="form-control">
                         <?php
@@ -103,7 +103,7 @@
                 <br/><br/>
                     <input type="submit" value="Filer Values`" />
                 </form>
-                
+
             </div>
         </div>
 
@@ -122,7 +122,7 @@
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Wingman Sessions Scheduled</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">ASV Sessions Scheduled</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Wingman Modules Covered</th>
-                        
+
                     </tr>
                     </thead>
                     <tbody>
@@ -130,7 +130,7 @@
                         $i=1;
                         foreach ($child_data as $child) {
                             echo '<tr>'.
-                            '<td><a href="../../profile/'.$child->id.'">'.$child->name.'</td>'.
+                            '<td><a href="'.URL::to('profile/'.$child->id).'">'.$child->name.'</td>'.
                             '<td>'.$child->wingman_name.'</td>'.
                             '<td>'.$child->center_name.'</td>'.
                             '<td>'.$child->journal_count.'</td>'.
@@ -173,7 +173,7 @@
 
 
 <script type="text/javascript">
-    
+
     $(document).ready(function(){
         $('#start_date').pickadate({
             format: 'dd-mm-yyyy'
@@ -184,7 +184,7 @@
         });
 
          $('.list_popover').popover({'html' : true});
-    }); 
+    });
 
 </script>
 
