@@ -8,7 +8,7 @@ class BaseController extends Controller {
 	 * @return void
 	 */
 
-	protected $year_time; 
+	protected $year_time;
 
 	protected function setupLayout()
 	{
