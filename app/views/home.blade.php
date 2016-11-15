@@ -45,7 +45,7 @@
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='calendar/select-center' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/centers.png')}}"><br>Calendars of<br>Centers</a>
             </div>
-            
+
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='calendar/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar of<br>Students</a>
@@ -115,7 +115,7 @@
 
                 <a href='settings/{{$user->id}}/students' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/students.png')}}"><br>Assign<br>Students</a>
             </div>
-            
+
         @endif
 
 
@@ -125,12 +125,10 @@
             </div>
         @endif-->
 
-        @if($user_group == "Propel Strat" || $user_group == "Program Director, Propel")
-            <div class="col-md-4 col-sm-6 text-center">
-                <a href='reports' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Reports</a>
-            </div>
-        @endif
-
+        <div class="col-md-4 col-sm-6 text-center">
+            <a href='reports' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Reports</a>
+        </div>
+    
     </div>
 </div>
 @stop
