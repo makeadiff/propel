@@ -91,8 +91,8 @@ class HomeController extends BaseController
     public function get_year() { /* Function get_year(): Source: madapp/system/helper/misc_helper.php Line 123 */
         $this_month = intval(date('m'));
         $months = array();
-        $start_month = 5; // May
-        $start_year = date('Y');
+        $start_month = 6; // May - Temporarily changed to June
+         $start_year = date('Y');
         if($this_month < $start_month) $start_year = date('Y')-1;
         return $start_year;
     }
