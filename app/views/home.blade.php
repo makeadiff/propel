@@ -36,7 +36,7 @@
 
         @if($user_group == "Propel Fellow")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='calendar/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendars of<br>Students</a>
+                <a href='calendar/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendars of<br>Youth</a>
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
@@ -48,7 +48,7 @@
 
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='calendar/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar of<br>Students</a>
+                <a href='calendar/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar of<br>Youth</a>
             </div>
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='calendar/select-asv' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/asv.png')}}"><br>Calendars of<br>ASVs</a>
@@ -83,14 +83,14 @@
         @if($user_group == "Propel Fellow")
 
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='feedback/select-student' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Student<br>Feedback</a>
+                <a href='feedback/select-student' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Youth<br>Feedback</a>
             </div>
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='feedback/module-feedback' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/feedback.png')}}"><br>Module<br>Feedback</a>
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='http://makeadiff.in/madapp/index.php/kids/manageaddkids' target='_blank' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/kids.png')}}"><br>Students</a>
+                <a href='http://makeadiff.in/madapp/index.php/kids/manageaddkids' target='_blank' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/kids.png')}}"><br>Youth</a>
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
@@ -98,7 +98,7 @@
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='settings/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/students.png')}}"><br>Assign<br>Students<br>to Wingmen</a>
+                <a href='settings/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/students.png')}}"><br>Assign<br>Youth<br>to Wingmen</a>
             </div>
 
             <div class="col-md-4 col-sm-6 text-center">
@@ -109,11 +109,11 @@
 
         @elseif($user_group == "Propel Wingman" ||  $user_group == "Aftercare Wingman")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='feedback/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Student<br>Feedback</a>
+                <a href='feedback/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Youth<br>Feedback</a>
             </div>
             <div class="col-md-4 col-sm-6 text-center">
 
-                <a href='settings/{{$user->id}}/students' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/students.png')}}"><br>Assign<br>Students</a>
+                <a href='settings/{{$user->id}}/students' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/students.png')}}"><br>Assign<br>Youth</a>
             </div>
 
         @endif
@@ -128,7 +128,7 @@
         <div class="col-md-4 col-sm-6 text-center">
             <a href='reports' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/reports.png')}}"><br>Reports</a>
         </div>
-    
+
     </div>
 </div>
 @stop

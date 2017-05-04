@@ -24,6 +24,7 @@ Route::filter('propel_check',function(){
 });
 
 Route::get('/error','CommonController@showError');
+Route::get('/reminders','CalendarController@eventreminder');
 
 Route::group(array('before'=>'login_check|propel_check'),function()
 {
@@ -54,6 +55,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/calendar/cancelEvent','CalendarController@cancelEvent');
     Route::post('/calendar/asv/cancelEvent','CalendarController@cancelEvent');
 
+
     Route::get('/calendar/approve/{student_id}/{month}/{year}','CalendarController@approve');
     Route::post('/calendar/bulk-approve','CalendarController@approveSelected');
 
@@ -79,7 +81,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::post('/settings/{wingman_id}/students','SettingController@saveStudents');
 
     Route::get('/reports','ReportController@showReports');
-    //Route::post('/reports/{start?}/{end?}','ReportController@showReports');
+    Route::get('/reports-filter/{start?}/{end?}','ReportController@showReports');
     Route::get('/reports/class-status/select-city','ReportController@showCities');
     Route::get('/reports/class-status/city/{city_id}','ReportController@showClassStatus');
     Route::get('/reports/wingman-journal-report','ReportController@showWingmanJournalReport');

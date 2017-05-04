@@ -45,7 +45,7 @@
             <button type="button" id="assignStudents" class="btn btn-primary">Edit Assignment</button>
             @else
             <p style="text-align:center; color:#FFF">No students assigned to {{$wingman->name}}.</p>
-            <button type="button" class="btn btn-primary" id="assignStudents">Assign Students</button>
+            <button type="button" class="btn btn-primary" id="assignStudents">Assign Youth</button>
             @endif
             </div>
         <br>
@@ -84,7 +84,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
-                
+
             </div>
             </form>
         </div><!-- /.modal-content -->

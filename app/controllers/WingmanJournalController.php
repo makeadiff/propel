@@ -43,7 +43,7 @@ class WingmanJournalController extends BaseController
         $fellow = Fellow::find($user_id);
         $city = $fellow->city()->first();
         //return $city->id;
-        $students = DB::table('propel_student_wingman as A')->join('Student as B','A.student_id','=','B.id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->select('A.student_id','B.name','A.wingman_id')->distinct()->where('D.id','=',$city->id)->get();
+        $students = DB::table('propel_student_wingman as A')->join('Student as B','A.student_id','=','B.id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->select('A.student_id','B.name','A.wingman_id')->distinct()->groupby('A.student_id')->where('D.id','=',$city->id)->get();
         //return $students;
         return View::make('feedback/select-students-city')->with('students',$students);
     }
@@ -57,7 +57,7 @@ class WingmanJournalController extends BaseController
     public function showFeedback($wingman_id,$student_id)
     {
         $student = Student::where('id','=',$student_id)->first();
-        $entries = DB::table('propel_wingmanJournals as A')->join('User as B','B.id','=','A.wingman_id')->select('A.id as id','A.on_date as on_date','B.name as wingman_name','A.title as title')->distinct()->where('A.student_id','=',$student_id)->where('A.type','=','child_feedback')->get();
+        $entries = DB::table('propel_wingmanJournals as A')->join('User as B','B.id','=','A.wingman_id')->select('A.id as id','A.on_date as on_date','B.name as wingman_name','A.title as title')->distinct()->where('A.student_id','=',$student_id)->where('A.type','=','child_feedback')->orderby('A.on_date','DESC')->get();
         return View::make('feedback/child_feedback')->with('entries',$entries)->with('student',$student);
     }
 

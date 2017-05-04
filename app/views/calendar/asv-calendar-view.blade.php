@@ -33,7 +33,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-            
+
             $('#calendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
@@ -80,7 +80,7 @@
                 },
                 editable: false,
                 eventLimit: false, // allow "more" link when too many events
-                
+
                 events: <?php echo $calendarEvents ?>,
 
                 eventClick: function(calEvent, jsEvent, view) {
@@ -99,9 +99,9 @@
                         $("#dialogModal").modal('show');
                     }
                     else if(data.getAttribute('status')!= 'approved'){
-                        $("#dialogModal").modal('show');   
+                        $("#dialogModal").modal('show');
                     }
-                    
+
                     event_id = id;
                     start_time = data.getAttribute('start');
                     end_time = data.getAttribute('end');
@@ -114,12 +114,12 @@
                     $(element).tooltip();
                 }
             });
-        
+
             $('#calendar.cancelled').click(function(e) {
                 e.preventDefault() ;
             }) ;
         });
-        
+
         function timeFormat(time){
             var time_value = new Date(time);
             var hours = time_value.getUTCHours();
@@ -140,9 +140,9 @@
             h = h<10?"0"+h:h;
             /*var pattern = new RegExp("0?"+hours+":"+minutes+":"+sec);
             var replacement = h+":"+minutes;
-            replacement += " "+dd;*/    
+            replacement += " "+dd;*/
             var time_new = h+':'+minutes+' '+dd;
-            return(time_new);           
+            return(time_new);
         }
 
     </script>
@@ -159,7 +159,7 @@
 
         <h2 class="sub-title">Calendar</h2>
         <br>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group" style="max-width:900px; margin:auto">
@@ -192,7 +192,7 @@
 
 
                     <div class="form-group">
-                        <label for="student" class="control-label">Students : </label>
+                        <label for="student" class="control-label">Youth : </label>
                         <select multiple class="form-control" name="student_id[]">
                             @foreach($students as $student)
                                 <option value="{{$student->id}}">{{$student->name}}</option>
@@ -275,7 +275,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
-                
+
             </div>
             </form>
         </div><!-- /.modal-content -->
