@@ -111,12 +111,15 @@
                         @if($event_type == "wingman_time")
                         <th width="40%" style="text-decoration:underline">Wingman Name</th>
                         @elseif($event_type == "volunteer_time")
-                        <th width="40%" style="text-decoration:underline">AS Name</th>
+                        <th width="40%" style="text-decoration:underline">ASV Name</th>
                         @endif
-                        <th width="20%" style="text-decoration:underline">Sessions Approved</th>
+                        @if($event_type == "wingman_time")
+                        <th width="15%" style="text-decoration:underline">Ideal Sessions</th>
+                        @endif
+                        <th width="15%" style="text-decoration:underline">Sessions scheduled</th>
 
-                        <th width="20%" style="text-decoration:underline">Sessions Attended</th>
-                        <th width="20%" style="text-decoration:underline">%Attendance</th>
+                        <th width="15%" style="text-decoration:underline">Sessions Attended</th>
+                        <th width="15%" style="text-decoration:underline">%Attendance</th>
 
                     </tr>
                     </thead>
@@ -134,7 +137,10 @@
 
                             $attended = (int)$data['attended'];
                             $approved = (int)$data['approved'] + $attended;
-                            $percent_attended = round((float)($attended/$approved * 100),2);
+                            if($approved != 0)
+                              $percent_attended = round((float)($attended/$approved * 100),2);
+                            else
+                              $percent_attended = 0;
 
                             if(isset($start_date) && $start_date!=''){
                                 $start = '/'.$start_date;
@@ -150,12 +156,10 @@
                                 $end = "/null";
                             }
 
-
-
-                            //echo $start; echo $end;
                             if($event_type == "wingman_time"){
                                 echo '<tr>'.
-                                '<td class="right">'.$data['wingman_name'].'</td>'.
+                                '<td>'.$data['wingman_name'].'</td>'.
+                                '<td class="right">'.$data['ideal_session'].'</td>'.
                                 '<td class="right">'.$approved.'</td>'.
                                 '<td class="right">'.$attended.'</td>'.
                                 '<td class="right">'.$percent_attended.'</td>'.
@@ -163,7 +167,7 @@
                             }
                             else if($event_type == "volunteer_time"){
                                 echo '<tr>'.
-                                '<td class="right">'.$data['asv_name'].'</td>'.
+                                '<td>'.$data['asv_name'].'</td>'.
                                 '<td class="right">'.$approved.'</td>'.
                                 '<td class="right">'.$attended.'</td>'.
                                 '<td class="right">'.$percent_attended.'</td>'.

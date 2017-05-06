@@ -42,13 +42,13 @@ h2.sub-title
 
 a,a.visited{
     color:#FFF;
-    text-decoration: none;  
+    text-decoration: none;
     cursor: pointer;
 }
 
 a:hover{
     color:#0CF;
-    text-decoration: none;  
+    text-decoration: none;
 }
 
 
@@ -153,6 +153,7 @@ body.blue-red
     background: -ms-linear-gradient(-45deg,  #3f4591 0%,#a5607f 69%,#db766a 100%); /* IE10+ */
     background: linear-gradient(135deg,  #3f4591 0%,#a5607f 69%,#db766a 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f4591', endColorstr='#db766a',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-
+}
+td.zero{
+  /*background: #F4511E !important;*/
 }

@@ -173,9 +173,7 @@ class ReportController extends BaseController
 
         $wingmen_adoption = (float)($adopted_wingman/$total_wingman*100);
         $fellow_adoption = (float)($adopted_fellow/$total_fellow*100);
-        //return round($wingmen_adoption);
-        //return ($wingmen);
-        //return 'NONE';
+
         return View::make('reports.select-report')->with('wingmen_adoption',$wingmen_adoption)->with('fellow_adoption',$fellow_adoption);
     }
 
@@ -194,17 +192,10 @@ class ReportController extends BaseController
 
         $report = json_decode(json_encode($report),true);
 
-       /* var_dump($report);
-        exit;*/
-
         Excel::create('Wingman-Journal-Report', function($excel) use($report) {
-
                 $excel->sheet('Report', function($sheet) use($report)  {
-
-                        $sheet->fromArray($report);
-
-                    });
-
+                $sheet->fromArray($report);
+              });
             })->export('csv');
     }
 
@@ -240,6 +231,7 @@ class ReportController extends BaseController
         if(isset($event_type) && $event_type=="wingman_time"){
 
             if($city_id =='null'){
+                //Filter data for cities for wingman_time
 
                 $tables = DB::table('propel_calendarEvents as A')
                               ->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')
@@ -258,26 +250,33 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$start);
                 }
                 else{
-                    $query = $query->where('A.start_time','>=',$this->year_time);
+                    $start = date('Y-m-d 00:00:00',strtotime($this->year_time));
+                    $query = $query->where('A.start_time','>=',$start);
                 }
 
                 if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
+                else{
+                  $end = date('Y-m-d h:i:s');
+                  $query = $query->where('A.end_time','<=',$end);
+                }
+
+                $start_day = new DateTime($start);
+                $end_day = new DateTime($end);
+                $duration =  $end_day->diff($start_day)->format("%a");
+                $ideal_session = floor($duration/7);
 
                 $data_collection = $query->get();
 
                 $datas = array();
+
                 $id = 0;
 
                 foreach ($data_collection as $data) {
-
                     if($data->id!=$city_id){
                         $id = $data->city_id;
-
-                        $datas[$id]['city_id'] = $data->city_id;
-                        $datas[$id]['city_name'] = $data->city_name;
                         if($data->status == 'approved'){
                             $datas[$id]['approved'] = $data->event_count;
                         }
@@ -298,9 +297,49 @@ class ReportController extends BaseController
                     }
                 }
 
-                return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);
+                $citydetails_table = DB::table('Student as A')
+                                  ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                  ->join('User as E','E.id','=','B.wingman_id')
+                                  ->join('Center as C','C.id','=','A.center_id')
+                                  ->join('City as D','D.id','=','C.city_id');
+
+                $citydetails = $citydetails_table->select('D.id','D.name')->distinct()->where('D.id','<>',26)->orderBy('D.name','ASC')->get();
+
+                foreach ($citydetails as $city){
+                  $id = $city->id;
+                  $datas[$id]['city_id'] = $city->id;
+                  $datas[$id]['city_name'] = $city->name;
+                  if(!isset($datas[$id]['approved']))
+                    $datas[$id]['approved'] = 0;
+
+                  if(!isset($datas[$id]['attended']))
+                    $datas[$id]['attended'] = 0;
+
+                  $citydetails = DB::table('Student as A')
+                                    ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                    ->join('User as E','E.id','=','B.wingman_id')
+                                    ->join('Center as C','C.id','=','A.center_id')
+                                    ->join('City as D','D.id','=','C.city_id');
+
+                  $child = $citydetails->select('A.id','A.name')
+                            ->where('D.id','=',$id)
+                            ->where('E.status','=','1')
+                            ->where('E.user_type','=','volunteer')->get();
+
+                  // echo $id.'-'.count($child).'<br/>';
+                  $datas[$id]['child_count'] = count($child);;
+                  $datas[$id]['ideal_session'] = count($child)*$ideal_session;
+                }
+
+                return View::make('reports.attendance.attendance-report')
+                        ->with('datas',$datas)
+                        ->with('event_type',$event_type)
+                        ->with('start_date',$start_date)
+                        ->with('end_date',$end_date)
+                        ->with('ideal_session',$ideal_session);
             }
             else{
+                //Filter data for Wingman in a city for wingman_time
 
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.wingman_id')->join('City as D','D.id','=','C.city_id');
 
@@ -311,18 +350,36 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$start);
                 }
                 else{
-                    $query = $query->where('A.start_time','>=',$this->year_time);
+                    $start = date('Y-m-d 00:00:00',strtotime($this->year_time));
+                    $query = $query->where('A.start_time','>=',$start);
                 }
 
                 if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
+                else{
+                  $end = date('Y-m-d h:i:s');
+                  $query = $query->where('A.end_time','<=',$end);
+                }
+
+                $start_day = new DateTime($start);
+                $end_day = new DateTime($end);
+                $duration =  $end_day->diff($start_day)->format("%a");
+                $ideal_session = floor($duration/7);
 
                 $data_collection = $query->get();
 
                 $datas = array();
                 $id = 0;
+
+                $wingmandetails_table = DB::table('Student as A')
+                                  ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                  ->join('User as E','E.id','=','B.wingman_id')
+                                  ->join('Center as C','C.id','=','A.center_id')
+                                  ->join('City as D','D.id','=','C.city_id');
+
+                $wingmandetails = $wingmandetails_table->select('E.id','E.name')->distinct()->where('D.id','<>',26)->orderBy('D.name','ASC')->get();
 
                 foreach ($data_collection as $data) {
 
@@ -351,14 +408,51 @@ class ReportController extends BaseController
                     }
                 }
 
+                $wingmandetails_table = DB::table('Student as A')
+                                  ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                  ->join('User as E','E.id','=','B.wingman_id')
+                                  ->join('Center as C','C.id','=','A.center_id')
+                                  ->join('City as D','D.id','=','C.city_id');
+
+                $wingmandetails = $wingmandetails_table->select('E.id','E.name')
+                                    ->where('E.status','=','1')
+                                    ->where('E.user_type','=','volunteer')
+                                    ->where('D.id','=',$city_id)
+                                    ->orderBy('D.name','ASC')->get();
+
+                foreach ($wingmandetails as $wingman){
+                  $id = $wingman->id;;
+                  $datas[$id]['wingman_name'] = $wingman->name;
+                  if(!isset($datas[$id]['approved']))
+                    $datas[$id]['approved'] = 0;
+
+                  if(!isset($datas[$id]['attended']))
+                    $datas[$id]['attended'] = 0;
+
+                  $wingmandetails = DB::table('Student as A')
+                                    ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                    ->join('User as E','E.id','=','B.wingman_id')
+                                    ->join('Center as C','C.id','=','A.center_id')
+                                    ->join('City as D','D.id','=','C.city_id');
+
+                  $child = $wingmandetails->select('A.id','A.name')
+                            ->where('E.id','=',$id)
+                            ->where('E.status','=','1')
+                            ->where('D.id','=',$city_id)
+                            ->where('E.user_type','=','volunteer')->get();
+
+                  $datas[$id]['child_count'] = count($child);;
+                  $datas[$id]['ideal_session'] = count($child)*$ideal_session;
+                }
 
 
-                return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
+                return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date)->with('ideal_session',$ideal_session);
             }
         }
         else if(isset($event_type) && $event_type=="volunteer_time"){
 
             if($city_id =='null'){
+                //Filter data for cities for volunteer_time
 
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.volunteer_id')->join('City as D','D.id','=','C.city_id');
 
@@ -369,13 +463,23 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$start);
                 }
                 else{
-                    $query = $query->where('A.start_time','>=',$this->year_time);
+                    $start = date('Y-m-d 00:00:00',strtotime($this->year_time));
+                    $query = $query->where('A.start_time','>=',$start);
                 }
 
                 if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
+                else{
+                  $end = date('Y-m-d h:i:s');
+                  $query = $query->where('A.end_time','<=',$end);
+                }
+
+                $start_day = new DateTime($start);
+                $end_day = new DateTime($end);
+                $duration =  $end_day->diff($start_day)->format("%a");
+                $ideal_session = floor($duration/7);
 
                 $data_collection = $query->get();
 
@@ -387,7 +491,6 @@ class ReportController extends BaseController
                     if($data->id!=$city_id){
                         $id = $data->city_id;
 
-                        $datas[$id]['city_id'] = $data->city_id;
                         $datas[$id]['city_name'] = $data->city_name;
                         if($data->status == 'approved'){
                             $datas[$id]['approved'] = $data->event_count;
@@ -409,9 +512,41 @@ class ReportController extends BaseController
                     }
                 }
 
+                $citydetails_table = DB::table('Student as A')
+                                  ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                  ->join('User as E','E.id','=','B.wingman_id')
+                                  ->join('Center as C','C.id','=','A.center_id')
+                                  ->join('City as D','D.id','=','C.city_id');
+
+                $citydetails = $citydetails_table->select('D.id','D.name')->distinct()->where('D.id','<>',26)->orderBy('D.name','ASC')->get();
+
+                foreach ($citydetails as $city){
+                  $id = $city->id;
+                  $datas[$id]['city_id'] = $city->id;
+                  $datas[$id]['city_name'] = $city->name;
+                  if(!isset($datas[$id]['approved']))
+                    $datas[$id]['approved'] = 0;
+
+                  if(!isset($datas[$id]['attended']))
+                    $datas[$id]['attended'] = 0;
+
+                  $citydetails = DB::table('Student as A')
+                                    ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                    ->join('User as E','E.id','=','B.wingman_id')
+                                    ->join('Center as C','C.id','=','A.center_id')
+                                    ->join('City as D','D.id','=','C.city_id');
+
+                  $child = $citydetails->select('A.id','A.name')
+                            ->where('D.id','=',$id)
+                            ->where('E.status','=','1')
+                            ->where('E.user_type','=','volunteer')->get();
+
+                }
+
                 return View::make('reports.attendance.attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('start_date',$start_date)->with('end_date',$end_date);
             }
             else{
+                //Filter data for volunteers in a city for volunteer_time
 
                 $tables = DB::table('propel_calendarEvents as A')->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.volunteer_id')->join('City as D','D.id','=','C.city_id');
 
@@ -422,13 +557,23 @@ class ReportController extends BaseController
                     $query = $query->where('A.start_time','>=',$start);
                 }
                 else{
-                    $query = $query->where('A.start_time','>=',$this->year_time);
+                    $start = date('Y-m-d 00:00:00',strtotime($this->year_time));
+                    $query = $query->where('A.start_time','>=',$start);
                 }
 
                 if(isset($end_date) && $end_date!='null'){
                     $end = date('Y-m-d 00:00:00',strtotime($end_date));
                     $query = $query->where('A.end_time','<=',$end);
                 }
+                else{
+                  $end = date('Y-m-d h:i:s');
+                  $query = $query->where('A.end_time','<=',$end);
+                }
+
+                $start_day = new DateTime($start);
+                $end_day = new DateTime($end);
+                $duration =  $end_day->diff($start_day)->format("%a");
+                $ideal_session = floor($duration/7);
 
                 $data_collection = $query->get();
 
@@ -460,6 +605,27 @@ class ReportController extends BaseController
 
                         $id = $data->asv_id;
                     }
+                }
+
+                $asvdetails_table = DB::table('User as A')
+                                  ->join('UserGroup as B','B.user_id','=','A.id')
+                                  ->join('City as C','C.id','=','A.city_id');
+
+                $asvdetails = $asvdetails_table->select('A.id','A.name')
+                                    ->where('A.status','=','1')
+                                    ->where('A.user_type','=','volunteer')
+                                    ->where('B.group_id','=',349)
+                                    ->where('C.id','=',$city_id)
+                                    ->orderBy('A.name','ASC')->get();
+
+                foreach ($asvdetails as $asv){
+                  $id = $asv->id;;
+                  $datas[$id]['asv_name'] = $asv->name;
+                  if(!isset($datas[$id]['approved']))
+                    $datas[$id]['approved'] = 0;
+
+                  if(!isset($datas[$id]['attended']))
+                    $datas[$id]['attended'] = 0;
                 }
 
                 return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
@@ -723,16 +889,6 @@ class ReportController extends BaseController
 
         $city_data = Student::join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('E.name as city_name','E.id as city_id',DB::raw('count(Student.id) as Count' ))->distinct()->groupby('E.id')->where('E.id','<=','25')->where('C.user_type','=','volunteer')->where('C.status','=','1')->orderby('E.name','ASC')->get();
 
-
-        // $city_data = Student::join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('E.name as city_name','Student.name','E.id as city_id')->distinct()->where('E.id','<=','25')->where('C.user_type','=','volunteer')->where('C.status','=','1')->where('E.id','=','15')->orderby('E.name','ASC')->get();
-        //
-        // return $city_data;
-
-        //echo '<b>Total Kids in Propel: '.count($child_data).'</b><br/><br/>';
-
-        /*foreach ($child_data as $child){
-            echo $child->name.' - '.$child->wingman_name.' | '.$child->center_name.' | '.$child->city_name.'<br/>';
-        }*/
 
         return View::make('reports.child-report.city-data')->with('city_data',$city_data)->with('total_classes',$total_classes);
 

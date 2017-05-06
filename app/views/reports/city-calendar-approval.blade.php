@@ -142,14 +142,14 @@
                             if($created!=0)
                                 $percent_approved = round((float)($approved/$created * 100),2);
                             else
-                                $percent_approved = 'N/A';
+                                $percent_approved = 0;
 
                             echo '<tr>'.
                             '<td>'.ucwords(strtolower($data['wingman_name'])).'</td>'.
                             '<td>'.ucwords(strtolower($data['student_name'])).'</td>'.
                             '<td class="right">'.$created.'</td>'.
                             '<td class="right">'.$approved.'</td>'.
-                            '<td class="right">'.$percent_approved.'</td>'.
+                            '<td class="right">'.$percent_approved.'%</td>'.
                             '</tr>';
                         }
                     ?>

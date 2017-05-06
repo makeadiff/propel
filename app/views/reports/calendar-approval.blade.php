@@ -135,7 +135,10 @@
 
                             $approved = (int)$data['approved'] + (int)$data['attended'];
                             $created = (int)$data['created'] + $approved;
-                            $percent_approved = round((float)($approved/$created * 100),2);
+                            if($created!=0)
+                              $percent_approved = floatval(($approved/$created) * 100);
+                            else
+                              $percent_approved = 0;
 
                             if(isset($start_date) && $start_date!=""){
                                 $start = '/'.$start_date;
@@ -157,7 +160,7 @@
                             '<td><a href="'.URL::to("/reports/calendar-approval/".$data['city_id']."".$start.$end."").'">'.$data['city_name'].'</td>'.
                             '<td class="right">'.$created.'</td>'.
                             '<td class="right">'.$approved.'</td>'.
-                            '<td class="right">'.$percent_approved.'</td>'.
+                            '<td class="right">'.round($percent_approved,0,PHP_ROUND_HALF_UP).'%</td>'.
                             '</tr>';
                         }
                     ?>

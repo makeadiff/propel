@@ -8,7 +8,7 @@
 
 <script src='{{URL::to("/")}}/js/lib/moment.min.js'></script>
 <script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
-<
+
 <script type="text/javascript">
     $(function () {
         $('.footable').footable({
@@ -24,17 +24,10 @@
 <script type="text/javascript">
 
     $(function () {
-
         $('.clear-filter').click(function (e) {
             e.preventDefault();
             $('table').trigger('footable_clear_filter');
         });
-
-
-
-
-
-
     });
 
 </script>
@@ -89,17 +82,20 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8 col-md-offset-2     white">
+            <div class="col-md-8 col-md-offset-2 white">
 
             <br>
                 @if(count($datas)!=0)
-                <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
+                <table class="white footable table table-bordered table-responsive toggle-medium attendance-report" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
                         <th width="40%" style="text-decoration:underline">City Name</th>
-                        <th width="20%" style="text-decoration:underline">Sessions Approved</th>
-                        <th width="20%" style="text-decoration:underline">Sessions Attended</th>
-                        <th width="20%" style="text-decoration:underline">%Attendance</th>
+                        @if($event_type=="wingman_time")
+                        <th width="15%" style="text-decoration:underline">Ideal Sessions</th>
+                        @endif
+                        <th width="15%" style="text-decoration:underline">Sessions scheduled</th>
+                        <th width="15%" style="text-decoration:underline">Sessions Attended</th>
+                        <th width="15%" style="text-decoration:underline">%Attendance</th>
 
                     </tr>
                     </thead>
@@ -117,7 +113,12 @@
 
                             $attended = (int)$data['attended'];
                             $approved = (int)$data['approved'] + $attended;
-                            $percent_attended = round((float)($attended/$approved * 100),2);
+                            if($approved!=0){
+                              $percent_attended = floatval(($attended/$approved) * 100);
+                            }
+                            else{
+                              $percent_attended = 0;
+                            }
 
                             if(isset($start_date) && $start_date!=''){
                                 $start = '/'.$start_date;
@@ -133,15 +134,13 @@
                                 $end = "/null";
                             }
 
-
-
-                            //echo $start; echo $end;
-
                             echo '<tr>'.
-                            '<td><a href="'.URL::to("reports/attendance-report/".$data['city_id']."/".$event_type."".$start."".$end."").'">'.$data['city_name'].'</td>'.
-                            '<td class="right">'.$approved.'</td>'.
-                            '<td class="right">'.$attended.'</td>'.
-                            '<td class="right">'.$percent_attended.'</td>'.
+                            '<td><a href="'.URL::to("reports/attendance-report/".$data['city_id']."/".$event_type."".$start."".$end."").'">'.$data['city_name'].'</td>';
+                            if($event_type == "wingman_time")
+                              echo '<td class="right">'.$data['ideal_session'].'</td>';
+                            echo '<td class="right '.($approved == 0 ? "zero":"").'">'.$approved.'</td>'.
+                            '<td class="right '.($attended == 0 ? "zero":"").'">'.$attended.'</td>'.
+                            '<td class="right '.(round($percent_attended,0,PHP_ROUND_HALF_DOWN)==0?"zero":"").'">'.round($percent_attended,0,PHP_ROUND_HALF_DOWN).'%</td>'.
                             '</tr>';
                         }
                     ?>

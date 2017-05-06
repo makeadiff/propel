@@ -43,7 +43,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">City Propeller Data</h2>
+        <h2 class="sub-title">City Youth Data</h2>
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
@@ -115,7 +115,7 @@
                 <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
-                        <th width="20%" style="text-decoration:underline">Propeller Name</th>
+                        <th width="20%" style="text-decoration:underline">Youth Name</th>
                         <th width="20%" style="text-decoration:underline">Wingman Name</th>
                         <th width="20%" style="text-decoration:underline">Center</th>
                         <th width="10%" data-hide="phone" data-sort-initial="true" style="text-decoration:underline">Journals Filled</th>

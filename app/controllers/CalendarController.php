@@ -543,7 +543,7 @@ class CalendarController extends BaseController
 
         if($city_id == 'null' || !isset($city_id)){
 
-            $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->leftjoin('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','A.student_id')->join('User as F','F.id','=','E.wingman_id');
+            $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','A.student_id')->join('User as F','F.id','=','E.wingman_id');
 
             $month = Date('m');
 
@@ -567,10 +567,9 @@ class CalendarController extends BaseController
             }
 
             $data = $fetchQuery->orderBy('D.name','ASC')->orderBy('A.student_id','ASC')->orderBy('month','ASC')->get();
-            // $date1 = new Datetime($start);
-            // $date2 = new Datetime($end);
-            // $duration = $date1->diff($date2);
-            // return $duration;
+            // $citydetails = DB::table('City as A')->select('A.id as city_id','')/
+
+
 
             $datas = array();
 
@@ -637,6 +636,37 @@ class CalendarController extends BaseController
                     }
                     $city_id = $calendar_data->cityId;
                 }
+            }
+
+            $citydetails_table = DB::table('Student as A')
+                              ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                              ->join('User as E','E.id','=','B.wingman_id')
+                              ->join('Center as C','C.id','=','A.center_id')
+                              ->join('City as D','D.id','=','C.city_id');
+
+            $citydetails = $citydetails_table->select('D.id','D.name')->distinct()->where('D.id','<>',26)->orderBy('D.name','ASC')->get();
+
+            foreach ($citydetails as $city){
+              $id = $city->id;
+              $datas[$id]['city_id'] = $city->id;
+              $datas[$id]['city_name'] = $city->name;
+              if(!isset($datas[$id]['approved']))
+                $datas[$id]['approved'] = 0;
+
+              $citydetails = DB::table('Student as A')
+                                ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                ->join('User as E','E.id','=','B.wingman_id')
+                                ->join('Center as C','C.id','=','A.center_id')
+                                ->join('City as D','D.id','=','C.city_id');
+
+              $child = $citydetails->select('A.id','A.name')
+                        ->where('D.id','=',$id)
+                        ->where('E.status','=','1')
+                        ->where('E.user_type','=','volunteer')->get();
+
+              // echo $id.'-'.count($child).'<br/>';
+              $datas[$id]['child_count'] = count($child);;
+              // $datas[$id]['ideal_session'] = count($child)*$ideal_session;
             }
 
             return View::make('reports.calendar-approval')->with('datas',$datas)->with('start_date',$start_date)->with('end_date',$end_date)->with('cities',$cities);
@@ -722,6 +752,41 @@ class CalendarController extends BaseController
                     }
                     $student_id = $calendar_data->student_id;
                 }
+            }
+
+            $wingmandetails_table = DB::table('Student as A')
+                              ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                              ->join('User as E','E.id','=','B.wingman_id')
+                              ->join('Center as C','C.id','=','A.center_id')
+                              ->join('City as D','D.id','=','C.city_id');
+
+            $wingmandetails = $wingmandetails_table->select('E.id as wingman_id','E.name as wingman_name','A.id as student_id','A.name as student_name')
+                                ->where('E.status','=','1')
+                                ->where('E.user_type','=','volunteer')
+                                ->where('D.id','=',$city_id)
+                                ->orderBy('D.name','ASC')->get();
+
+            foreach ($wingmandetails as $wingman){
+              $id = $wingman->student_id;;
+              $datas[$id]['wingman_id'] = $wingman->wingman_id;
+              $datas[$id]['wingman_name'] = $wingman->wingman_name;
+              $datas[$id]['student_id'] = $wingman->student_id;
+              $datas[$id]['student_name'] = $wingman->student_name;
+              if(!isset($datas[$id]['approved']))
+                $datas[$id]['approved'] = 0;
+
+              $wingmandetails = DB::table('Student as A')
+                                ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                ->join('User as E','E.id','=','B.wingman_id')
+                                ->join('Center as C','C.id','=','A.center_id')
+                                ->join('City as D','D.id','=','C.city_id');
+
+              $child = $wingmandetails->select('A.id','A.name')
+                        ->where('E.id','=',$id)
+                        ->where('E.status','=','1')
+                        ->where('D.id','=',$city_id)
+                        ->where('E.user_type','=','volunteer')->get();
+
             }
 
             $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
