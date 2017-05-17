@@ -15,10 +15,18 @@ class HomeController extends BaseController
 
         $flag = false;
 
-
         foreach($groups as $group) {
-            if($group->id == '1' || $group->id == '272' || $group->id == '348' || $group->id == '359' || $group->id == '212' || $group->id == '365' || $group->id = '349') {
+            if($group->id == '1' ||    // Executive Team
+               $group->id == '272' ||  // Propel Fellow
+               $group->id == '348' ||  // Propel Wingman
+               $group->id == '359' ||  // Propel Strategist
+               $group->id == '212' ||  // Propel director
+               $group->id == '365' ||  // Aftercare Wingman
+               $group->id = '349') {   // Propel ASV
                 $flag = true;
+            }
+            else if($group->type == 'fellow'){
+              $flag = true;            // Other Fellow
             }
 
         }
@@ -43,6 +51,7 @@ class HomeController extends BaseController
         $after_care_wingman = false;
         $strat = false;
         $director = false;
+        $otherfellow = false;
 
         foreach($groups as $group) {
             if($group->id == '272')
@@ -53,12 +62,18 @@ class HomeController extends BaseController
                 $asv = true;
             elseif($group->id == '359')
                 $strat = true;
+            elseif($group->id == '')
+                $strat = true;
             elseif($group->id == '365')
                 $after_care_wingman = true;
+            elseif($group->type == 'fellow'){
+                $otherfellow = true;
+            }
             elseif($group->id == '212' || $group->id == '1'){
                 $director = true;
                 $_SESSION['original_id'] = $_SESSION['user_id'];
             }
+
 
         }
         if($director == true)
@@ -73,6 +88,8 @@ class HomeController extends BaseController
             View::share('user_group','Aftercare Wingman');
         elseif($asv == true)
             View::share('user_group','Propel ASV');
+        elseif($otherfellow == true)
+            View::share('user_group','Other Fellow');
 
     }
 

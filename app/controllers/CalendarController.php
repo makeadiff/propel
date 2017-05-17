@@ -106,6 +106,53 @@ class CalendarController extends BaseController
         return View::make('calendar.asv-calendar-view')->with('calendarEvents',$calendarEvents)->with('city',$city)->with('students',$students)->with('subjects',$subjects) ->with('volunteer_id',$asv_id);
     }
 
+    public function showWingmanCalendar($wingman_id)
+    {
+
+        $this->setGroup();
+
+        $city = Volunteer::find($wingman_id)->city()->first();
+        $students  = $city->student()->get();
+
+        $calendarEvents = DB::table('propel_calendarEvents as ce')
+                          ->leftJoin('propel_cancelledCalendarEvents as cce','ce.id','=','cce.calendar_event_id')
+                          ->join('propel_wingmanTimes as wt','wt.calendar_event_id','=','ce.id')
+                          ->leftJoin('User as u','u.id','=','wt.wingman_id')
+                          ->join('Student','Student.id','=','ce.student_id')
+                          ->join('propel_wingmanModules as m','m.id','=','wt.wingman_module_id')
+                          ->select( 'ce.id',
+                                    'ce.type as title',
+                                    'ce.start_time as start',
+                                    'ce.end_time as end',
+                                    'ce.status',
+                                    'm.name as module_name',
+                                    'cce.reason as reason',
+                                    'cce.comment as comment',
+                                    'u.name as wingman_name',
+                                    'wt.wingman_id as wingman_id',
+                                    'Student.name as student_name')
+                          ->where('wt.wingman_id','=',$wingman_id)->get();
+
+
+        foreach ($calendarEvents as $calendarEvent) {
+
+            $calendarEvent->title = $calendarEvent->student_name . " : " . str_replace('_', ' ',$calendarEvent->title) ;
+            $calendarEvent->title = ucwords($calendarEvent->title);
+            $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
+            $calendarEvent->reason = ucwords($calendarEvent->reason);
+
+        }
+
+        // return $calendarEvents;
+        $calendarEvents = json_encode($calendarEvents);
+
+        return View::make('calendar.wingman-calendar-view')
+                ->with('calendarEvents',$calendarEvents)
+                ->with('city',$city)
+                ->with('students',$students)
+                ->with('wingman_id',$wingman_id);
+    }
+
     public function createEvent()
     {
 
@@ -404,6 +451,25 @@ class CalendarController extends BaseController
         $wingmen = $fellow->wingman()->get();
         //return $wingmen;
         return View::make('calendar.select-wingman')->with('wingmen',$wingmen);
+    }
+
+    public function showAllWingman()
+    {
+        $city_id = $_SESSION['city_id'];
+        $wingmen = DB::table('User as A')
+                    ->join('City as B','B.id','=','A.city_id')
+                    ->join('UserGroup as C','C.user_id','=','A.id')
+                    ->join('Group as D','D.id','=','C.group_id')
+                    ->select('A.id','A.name')
+                    ->where('A.status','=',1)
+                    ->where('A.user_type','=','volunteer')
+                    ->where('D.id','=','348')
+                    ->where('B.id','=',$city_id)
+                    ->orderBy('A.name','ASC')
+                    ->get();
+
+        // return $wingmen;
+        return View::make('calendar.all-wingman')->with('wingmen',$wingmen);
     }
 
     public function selectCenter()
@@ -800,103 +866,6 @@ class CalendarController extends BaseController
         }
     }
 
-    /*
-    public function calendarApproval(){
-
-        $input = Input::all();
-        $start = false;
-        $end = false;
-
-        $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id');
-
-
-        $month = Date('m');
-
-        /*$fetchQuery = $query->select('A.id','D.name','D.id as cityId','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26);
-
-        return $fetchQuery->get();   */
-
-        //$fetchQuery = $query->select('A.id',DB::raw('count(A.student_id)'),'D.name','D.id as cityId','A.status',DB::raw('MONTH(A.start_time) as month'),DB::raw('count(D.id)'),DB::raw('count(A.start_time) as event_count'))->groupby('A.student_id')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26);
-
-        //return $fetchQuery->orderBy('D.name','ASC')->orderBy('A.student_id','ASC')->get();
-
-        /*if(count($input)>0){
-
-            if(Input::get('start_date')!=""){
-                $start = true;
-            }
-            if(Input::get('end_date')!=""){
-                $end = true;
-            }
-
-            $start_date = date('c',strtotime(Input::get('start_date')));
-            $end_date = date('c',strtotime(Input::get('end_date')));
-            if($start){
-                $data = $fetchQuery->where('A.start_time','>=',$start_date)->orderBy('D.name','ASC')->get();
-            }
-            else if($end){
-                $data = $fetchQuery->where('A.end_time','<=',$end_date)->orderBy('D.name','ASC')->get();
-            }
-            else if($start && $end){
-                $data = $fetchQuery->where('A.start_time','>=',$start_date)->where('A.end_time','<=',$end_date)->orderBy('D.name','ASC')->get();
-            }
-            else{
-                $data = $fetchQuery->orderBy('D.name','ASC')->get();
-            }
-        }
-        else{
-            $data = $fetchQuery->orderBy('D.name','ASC')->get();
-        }
-
-
-        $datas = array();
-
-        $city_id = 0;
-
-        foreach ($data as $calendar_data) {
-
-            if($calendar_data->cityId!=$city_id){
-                $city_id = $calendar_data->cityId;
-
-                $datas[$city_id]['city_id'] = $calendar_data->cityId;
-                $datas[$city_id]['city_name'] = $calendar_data->name;
-                if($calendar_data->status == 'approved'){
-                    $datas[$city_id]['approved'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'created'){
-                    $datas[$city_id]['created'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'attended'){
-                    $datas[$city_id]['attended'] = $calendar_data->event_count;
-                }
-
-            }
-            else{
-                if($calendar_data->status == 'approved'){
-                    $datas[$city_id]['approved'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'created'){
-                    $datas[$city_id]['created'] = $calendar_data->event_count;
-                }
-                if($calendar_data->status == 'attended'){
-                    $datas[$city_id]['attended'] = $calendar_data->event_count;
-                }
-
-                $city_id = $calendar_data->id;
-            }
-        }
-
-        $cities = DB::table('City')->where('id','<',26)->orderBy('name','ASC')->get();
-
-        if(count($input)>0){
-            return View::make('reports.calendar-approval')->with('datas',$datas)->with('start_date',Input::get('start_date'))->with('end_date',Input::get('end_date'))->with('cities',$cities);
-        }
-        else{
-            return View::make('reports.calendar-approval')->with('datas',$datas)->with('cities',$cities);
-        }
-
-    }*/
-
     public function calendarFilter(){
 
         $start = "/null";
@@ -949,7 +918,7 @@ class CalendarController extends BaseController
         $student = Student::find($event->student_id);
         $center_name = $student->center()->first()->name;
         $sms = new SMSController();
-        $sms->message = "Hi $volunteer_name,\n\nYou have a class scheduled at $center_name on $on_date($on_time).\n\nPlease contact $user_name($user->phone) for more details.";
+        $sms->message = "Hi $volunteer_name,\n\nThis is to remind that you have a class scheduled three days from today at $center_name on $on_date($on_time).\n\nPlease contact $user_name($user->phone) for more details.";
         $sms->number = $volunteer->phone;
         $sms->send();
       }

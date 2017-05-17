@@ -68,19 +68,33 @@
         <h2 class="sub-title">Calendar</h2>
         <br>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group" style="max-width:900px; margin:auto">
-                    <span class="fc-event legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px;">Not Approved Event</span>
-                    <span class="fc-event cancelled legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px">Cancelled Event</span>
-                    <span class="fc-event approved legend" style="min-width:50px; padding:0 5px; float:right;">Approved Event</span>
-                    <br/><br/>
-                </div>
-                <div id='calendar'>
-                </div>
-            </div>
+        @if($calendarEvents != '[]')
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group" style="max-width:900px; margin:auto">
 
+                      <span class="fc-event legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px;">Not Approved Event</span>
+                      <span class="fc-event cancelled legend" style="min-width:50px; padding:0 5px; float:right; margin-left:10px">Cancelled Event</span>
+                      <span class="fc-event approved legend" style="min-width:50px; padding:0 5px; float:right;">Approved Event</span>
+                      <br/><br/>
+                  </div>
+                  <div id='calendar'>
+                  </div>
+              </div>
+              <div class="col-md-12">
+
+              </div>
+          </div>
+        @else
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <div class="alert alert-warning" role="alert">No data for the selected Center</div>
+            <div class="centered">
+                <a class="btn btn-default" href="{{URL::to('/')}}">Go Back</a>
+            </div>
+          </div>
         </div>
+        @endif
     </div>
 </div>
 

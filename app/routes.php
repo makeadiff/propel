@@ -3,7 +3,7 @@
 Route::filter('login_check',function()
 {
     session_start();
-    //$_SESSION['user_id']=57184;//62841;//78268;//105354;//36327;//11752; //66804; //48032 //47642 //22730 //50671 //48286 //85896//57184
+    $_SESSION['user_id']= 57184; //26956; //57184;//62841;//78268;//105354;//36327;//11752; //66804; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))
@@ -41,6 +41,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/feedback/{wingman_id}/{student_id}','WingmanJournalController@showFeedback');
 
     Route::get('/calendar/select-wingman','CalendarController@selectWingman');
+    Route::get('/calendar/all-wingman','CalendarController@showAllWingman');
+    Route::get('/calendar/wingman/{wingman_id}','CalendarController@showWingmanCalendar');
     Route::get('/calendar/approve-calendar','CalendarController@approveView');
     Route::get('/calendar/select-center','CalendarController@selectCenter');
     Route::get('/calendar/center/{center_id}','CalendarController@showCenterCalendar');
@@ -61,11 +63,15 @@ Route::group(array('before'=>'login_check|propel_check'),function()
 
     Route::resource('/journal-entry','JournalEntryController',array('except' => array('index')));
 
+    Route::get('/attendance/select-profile','AttendanceController@selectProfile');
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
-    Route::get('/attendance/wingman/{wingman_id}','AttendanceController@showAttendanceToFellow');
+    Route::get('/attendance/asv/{timeline?}','AttendanceController@selectASV');
+    Route::get('/attendance/wingman/{wingman_id}/{timeline?}','AttendanceController@showAttendanceToFellow');
     Route::get('/attendance/{user_id}','AttendanceController@showAttendanceToWingman');
     Route::post('/attendance/{user_id}','AttendanceController@save');
     Route::post('/attendance/wingman/{user_id}','AttendanceController@save');
+    Route::post('/attendance/{user_id}','AttendanceController@save');
+    Route::post('/attendance/wingman/{user_id}/previous','AttendanceController@save');
 
     Route::get('/settings/subjects','SettingController@selectSubjects');
     Route::post('/settings/subjects','SettingController@saveSubjects');

@@ -46,6 +46,18 @@
                 <a href='calendar/select-center' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/centers.png')}}"><br>Calendars of<br>Centers</a>
             </div>
 
+        @elseif($user_group == "Other Fellow")
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='calendar/all-wingman' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendars of<br>Wingman</a>
+            </div>
+
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='calendar/select-asv' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/asv.png')}}"><br>Calendars of<br>ASVs</a>
+            </div>
+            <div class="col-md-4 col-sm-6 text-center">
+                <a href='calendar/select-center' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/centers.png')}}"><br>Calendars of<br>Centers</a>
+            </div>
+
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">
                 <a href='calendar/{{$user->id}}' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/calendar.png')}}"><br>Calendar of<br>Youth</a>
@@ -70,7 +82,7 @@
 
         @if($user_group == "Propel Fellow")
             <div class="col-md-4 col-sm-6 text-center">
-                <a href='attendance/select-wingman' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/attendance.png')}}"><br>Attendance of<br>Wingmen/ASV</a>
+                <a href='attendance/select-profile' class='btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/attendance.png')}}"><br>Attendance of<br>Wingmen/ASV</a>
             </div>
         @elseif($user_group == "Propel Wingman")
             <div class="col-md-4 col-sm-6 text-center">

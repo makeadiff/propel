@@ -18,8 +18,7 @@
 
 </style>
 <script type="text/javascript">
-    event_type;
-    volunteer_id;
+    wingman_id;
     module_id;
     subject_id;
     start_time;
@@ -91,7 +90,7 @@
                     var string = '<strong>'+ data.name + '</strong>'
                                     + '<br/>' + data.getAttribute('start')
                                     + ' - ' + data.getAttribute('end')
-                                    + (data.getAttribute('volunteer_name')?'<br/>Volunteer Name: <strong>'+data.getAttribute('volunteer_name')+'</strong><br/>Subject Name: <strong>'+data.getAttribute('subject_name')+'</strong>':'')
+                                    + (data.getAttribute('volunteer_name')?'<br/>Volunteer Name: <strong>'+data.getAttribute('volunteer_name')+'</strong>':'')
                                     + (data.getAttribute('wingman_name')?'<br/>Wingman Name: <strong>'+data.getAttribute('wingman_name')+'</strong> <br/>Module Name: <strong>'+ data.getAttribute('module_name')+'</strong>':'')
                                     + '<br/><strong>(' + data.getAttribute('status').toUpperCase() + ')</strong>';
                     $('#event_detail').html(string);
@@ -105,10 +104,9 @@
                     event_id = id;
                     start_time = data.getAttribute('start');
                     end_time = data.getAttribute('end');
-                    volunteer_id = (data.getAttribute('volunteer_id')?data.getAttribute('volunteer_id'):'');
+                    wingman_id = (data.getAttribute('wingman_id')?data.getAttribute('wingman_id'):'');
                     event_type = data.name;
                     module_id = (data.getAttribute('module_id')?data.getAttribute('module_id'):'');
-                    subject_id = (data.getAttribute('subject_id')?data.getAttribute('subject_id'):'');
                 },
                 eventRender: function(event, element) {
                     $(element).tooltip();
@@ -159,7 +157,6 @@
 
         <h2 class="sub-title">Calendar</h2>
         <br>
-
         @if($calendarEvents != '[]')
           <div class="row">
               <div class="col-md-12">
@@ -180,14 +177,13 @@
         @else
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
-            <div class="alert alert-warning" role="alert">No data for the selected Propel ASV</div>
+            <div class="alert alert-warning" role="alert">No data for the selected Wingman</div>
             <div class="centered">
                 <a class="btn btn-default" href="{{URL::to('/')}}">Go Back</a>
             </div>
           </div>
         </div>
         @endif
-        
     </div>
 </div>
 
@@ -213,15 +209,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="subject" class="control-label">Subject</label>
-                        <select class="form-control" id="subject" name="subject">
-                            @foreach($subjects as $subject)
-                            <option value="{{$subject->id}}">{{$subject->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="form-group">
                         <label for="start_time" class="control-label">Start Time : </label>
 
                         <div class="form-group">
@@ -239,7 +226,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="volunteer_id" value="{{$volunteer_id}}">
+                    <input type="hidden" name="wingman_id" value="{{$wingman_id}}">
                     <input type="hidden" name="type" value="volunteer_time">
                     <input type="hidden" id="on_date" name="on_date">
                     <input type="hidden" id="end_date" name="end_date">
@@ -279,7 +266,7 @@
                         <label for="comment" class="control-label">Comment : </label>
                         <textarea class="form-control" id="comment" name="comment"></textarea>
                     </div>
-                    <input type="hidden" name="volunteer_id" value="{{$volunteer_id}}">
+                    <input type="hidden" name="wingman_id" value="{{$wingman_id}}">
                     <input type="hidden" id="calendar_event_id" name="calendar_event_id">
                     <input type="hidden" id="cancel_on_date" name="cancel_on_date">
 
@@ -350,7 +337,7 @@
         if(event_type == "ASV Time") {
             $('.volunteer-time').css('display','block');
             $('#edit_type').val('volunteer_time');
-            $('#edit_volunteer').val(volunteer_id);
+            $('#edit_volunteer').val(wingman_id);
             $('#edit_subject').val(subject_id);
         } else if(event_type == "Wingman Time") {
             $('.wingman-time').css('display','block');
@@ -361,7 +348,7 @@
             $('#edit_type').val('child_busy');
         }
         $('#calendar_id').val(event_id);
-        $('#edit_volunteer').val(volunteer_id);
+        $('#edit_volunteer').val(wingman_id);
         $('#editModal').modal('show');
     });
 

@@ -17,7 +17,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Attendance</h2>
+        <h2 class="sub-title">ASV Attendance</h2>
         <br>
         @if(count($attended)!=0)
         <div class="row">
@@ -26,14 +26,16 @@
             <table class="table table-bordered table-responsive white footable" data-paging="true" data-page-size="12">
                 <thead>
                 <tr>
-                    <th width="40%">Wingman Name</th>
+                    <th width="40%">ASV Name</th>
+                    <!-- <th width="30%">Student Name</th> -->
                     <th width="40%">Date</th>
-                    <th width="20%">Attended</th>
+                    <th width="15%">Attended</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($attended as $entry)
+                    @foreach($attended as $event)
                         <?php
+                            $entry = CalendarEvent::find($event->id);
                             $type = $entry->type;
                             if($type=='volunteer_time'){
                                 $variable = $entry->volunteerTime()->first();
@@ -43,15 +45,7 @@
                                     $status = $entry->volunteerTime()->first()->volunteer()->first()->status;
                                 }
                             }
-                            else
-                            if ($type=='wingman_time'){
-                                $variable = $entry->wingmanTime()->first();
-                                if(!empty($variable))
-                                {
-                                    $type = $entry->wingmanTime()->first()->wingman()->first()->user_type;
-                                    $status = $entry->wingmanTime()->first()->wingman()->first()->status;
-                                }
-                            }
+
                         ?>
                         @if(!empty($variable) && ($type=='volunteer' && $status=='1'))
                             <tr>
@@ -64,24 +58,23 @@
                                     $status = $entry->volunteerTime()->first()->volunteer()->first()->status;
                                     $name = $entry->volunteerTime()->first()->volunteer()->first()->name;
                                     if($type=='volunteer' && $status=='1')
-                                        echo $name;
+                                        echo ucwords(strtolower($name));
                                 ?>
                             </td>
-                            @elseif($entry->type == "wingman_time")
-                            <td>
+                            <!-- <td>
                                 <?php
-                                    $type = $entry->wingmanTime()->first()->wingman()->first()->user_type;
-                                    $status = $entry->wingmanTime()->first()->wingman()->first()->status;
-                                    $name = $entry->wingmanTime()->first()->wingman()->first()->name;
-                                    if($type=='volunteer' && $status=='1')
-                                        echo $name;
+                                    $student = $entry->student()->first()->name;
+                                    //echo ucwords(strtolower($student));
                                 ?>
-                            </td>
+                            </td> -->
                             @endif
-                            <td>{{date_format(date_create($entry->start_time),'l, jS F Y')}}</td>
-                            <td>
+                            <td>{{date_format(date_create($entry->start_time),'l, jS F Y, h:i A')}}</td>
+                            <td class="center">
                             <input {{($entry->status == "attended" ? 'checked' : "")}} type="checkbox" data-toggle="toggle" data-on="Present" data-off="Absent" value="1" name="attended[{{$entry->id}}]" />
                             <input type="hidden" value="1" name="calender_entry[{{$entry->id}}]" />
+                            <input type="hidden" name="volunteer_id" value="{{$entry->volunteer_id}}"></input>
+                            <input type="hidden" name="start_time" value="{{$entry->start_time}}"></input>
+                            <input type="hidden" name="type" value="volunteer_time"/></input>
                             </td>
                             </tr>
                         @endif
@@ -108,7 +101,7 @@
         </div>
         @else
         <p style="text-align:center; color:#FFF">No attendance entries to mark</p><br/><br/>
-        <a href="{{{URL::to('attendance/wingman/'.$wingman_id.'/previous')}}}"><button type="button" class="btn btn-default" data-dismiss="modal">Mark Attendance for events before {{$date}}</button></a>
+        <a href="{{{URL::to('attendance/asv/previous')}}}"><button type="button" class="btn btn-default" data-dismiss="modal">Mark Attendance for events before {{$date}}</button></a>
         @endif
     </div>
 </div>

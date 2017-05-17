@@ -3,6 +3,8 @@
 class ReportController extends BaseController
 {
 
+    private $asvGroupName = "Propel ASV";
+
     public function showCities()
     {
         $cities = City::all();

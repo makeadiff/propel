@@ -19,7 +19,7 @@ class City extends Eloquent
         return $this->hasMany('Volunteer');
     }
 
-    public function center() 
+    public function center()
     {
         return $this->hasMany("Center");
     }
