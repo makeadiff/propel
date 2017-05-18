@@ -11,7 +11,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Select Multiplier</h2>
+        <h2 class="sub-title">Select Fellow</h2>
         <br>
 
 

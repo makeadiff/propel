@@ -44,7 +44,7 @@
                         echo 'defaultDate: \''.$_GET['date'].'\',';
                     }
                 ?>
-                selectable: true,
+                selectable: false,
                 selectHelper: true,
                 select: function(start, end) {
                     var title=' ';
@@ -78,7 +78,7 @@
                     $('#calendar').fullCalendar('unselect');
                 },
                 editable: false,
-                eventLimit: false, // allow "more" link when too many events
+                eventLimit: true, // allow "more" link when too many events
 
                 events: <?php echo $calendarEvents ?>,
 

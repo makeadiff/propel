@@ -70,6 +70,7 @@ Route::group(array('before'=>'login_check|propel_check'),function()
     Route::get('/attendance/{user_id}','AttendanceController@showAttendanceToWingman');
     Route::post('/attendance/{user_id}','AttendanceController@save');
     Route::post('/attendance/wingman/{user_id}','AttendanceController@save');
+    Route::post('/attendance/asv/{timeline?}','AttendanceController@save');
     Route::post('/attendance/{user_id}','AttendanceController@save');
     Route::post('/attendance/wingman/{user_id}/previous','AttendanceController@save');
 

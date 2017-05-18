@@ -52,18 +52,45 @@ class AttendanceController extends BaseController
     {
         $attendance_data = Input::get('attended');
         $calender_data = Input::get('calender_entry');
+        if(Input::get('volunteer_id') != null){
+          $volunteer_id = Input::get('volunteer_id');
+        }
+        if(Input::get('start_time') != null){
+          $start_time = Input::get('start_time');
+        }
+
+        $segment = Request::segment(2);
 
         foreach ($calender_data as $id => $value) {
+          if($segment == 'asv'){
+            $volunteer = $volunteer_id[$id];
+            $start = $start_time[$id];
+            $events = DB::table('propel_calendarEvents as A')
+                          ->join('propel_volunteerTimes as B','B.calendar_event_id','=','A.id')
+                          ->select('A.id as id')
+                          ->where('A.start_time','=',$start)
+                          ->where('B.volunteer_id','=',$volunteer)
+                          ->get();
+            foreach ($events as $event) {
+              $calender_event = CalendarEvent::find($event->id);
+              $calender_event->status = isset($attendance_data[$id]) ? 'attended' : 'approved';
+              $calender_event->save();
+            }
+          }
+          else{
             $calender_event = CalendarEvent::find($id);
             $calender_event->status = isset($attendance_data[$id]) ? 'attended' : 'approved';
             $calender_event->save();
+          }
         }
 
-        // return Request::segment(2);
-
-        if(Request::segment(2) == 'wingman') {
+        if($segment == 'wingman') {
             return Redirect::to(URL::to('/') . "/attendance/wingman/" . $user_id)->with('success', 'Attendence Saved.');
-        }else {
+        }
+        if($segment == 'asv') {
+            return Redirect::to(URL::to('/') . "/attendance/asv")->with('success', 'Attendence Saved.');
+        }
+        else {
             return Redirect::to(URL::to('/') . "/attendance/" . $user_id)->with('success', 'Attendence Saved.');
         }
 

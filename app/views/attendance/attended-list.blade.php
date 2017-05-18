@@ -78,7 +78,7 @@
                                 ?>
                             </td>
                             @endif
-                            <td>{{date_format(date_create($entry->start_time),'l, jS F Y')}}</td>
+                            <td>{{date_format(date_create($entry->start_time),'D, jS M Y')}}</td>
                             <td>
                             <input {{($entry->status == "attended" ? 'checked' : "")}} type="checkbox" data-toggle="toggle" data-on="Present" data-off="Absent" value="1" name="attended[{{$entry->id}}]" />
                             <input type="hidden" value="1" name="calender_entry[{{$entry->id}}]" />

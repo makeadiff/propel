@@ -37,7 +37,8 @@
             ?>
 
 
-
+            selectable: false,
+            selectHelper: true,
             editable: false,
             eventLimit: false, // allow "more" link when too many events
 

@@ -68,12 +68,12 @@
                                 ?>
                             </td> -->
                             @endif
-                            <td>{{date_format(date_create($entry->start_time),'l, jS F Y, h:i A')}}</td>
+                            <td>{{date_format(date_create($entry->start_time),'D, jS M Y, h:i A')}}</td>
                             <td class="center">
                             <input {{($entry->status == "attended" ? 'checked' : "")}} type="checkbox" data-toggle="toggle" data-on="Present" data-off="Absent" value="1" name="attended[{{$entry->id}}]" />
                             <input type="hidden" value="1" name="calender_entry[{{$entry->id}}]" />
-                            <input type="hidden" name="volunteer_id" value="{{$entry->volunteer_id}}"></input>
-                            <input type="hidden" name="start_time" value="{{$entry->start_time}}"></input>
+                            <input type="hidden" name="volunteer_id[{{$entry->id}}]" value="{{$event->volunteer_id}}"></input>
+                            <input type="hidden" name="start_time[{{$entry->id}}]" value="{{$entry->start_time}}"></input>
                             <input type="hidden" name="type" value="volunteer_time"/></input>
                             </td>
                             </tr>

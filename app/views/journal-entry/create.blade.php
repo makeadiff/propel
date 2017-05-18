@@ -48,7 +48,7 @@
                         <textarea class="form-control" name="moduleFeedback" id="moduleFeedback" placeholder="Module Feedback Entry" rows="10"></textarea>
                     </div>
                     <br/>
-                    <h4 class="sub-title">Child Feedback</h4>
+                    <h4 class="sub-title">Observation about Youth</h4>
                     <div class="form-group" >
                         <input type="text" class="form-control" name="title" id="title" value="" placeholder="Title for Child Feedback">
                     </div>
