@@ -8,7 +8,7 @@
 
 <script src='{{URL::to("/")}}/js/lib/moment.min.js'></script>
 <script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
-<
+
 <script type="text/javascript">
     $(function () {
         $('.footable').footable({
@@ -79,8 +79,7 @@
                                             echo 'value="'.$start_date.'"';
                                         }
                                     ?>
-
-                                >
+                                />
                             </div>
                         </div>
                     </div>
@@ -93,7 +92,7 @@
                                             echo 'value="'.$end_date.'"';
                                         }
                                     ?>
-                                >
+                                />
                             </div>
                         </div>
                     </div>
@@ -114,11 +113,11 @@
                 <table class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
-                        <th width="20%" style="text-decoration:underline">Wingman Name</th>
-                        <th width="20%" style="text-decoration:underline">Student Name</th>
-                        <th width="20%" style="text-decoration:underline">Calendars Created</th>
-                        <th width="20%" style="text-decoration:underline">Calendars Approved</th>
-                        <th width="20%" style="text-decoration:underline">%Approved</th>
+                        <th width="25%">Student Name</th>
+                        <th width="25%">Wingman Name</th>
+                        <th class="right" width="15%">Calendars Created</th>
+                        <th class="right" width="15%">Calendars Approved</th>
+                        <th class="right" width="15%">%Approved</th>
 
                     </tr>
                     </thead>
@@ -140,16 +139,16 @@
                             $approved = (int)$data['approved'] + (int)$data['attended'];
                             $created = (int)$data['created'] + $approved;
                             if($created!=0)
-                                $percent_approved = round((float)($approved/$created * 100),2);
+                                $percent_approved = round((float)($approved/$created * 100),0).'%';
                             else
-                                $percent_approved = 0;
+                                $percent_approved = 'N/A';
 
                             echo '<tr>'.
-                            '<td>'.ucwords(strtolower($data['wingman_name'])).'</td>'.
                             '<td>'.ucwords(strtolower($data['student_name'])).'</td>'.
+                            '<td>'.ucwords(strtolower($data['wingman_name'])).'</td>'.
                             '<td class="right">'.$created.'</td>'.
                             '<td class="right">'.$approved.'</td>'.
-                            '<td class="right">'.$percent_approved.'%</td>'.
+                            '<td class="right">'.$percent_approved.'</td>'.
                             '</tr>';
                         }
                     ?>

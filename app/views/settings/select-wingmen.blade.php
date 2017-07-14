@@ -22,9 +22,9 @@
                 </thead>
                 <tbody>
                    @foreach($selected_wingmen as $wingman)
-                        <tr>
-                            <td>{{ucwords(strtolower($wingman->name))}}</td>
-                        </tr>
+                      <tr>
+                        <td>{{ucwords(strtolower($wingman->name))}}</td>
+                      </tr>
                    @endforeach
                 </tbody>
                 <tfoot>
@@ -60,27 +60,32 @@
             </div>
             <form method="post" enctype="multipart/form-data" action="{{URL::to('/settings/wingmen')}}">
             <div class="modal-body">
-                    <div class="form-group">
-
-                    </div>
-                    <div class="form-group">
-                        <label>Wingmen:</label><br/>
-                        <div class="selectBox" style="width=100%; height:180px; padding:10px; overflow-y:scroll; border:thin #CCC solid;">
-                            <?php
-                                $i = 0;
-                                foreach($all_wingmen as $wingman){
-                                    echo '<input name="wingmen[]" type="checkbox" id="group'.$i.'" value="'.$wingman->id.'" '.(is_numeric($wingman->phone)?'':$wingman->phone).'/>
-                                    <label for="group'.$i.'">'.ucwords(strtolower($wingman->name)).' '.$wingman->group_id.'</label><br/>';
-                                $i++;
-                                }
-                            ?>
-                        </div>
-                    </div>
+              <label for="filter">Filter&nbsp;</label>
+              <input type="text" id="filter" data-filter=#filter class="form-control input-sm" placeholder="Start Typing Name/Shelter Name">
+              <a href="#clear" class="clear-filter" title="clear filter" id="filter-clear">[clear]</a>
+              <div class="form-group">
+                  <label>Wingmen:</label><br/>
+                  <div class="selectBox" style="width=100%; height:180px; padding:10px; overflow-y:scroll; border:thin #CCC solid;">
+                    <table data-filter="#filter" class="footable table table-bordered table-responsive toggle-medium" data-filter-timeout="100" data-filter-text-only="true" data-filter-minimum="3">
+                      <?php
+                          $i = 0;
+                          foreach($all_wingmen as $wingman){
+                              echo '<tr>';
+                              echo '<td width="10%" style="text-align: center"><input name="wingmen[]" type="checkbox" id="group'.$i.'" value="'.$wingman->id.'" '.(is_numeric($wingman->phone)?'':$wingman->phone)
+                              .'/></td>'
+                              .'<td><label for="group'.$i.'">'.ucwords(strtolower($wingman->name)).' <span class="shelter">'.ucwords(strtolower($wingman->group_id)).'</span></label></td>';
+                              echo '</tr>';
+                          $i++;
+                          }
+                      ?>
+                    </table>
+                  </div>
+              </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Save changes</button>
-                
+
             </div>
             </form>
         </div>
@@ -94,9 +99,6 @@
         $('#assignStudents').click(function(){
             $('#assignStudentsModal').modal('show');
         });
-    });        
+    });
 </script>
 @stop
-
-
-

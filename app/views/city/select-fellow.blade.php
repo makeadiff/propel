@@ -17,8 +17,8 @@
 
         <div class="row">
                 @foreach($fellows as $fellow)
-                    <div style="padding:10px" class="col-md-4 col-sm-6">
-                        <a href="{{URL::to('/city-change/fellow/' . $fellow->id)}}" class="btn btn-primary btn-dash transparent"><img  src="{{URL::to('/img/profile.png')}}"><br/>{{$fellow->name}}</a><br>
+                    <div style="padding:10px" class="col-md-3 col-sm-6">
+                        <a href="{{URL::to('/city-change/fellow/' . $fellow->id)}}" class="btn btn-primary btn-dash transparent"><img  src="{{URL::to('/img/profile.png')}}"><br/>{{ucwords(strtolower($fellow->name))}}</a><br>
                     </div>
                 @endforeach
         </div>

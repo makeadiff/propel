@@ -3,6 +3,7 @@
 class AttendanceController extends BaseController
 {
     private $asvGroupName = "Propel ASV";
+    private $wingmanGroupName = "Propel Wingman";
 
     public function showAttendanceToWingman($user_id)
     {
@@ -36,14 +37,14 @@ class AttendanceController extends BaseController
         $previousMonth = date("Y-m-d h:i:s", strtotime("-1 months"));
         $previousDate = date("M Y ", strtotime("-1 months"));
 
-        if($timeline == null){
-          $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
-                  $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$previousMonth)->orderBy('start_time','DESC')->get();
-        }
-        elseif($timeline == 'previous'){
+        // if($timeline == null){
+        //   $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
+        //           $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$previousMonth)->orderBy('start_time','DESC')->get();
+        // }
+        // elseif($timeline == 'previous'){
           $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
                   $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$this->year_time)->orderBy('start_time','DESC')->get();
-        }
+        // }
 
         return View::make('attendance.attended-list')->with('attended',$attended)->with('timeline',$timeline)->with('wingman_id',$wingman_id)->with('date',$previousDate);
     }
@@ -113,7 +114,59 @@ class AttendanceController extends BaseController
         return View::make('attendance.select-wingman')->with('wingmen',$wingmen);
     }
 
-    public function selectAsv($timeline = null)
+    public function selectWingmen()
+    {
+
+        $user_id = $_SESSION['user_id'];
+        $fellow = Fellow::find($user_id);
+        $city = $fellow->city()->first();
+
+        $asvs = Group::where('name',$this->wingmanGroupName)->first()->volunteer()->where('city_id','=',$city->id)->where('user_type','=','volunteer')->where('status','=',1)->orderBy('name','ASC')->groupby('id')->get();
+
+        // return $asvs;
+
+        $asv_ids = array();
+        foreach($asvs as $asv)
+            $asv_ids[] = $asv->id;
+
+        $previousMonth = date("Y-m-d h:i:s", strtotime("-1 months"));
+        $previousDate = date("M Y ", strtotime("-1 months"));
+
+        $attended = DB::table('propel_calendarEvents as A')
+                      ->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')
+                      ->select('A.id','A.type as type','B.wingman_id as wingman_id','A.start_time as start_time')
+                      ->whereIn('B.wingman_id', $asv_ids)
+                      ->where(function($query){ $query->where('status','approved')->orWhere('status','attended');})
+                      ->where('start_time','>=',$this->year_time)
+                      ->orderBy('start_time','DESC')
+                      ->orderBy('B.wingman_id','ASC')->get();
+
+        $start_time = 0;
+        $volunteer_id = 0;
+        $id = 0;
+        foreach ($attended as $event => $object) {
+          if($start_time == $object->start_time && $wingman_id == $object->wingman_id){
+            unset($attended[$id]);
+            $start_time = $object->start_time;
+            $wingman_id = $object->wingman_id;
+            $id++;
+            // var_dump($attended);
+            // echo '<br/><br/>';
+          }
+          else{
+            $start_time = $object->start_time;
+            $wingman_id = $object->wingman_id;
+            $id++;
+          }
+        }
+
+        // return $attended;
+
+        return View::make('attendance.wingman-attendance')->with('attended',$attended)->with('wingman_id',$user_id)->with('date',$previousDate);
+
+    }
+
+    public function selectAsv()
     {
 
         $user_id = $_SESSION['user_id'];
@@ -131,19 +184,7 @@ class AttendanceController extends BaseController
         $previousMonth = date("Y-m-d h:i:s", strtotime("-1 months"));
         $previousDate = date("M Y ", strtotime("-1 months"));
 
-        if($timeline == null){
-          $attended = DB::table('propel_calendarEvents as A')
-                      ->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')
-                      ->select('A.id','A.type as type','B.volunteer_id as volunteer_id','A.start_time as start_time')
-                      ->whereIn('B.volunteer_id', $asv_ids)
-                      ->where(function($query){ $query->where('status','approved')->orWhere('status','attended');})
-                      ->where('start_time','>=',$previousMonth)
-                      ->orderBy('start_time','DESC')
-                      ->orderBy('B.volunteer_id','ASC')->get();
-
-        }
-        elseif($timeline == 'previous'){
-          $attended = DB::table('propel_calendarEvents as A')
+        $attended = DB::table('propel_calendarEvents as A')
                       ->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')
                       ->select('A.id','A.type as type','B.volunteer_id as volunteer_id','A.start_time as start_time')
                       ->whereIn('B.volunteer_id', $asv_ids)
@@ -151,7 +192,6 @@ class AttendanceController extends BaseController
                       ->where('start_time','>=',$this->year_time)
                       ->orderBy('start_time','DESC')
                       ->orderBy('B.volunteer_id','ASC')->get();
-        }
 
         $start_time = 0;
         $volunteer_id = 0;
@@ -174,7 +214,7 @@ class AttendanceController extends BaseController
 
         // return $attended;
 
-        return View::make('attendance.asv-attendance')->with('attended',$attended)->with('timeline',$timeline)->with('wingman_id',$user_id)->with('date',$previousDate);
+        return View::make('attendance.asv-attendance')->with('attended',$attended)->with('wingman_id',$user_id)->with('date',$previousDate);
 
     }
 

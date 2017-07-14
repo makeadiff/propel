@@ -5,7 +5,7 @@ class WingmanJournalController extends BaseController
 
 	public function showList($user_id)
     {
-        $entries = WingmanJournal::where('wingman_id','=',$user_id)->get();
+        $entries = WingmanJournal::where('wingman_id','=',$user_id)->orderby('created_at','DESC')->get();
         $session_id = $_SESSION['user_id'];
         $user = Volunteer::find($session_id);
 

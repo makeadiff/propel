@@ -139,10 +139,10 @@ div.board
     margin:30px;
 }
 
-td.right{
+td.right, th.right{
     text-align: right;
 }
-td.center{
+td.center, th.center{
     text-align: center;
 }
 
@@ -159,4 +159,21 @@ body.blue-red
 }
 td.zero{
   /*background: #F4511E !important;*/
+}
+
+tfoot, tfoot tr, tfoot tr td{
+  border: #CCC thin solid !important;
+  border: 0 !important;
+}
+
+#calendar thead{
+  border: none;
+}
+
+thead {
+  border: 1px solid #ddd;
+}
+
+span.shelter{
+  font-size: 9px;
 }

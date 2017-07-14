@@ -15,7 +15,7 @@
         <div class="col-md-6 col-md-offset-3 white">
 
             <h2 class = "sub-title centered">{{$journal_entry->title}}</h2><br>
-            <h4 class="sub-title">Type: 
+            <h4 class="sub-title">Type:
             <?php
                 if($journal_entry->type=="child_feedback"){
                     echo "Child Feedback";

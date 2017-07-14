@@ -10,7 +10,7 @@
 <script src='{{URL::to("/")}}/js/fullcalendar.js'></script>
 <script type="text/javascript">
 
- 
+
 <script type="text/javascript">
     $(function () {
         $('.footable').footable({
@@ -75,7 +75,7 @@
                     Classes Cancelled <span class="badge"> {{count($cancelled_classes)}}</span>
                 </button>
             </div>
-            
+
         </div>
 
         <div class="row">
@@ -84,11 +84,11 @@
         </div>
 
         <h2 class="sub-title">Class Cancellation Report</h2>
-        
+
         <br>
         <div class="row">
             <div class="center">
-       
+
                 <div class="col-md-12 col-sm-12">
                     <form class="form-inline text-center">
                         <label for="filter">Filter :&nbsp;</label>
@@ -115,7 +115,7 @@
                                 if($reason=='volunteer_not_available'){
                                     echo 'selected';
                                 }
-                            } 
+                            }
                         ?>
                         >Volunteer not available</option>
                     </select>
@@ -170,12 +170,12 @@
                     </div>
 
                     <br/>
-                    
+
             </div>
 
             <div class="col-md-12 col-sm-12">
                     <input type="submit" value="Filter Results" />
-                </form>    
+                </form>
             <br><br/><br/>
                 @if(!empty($cancelled_classes))
                 <table data-filter="#filter" class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
@@ -206,8 +206,8 @@
                             $i++;
                         }
                     ?>
-                    
-                        
+
+
                     </tbody>
                 </table>
                 @else
@@ -236,7 +236,7 @@
         });
 
          $('.list_popover').popover({'html' : true});
-    }); 
+    });
 
 
 

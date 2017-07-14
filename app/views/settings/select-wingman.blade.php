@@ -18,7 +18,7 @@
                         <a href="{{URL::to('/settings/'. $wingman->id . '/students')}}" class='btn btn-primary btn-dash transparent'><img  src="{{URL::to('/img/profile.png')}}"><br/>{{$wingman->name}}</a>
                     </div>
                 @endforeach
-            
+
 
         </div>
 

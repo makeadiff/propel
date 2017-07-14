@@ -13,7 +13,7 @@
             <br>
 
             <div style="padding:10px" class="col-md-3-offset-3 col-sm-6 text-center">
-                <a href="{{URL::to('/attendance/select-wingman/')}}" class='btn btn-primary btn-dash transparent'><img  src="{{URL::to('/img/attendance.png')}}"><br/>Wingman Attendance</a>
+                <a href="{{URL::to('/attendance/wingmen/')}}" class='btn btn-primary btn-dash transparent'><img  src="{{URL::to('/img/attendance.png')}}"><br/>Wingman Attendance</a>
             </div>
 
             <div style="padding:10px" class="col-md-3-offset-2 col-sm-6 text-center">

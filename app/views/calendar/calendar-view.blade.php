@@ -16,14 +16,6 @@
         margin-bottom:50px;
     }
 
-    /*.hiddenEvent{display: none;}
-    .fc-other-month .fc-day-number { display:none;}
-
-    td.fc-other-month .fc-day-number {
-         visibility: hidden;
-    }*/
-
-
 </style>
 <script type="text/javascript">
     volunteer_id;
@@ -87,13 +79,15 @@
                         }
                     }
 
-                    //alert(unapproved);
+                    // alert(today_date);
 
-                    //Cannot Create Events in Past -- if((start_timestamp < today_date)){
-                        //$('#errorCalendar').html('Error loading <strong>Time Machine</strong>: Cannot create events in past!');
-                        //$('#errorCalendar').fadeIn('slow');
-                        //$('html,body').animate({ scrollTop: 0 },1000);
-                    //}
+                    //Cannot Create Events in Past
+                    if((start_timestamp < today_date)){
+                        $('#errorCalendar').html('Error loading <strong>Time Machine</strong>: Cannot create events in past!');
+                        $('#errorCalendar').fadeIn('slow');
+                        $('html,body').animate({ scrollTop: 0 },1000);
+                        exit;
+                    }
                     //Approved Calender Error -- else if(monthstatus && user_group=='Propel Wingman' && unapproved!=0){
                         //$('#errorCalendar').html('<strong>Error</strong>: Month is already approved');
                         //$('#errorCalendar').fadeIn('slow');
@@ -182,9 +176,7 @@
 
             today = document.getElementsByClassName('fc-today').item(0);
             today_date = new Date(today.getAttribute('data-date'));
-            user_group = "<?php
-                        if(isset($user_group)) { echo $user_group;
-                        } ?>";
+            user_group = "<?php if(isset($user_group)) { echo $user_group;} ?>";
 
 
 
@@ -208,9 +200,6 @@
             minutes = minutes<10?"0"+minutes:minutes;
             sec = sec<10?"0"+sec:sec;
             h = h<10?"0"+h:h;
-            /*var pattern = new RegExp("0?"+hours+":"+minutes+":"+sec);
-            var replacement = h+":"+minutes;
-            replacement += " "+dd;*/
             var time_new = h+':'+minutes+' '+dd;
             return(time_new);
         }
@@ -233,7 +222,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-danger" id="errorCalendar" style="display:none; max-width:400px; margin:auto" role="alert"></div>
+                <div class="alert alert-danger" id="errorCalendar" style="display:none; max-width:600px; margin:auto" role="alert"></div>
                 <br/>
 
                 <div class="form-group" style="max-width:900px; margin:auto">

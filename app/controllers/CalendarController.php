@@ -1,4 +1,4 @@
-        <?php
+<?php
 
 class CalendarController extends BaseController
 {
@@ -14,18 +14,35 @@ class CalendarController extends BaseController
     public function showCenterCalendar($center_id)
     {
 
-        $this->setGroup();
+        $home = new HomeController;
+        $home->setGroup();
 
-        $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')
-            ->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')
-            ->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')
-            ->leftJoin('propel_wingmanModules as V','V.id','=','R.wingman_module_id')->leftJoin('propel_subjects as W','W.id','=','S.subject_id')
-            ->join('Student','Student.id','=','P.student_id')
-            ->select('P.id','P.type as title','P.start_time as start','P.end_time as end','P.status','Q.reason as reason','Q.comment as comment',
-                'U.name as wingman_name','T.name as volunteer_name','S.volunteer_id as volunteer_id','R.wingman_id as wingman_id','V.id as module_id',
-                'W.id as subject_id','V.name as module_name','W.name as subject_name','Student.name as student_name')
-            ->where('Student.center_id','=',$center_id)->get();
-
+        $calendarEvents = DB::table('propel_calendarEvents as P')
+                          ->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')
+                          ->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')
+                          ->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')
+                          ->leftJoin('User as T','T.id','=','S.volunteer_id')
+                          ->leftJoin('User as U','U.id','=','R.wingman_id')
+                          ->leftJoin('propel_wingmanModules as V','V.id','=','R.wingman_module_id')
+                          ->leftJoin('propel_subjects as W','W.id','=','S.subject_id')
+                          ->join('Student','Student.id','=','P.student_id')
+                          ->select('P.id',
+                                   'P.type as title',
+                                   'P.start_time as start',
+                                   'P.end_time as end',
+                                   'P.status',
+                                   'Q.reason as reason',
+                                   'Q.comment as comment',
+                                   'U.name as wingman_name',
+                                   'T.name as volunteer_name',
+                                   'S.volunteer_id as volunteer_id',
+                                   'R.wingman_id as wingman_id',
+                                   'V.id as module_id',
+                                   'W.id as subject_id',
+                                   'V.name as module_name',
+                                   'W.name as subject_name',
+                                   'Student.name as student_name')
+                          ->where('Student.center_id','=',$center_id)->get();
 
         foreach ($calendarEvents as $calendarEvent) {
 
@@ -33,8 +50,8 @@ class CalendarController extends BaseController
             $calendarEvent->title = ucwords($calendarEvent->title);
             $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
             $calendarEvent->reason = ucwords($calendarEvent->reason);
-
         }
+
         $calendarEvents = json_encode($calendarEvents);
 
         return View::make('calendar.center-calendar-view')->with('calendarEvents',$calendarEvents) ;
@@ -43,16 +60,40 @@ class CalendarController extends BaseController
     public function showCalendar($wingman_id,$student_id)
     {
 
-        $this->setGroup();
+        $home = new HomeController;
+        $home->setGroup();
+
         $city = Wingman::find($wingman_id)->city()->first();
         $volunteers = Group::where('name',$this->asvGroupName)->first()->volunteer()->where('city_id','=',$city->id)->where('status','=',1)->where('user_type','=','volunteer')->groupby('id')->get();
 
         //return $volunteers;
         $subjects = Wingman::find($wingman_id)->city()->first()->subject()->get();
         $wingman_modules = WingmanModule::all();
-        /*$calendarEvents = DB::table('propel_calendarEvents as P')->select('P.id','P.type as title','P.start_time as start','P.end_time as end')->where('student_id','=',$student_id)->get();
-        */
-        $calendarEvents = DB::table('propel_calendarEvents as P')->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')->leftJoin('User as T','T.id','=','S.volunteer_id')->leftJoin('User as U','U.id','=','R.wingman_id')->leftJoin('propel_wingmanModules as V','V.id','=','R.wingman_module_id')->leftJoin('propel_subjects as W','W.id','=','S.subject_id')->select('P.id','P.type as title','P.start_time as start','P.end_time as end','P.status','Q.reason as reason','Q.comment as comment','U.name as wingman_name','T.name as volunteer_name','S.volunteer_id as volunteer_id','R.wingman_id as wingman_id','V.id as module_id','W.id as subject_id','V.name as module_name','W.name as subject_name')->where('student_id','=',$student_id)->get();
+
+        $calendarEvents = DB::table('propel_calendarEvents as P')
+                            ->leftJoin('propel_cancelledCalendarEvents as Q','P.id','=','Q.calendar_event_id')
+                            ->leftJoin('propel_wingmanTimes as R','R.calendar_event_id','=','P.id')
+                            ->leftJoin('propel_volunteerTimes as S','S.calendar_event_id','=','P.id')
+                            ->leftJoin('User as T','T.id','=','S.volunteer_id')
+                            ->leftJoin('User as U','U.id','=','R.wingman_id')
+                            ->leftJoin('propel_wingmanModules as V','V.id','=','R.wingman_module_id')
+                            ->leftJoin('propel_subjects as W','W.id','=','S.subject_id')
+                            ->select('P.id',
+                                     'P.type as title',
+                                     'P.start_time as start',
+                                     'P.end_time as end',
+                                     'P.status',
+                                     'Q.reason as reason',
+                                     'Q.comment as comment',
+                                     'U.name as wingman_name',
+                                     'T.name as volunteer_name',
+                                     'S.volunteer_id as volunteer_id',
+                                     'R.wingman_id as wingman_id',
+                                     'V.id as module_id',
+                                     'W.id as subject_id',
+                                     'V.name as module_name',
+                                     'W.name as subject_name')
+                            ->where('student_id','=',$student_id)->get();
 
         foreach ($calendarEvents as $calendarEvent) {
 
@@ -67,15 +108,21 @@ class CalendarController extends BaseController
         $student_name = Student::where('id','=',$student_id)->first();
         $GLOBALS['student_id'] = $student_id;
 
-        return View::make('calendar.calendar-view')->with('volunteers',$volunteers)->with('subjects',$subjects)
-                        ->with('wingman_modules',$wingman_modules)->with('student_id',$student_id)->with('wingman_id',$wingman_id)->with('calendarEvents',$calendarEvents)->with('student_name',$student_name->name) ;
-
+        return View::make('calendar.calendar-view')
+                  ->with('volunteers',$volunteers)
+                  ->with('subjects',$subjects)
+                  ->with('wingman_modules',$wingman_modules)
+                  ->with('student_id',$student_id)
+                  ->with('wingman_id',$wingman_id)
+                  ->with('calendarEvents',$calendarEvents)
+                  ->with('student_name',$student_name->name);
     }
 
     public function showAsvCalendar($asv_id)
     {
 
-        $this->setGroup();
+        $home = new HomeController;
+        $home->setGroup();
 
         $city = Volunteer::find($asv_id)->city()->first();
         $students  = $city->student()->get();
@@ -109,7 +156,8 @@ class CalendarController extends BaseController
     public function showWingmanCalendar($wingman_id)
     {
 
-        $this->setGroup();
+        $home = new HomeController;
+        $home->setGroup();
 
         $city = Volunteer::find($wingman_id)->city()->first();
         $students  = $city->student()->get();
@@ -500,31 +548,6 @@ class CalendarController extends BaseController
         return View::make('calendar.select-asv')->with('asvs',$asvs);
     }
 
-
-    public static function setGroup()
-    {
-        $user_id = $_SESSION['user_id'];
-
-        $user = Volunteer::find($user_id);
-
-        $groups = $user->group()->get();
-
-        $fellow = false;
-        $wingman = false;
-
-        foreach($groups as $group) {
-            if($group->name == 'Propel Multiplier')
-                $fellow = true;
-            elseif($group->name == 'Propel Wingman')
-                $wingman = true;
-        }
-
-        if($fellow == true)
-            View::share('user_group','Propel Multiplier');
-        elseif($wingman == true)
-            View::share('user_group','Propel Wingman');
-    }
-
     public function approveView(){
         $user_id = $_SESSION['user_id'];
         $fellow = Fellow::find($user_id);
@@ -533,13 +556,7 @@ class CalendarController extends BaseController
         $current_month = date('c', strtotime("+1 month"));
         $i=0;
         $datalist = DB::table('User as A')->join('propel_fellow_wingman as B','A.id','=','B.fellow_id')->join('propel_student_wingman as C','C.wingman_id','=','B.wingman_id')->join('User as D','D.id','=','B.wingman_id')->join('Student as E','E.id','=','C.student_id')->join('propel_calendarEvents as F','F.student_id','=','C.student_id')->select('B.wingman_id as wingman_id','A.name as fellow_name','D.id as wingman_id','D.name as wingman_name','E.id as student_id','E.name as student_name','F.start_time as month')->where('A.id','=',$user_id)->where('F.status','!=','approved')->where('F.status','!=','cancelled')->orderBy('student_id')->orderBy('month')->where('F.start_time','<=',$current_month)->get();
-        /*foreach ($wingmen as $wingman) {
-            $students[$i] = $wingman->student()->get();
-            $i++;
-        }*/
 
-        //strftime('%Y-%m'
-        //return $students;
         return View::make('calendar.approve-calendar')->with('datalist',$datalist);
     }
 
@@ -761,8 +778,6 @@ class CalendarController extends BaseController
 
             $data = $fetchQuery->orderBy('D.name','ASC')->orderBy('A.student_id','ASC')->orderBy('month','ASC')->get();
 
-        //return $data;
-
             $datas = array();
 
             $student_id = 0;
@@ -891,7 +906,7 @@ class CalendarController extends BaseController
       $thirdday_start = date('Y-m-d 00:00:00',strtotime($today.' + 3 days')) ;
       $thirdday_end = date('Y-m-d 00:00:00',strtotime($today.' + 4 days')) ;
       // Finding events on the third day
-      $events = DB::table('propel_calendarEvents as A')->select('A.id as id','A.start_time as start_time','A.student_id as student_id')->where('A.start_time','>=',$thirdday_start)->where('A.start_time','<=',$thirdday_end)->get();
+      $events = DB::table('propel_calendarEvents as A')->select('A.id as id','A.start_time as start_time','A.student_id as student_id')->where('A.start_time','>=',$thirdday_start)->where('A.start_time','<=',$thirdday_end)->where('A.status','<>','cancelled')->get();
 
       // return $events;
 
@@ -922,7 +937,6 @@ class CalendarController extends BaseController
         $sms->number = $volunteer->phone;
         $sms->send();
       }
-
     }
 
 }

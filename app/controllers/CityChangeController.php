@@ -3,7 +3,7 @@
 Class CityChangeController extends BaseController
 {
     public function showCitySelect() {
-        $cities = City::orderBy('name','asc')->get();
+        $cities = City::orderBy('name','asc')->where('id','<=','26')->get();
         return View::make('city.city-select')->with('cities',$cities);
     }
 

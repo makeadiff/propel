@@ -12,8 +12,6 @@ Route::filter('login_check',function()
             return Redirect::to('http://makeadiff.in/madapp/index.php/auth/login/' . base64_encode(Request::url()));
 
     }
-
-
 });
 
 Route::filter('propel_check',function(){
@@ -65,7 +63,8 @@ Route::group(array('before'=>'login_check|propel_check'),function()
 
     Route::get('/attendance/select-profile','AttendanceController@selectProfile');
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
-    Route::get('/attendance/asv/{timeline?}','AttendanceController@selectASV');
+    Route::get('/attendance/asv/','AttendanceController@selectASV');
+    Route::get('/attendance/wingmen/','AttendanceController@selectWingmen');
     Route::get('/attendance/wingman/{wingman_id}/{timeline?}','AttendanceController@showAttendanceToFellow');
     Route::get('/attendance/{user_id}','AttendanceController@showAttendanceToWingman');
     Route::post('/attendance/{user_id}','AttendanceController@save');

@@ -447,6 +447,7 @@ class ReportController extends BaseController
                   $datas[$id]['ideal_session'] = count($child)*$ideal_session;
                 }
 
+                // return $datas;
 
                 return View::make('reports.attendance.city-attendance-report')->with('datas',$datas)->with('event_type',$event_type)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date)->with('ideal_session',$ideal_session);
             }
