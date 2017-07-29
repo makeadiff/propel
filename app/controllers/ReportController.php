@@ -245,6 +245,7 @@ class ReportController extends BaseController
                                 ->groupby('A.status')
                                 ->where('A.status','<>','cancelled')
                                 ->where('A.status','<>','created')
+                                ->where('C.user_type','=','volunteer')
                                 ->where('D.id','<',26);
 
                 if(isset($start_date) && $start_date!='null'){
