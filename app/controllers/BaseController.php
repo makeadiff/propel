@@ -23,7 +23,7 @@ class BaseController extends Controller {
         $this_month = intval(date('m'));
         $months = array();
         $start_date = '01';
-        $start_month = '08'; // May - Temporarily changes to june
+        $start_month = '06'; // June
         $start_year = date('Y');
         if($this_month < $start_month) $start_year = date('Y')-1;
         $this->year_time = date('Y-m-d 00:00:00',strtotime($start_year.'-'.$start_month.'-'.$start_date));

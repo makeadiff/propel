@@ -236,9 +236,9 @@ class ReportController extends BaseController
                 //Filter data for cities for wingman_time
 
                 $tables = DB::table('propel_calendarEvents as A')
-                              ->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')
-                              ->join('User as C','C.id','=','B.wingman_id')
-                              ->join('City as D','D.id','=','C.city_id');
+                            ->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')
+                            ->join('User as C','C.id','=','B.wingman_id')
+                            ->join('City as D','D.id','=','C.city_id');
 
                 $query = $tables->select('C.id','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'))
                                 ->groupby('D.id')
@@ -269,6 +269,8 @@ class ReportController extends BaseController
                 $end_day = new DateTime($end);
                 $duration =  $end_day->diff($start_day)->format("%a");
                 $ideal_session = floor($duration/7);
+
+                // return $ideal_session;
 
                 $data_collection = $query->get();
 
@@ -343,9 +345,29 @@ class ReportController extends BaseController
             else{
                 //Filter data for Wingman in a city for wingman_time
 
-                $tables = DB::table('propel_calendarEvents as A')->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')->join('User as C','C.id','=','B.wingman_id')->join('City as D','D.id','=','C.city_id');
+                $tables = DB::table('propel_calendarEvents as A')
+                            ->join('propel_wingmanTimes as B','A.id','=','B.calendar_event_id')
+                            ->join('User as C','C.id','=','B.wingman_id')
+                            ->join('City as D','D.id','=','C.city_id')
+                            ->join('propel_student_wingman as E','E.wingman_id','=','C.id')
+                            ->join('Student as F','F.id','=','E.student_id');
 
-                $query = $tables->select('C.id as wingman_id','C.name as wingman_name','D.name as city_name','A.status','C.city_id as city_id',DB::raw('count(A.status) as event_count'),DB::raw('count(C.id)'))->groupby('C.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('A.status','<>','created')->where('D.id','<',26)->where('D.id',$city_id)->orderby('D.name','ASC');
+                $query = $tables->select(
+                                'C.id as wingman_id',
+                                'C.name as wingman_name',
+                                'D.name as city_name',
+                                'A.status',
+                                'C.city_id as city_id',
+                                DB::raw('count(A.status) as event_count'),
+                                DB::raw('count(C.id)'))
+                            ->groupby('C.id')
+                            ->groupby('A.status')
+                            ->where('A.status','<>','cancelled')
+                            ->where('A.status','<>','created')
+                            ->where('D.id','<',26)
+                            ->where('D.id',$city_id)
+                            ->where('F.status','=',1)
+                            ->orderby('D.name','ASC');
 
                 if(isset($start_date) && $start_date!='null'){
                     $start = date('Y-m-d 00:00:00',strtotime($start_date));
@@ -369,6 +391,8 @@ class ReportController extends BaseController
                 $end_day = new DateTime($end);
                 $duration =  $end_day->diff($start_day)->format("%a");
                 $ideal_session = floor($duration/7);
+
+                // echo $ideal_session;
 
                 $data_collection = $query->get();
 
@@ -443,8 +467,15 @@ class ReportController extends BaseController
                             ->where('D.id','=',$city_id)
                             ->where('E.user_type','=','volunteer')->get();
 
-                  $datas[$id]['child_count'] = count($child);;
-                  $datas[$id]['ideal_session'] = count($child)*$ideal_session;
+                  if(!empty($child)){
+                    $datas[$id]['child_count'] = count($child);
+                    $datas[$id]['ideal_session'] = count($child)*$ideal_session;
+                  }
+                  else{
+                    $datas[$id]['child_count'] = 0;
+                    $datas[$id]['ideal_session'] = 0;
+                  }
+
                 }
 
                 // return $datas;
