@@ -8,7 +8,7 @@ class JournalEntryController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($wingman_id)
 	{
         $_user_id = $_SESSION['user_id'];
         $students = Wingman::find($_user_id)->student()->get();
@@ -77,7 +77,7 @@ class JournalEntryController extends \BaseController {
         /*$je->on_date = date_format(date_create(Input::get('pickdate')),'Y-m-d');
         $je->mom = Input::get('moduleFeedback');
         $je->childFeedback = Input::get('childFeedback');
-        
+
         $je->wingman_id = $user_id;
         $je->student_id = Input::get('student');
         $je->save();*/
@@ -115,7 +115,7 @@ class JournalEntryController extends \BaseController {
 
         foreach ($moduleList as $module) {
             if($module->id == $journal_entry->module_id){
-                
+
             }
         }
 
@@ -138,7 +138,7 @@ class JournalEntryController extends \BaseController {
         $type=Input::get('type');
         if($type=="module_feedback"){
             $moduleName = WingmanModule::where('id','=',Input::get('title'))->get();
-        
+
             $je->title = $moduleName[0]->name;
         }
         else{

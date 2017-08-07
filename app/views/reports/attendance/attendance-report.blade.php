@@ -37,7 +37,7 @@
         <br>
 
         <h2 class="sub-title">Attendance Report - {{ucwords(str_replace('_',' ',$event_type))}}</h2>
-        <p class="white">*Note: By default, the report shows data after {{date("F j, Y, g:i a",strtotime($year_time))}}. To change the Date Range, use filters. </p>
+        <p class="white">*Note: By default, the report shows data only after {{date("F j, Y, g:i a",strtotime($year_time))}}. To change the Date Range, use filters. </p>
         <br>
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
