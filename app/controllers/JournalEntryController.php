@@ -8,7 +8,7 @@ class JournalEntryController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create($wingman_id)
+	public function create() //$wingman_id
 	{
         $_user_id = $_SESSION['user_id'];
         $students = Wingman::find($_user_id)->student()->get();

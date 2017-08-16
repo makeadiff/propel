@@ -918,11 +918,13 @@ class ReportController extends BaseController
 
     public function showChildReport(){
         //echo $cities;
-        $child_data = Student::join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id')->where('E.id','<=','25')->where('C.user_type','=','volunteer')->get();
+        $child_data = Student::join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->join('StudentLevel as SL','Student.id','=','SL.student_id')->join('Level as L','L.id','=','SL.level_id')->select('Student.name as name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id','L.grade as Level')->where('E.id','<=','25')->where('L.grade','>=',11)->get();
+
+        // return $child_data;
 
         $total_classes=count($child_data);
 
-        $city_data = Student::join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('E.name as city_name','E.id as city_id',DB::raw('count(Student.id) as Count' ))->distinct()->groupby('E.id')->where('E.id','<=','25')->where('C.user_type','=','volunteer')->where('C.status','=','1')->orderby('E.name','ASC')->get();
+        $city_data = Student::join('StudentLevel as SL','Student.id','=','SL.student_id')->join('Level as L','L.id','=','SL.level_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id')->select('E.name as city_name','E.id as city_id',DB::raw('count(Student.id) as Count' ))->distinct()->groupby('E.id')->where('E.id','<=','25')->where('L.grade','>=',11)->orderby('E.name','ASC')->get();
 
 
         return View::make('reports.child-report.city-data')->with('city_data',$city_data)->with('total_classes',$total_classes);
