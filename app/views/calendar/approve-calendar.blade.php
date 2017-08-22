@@ -19,13 +19,13 @@
                 <thead>
                 <tr>
                     <th width ="5%" data-sort-ignore="true">
-                    
+
                     </th>
                     <th width="30%" >
                         Wingman Name
                     </th>
                     <th width="30%" data-hide="phone">
-                        Child Name
+                        Youth Name
                     </th>
                     <th width="20%" data-hide="phone">
                         Month
@@ -35,9 +35,9 @@
                     </th>
                 </tr>
                 </thead>
-                
+
                 <tbody>
-                    <?php 
+                    <?php
                     $lastMonth = 0;
                     $lastYear = 0;
                     $student_id = 0;
@@ -80,7 +80,7 @@
             <a class="btn btn-default" href="{{URL::to('/')}}">Go Back</a>
         </div>
         @endif
-        
+
     </div>
 
 </div>

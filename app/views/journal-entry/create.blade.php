@@ -17,7 +17,7 @@
                 <div class="alert alert-danger" id="errorMessage" style="display:none;" role="alert"></div>
                 <form id="journal-entry" role="form" method="post" enctype="multipart/form-data" action="{{URL::to('/')}}/journal-entry" onsubmit="return validate_data()">
 
-                    <h4 class="sub-title">Student</h4>
+                    <h4 class="sub-title">Youth</h4>
                     <div class="form-group">
                         <select id="student" class="form-control" placeholder="Student" name="student" style="width: 25%">
                             @foreach($students as $student)
@@ -50,10 +50,10 @@
                     <br/>
                     <h4 class="sub-title">Observation about Youth</h4>
                     <div class="form-group" >
-                        <input type="text" class="form-control" name="title" id="title" value="" placeholder="Title for Child Feedback">
+                        <input type="text" class="form-control" name="title" id="title" value="" placeholder="Title for Youth Feedback">
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" name="childFeedback" id="childFeedback" placeholder="Child Feedback Entry" rows="10"></textarea>
+                        <textarea class="form-control" name="childFeedback" id="childFeedback" placeholder="Youth Feedback Entry" rows="10"></textarea>
                     </div>
 
                     <div class="centered">

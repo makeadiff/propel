@@ -6,7 +6,7 @@
     <div class="centered">
         <br>
 
-        <h2 class="sub-title">Assign Students</h2>
+        <h2 class="sub-title">Assign Youth</h2>
         <br>
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
@@ -16,7 +16,7 @@
                 <thead>
                 <tr>
                     <th width="50%" data-sort-ignore="true">
-                        Student Name
+                        Youth Name
                     </th>
                     <th width="50%" data-sort-ignore="true">
                         Center
@@ -60,7 +60,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Add/Edit Students</h4>
+                <h4 class="modal-title">Add/Edit Youth</h4>
             </div>
             <form method="post" enctype="multipart/form-data" action="{{URL::to('/settings/'.$wingman->id.'/students')}}">
             <div class="modal-body">
@@ -68,7 +68,7 @@
               <input type="text" id="filter" data-filter=#filter class="form-control input-sm" placeholder="Start Typing Name/Shelter Name">
               <a href="#clear" class="clear-filter" title="clear filter" id="filter-clear">[clear]</a>
               <div class="form-group">
-                  <label>Students:</label><br/>
+                  <label>Youth:</label><br/>
                   <div class="selectBox" style="width=100%; height:180px; padding:10px; overflow-y:scroll; border:thin #CCC solid;">
                     <table data-filter="#filter" class="footable table table-bordered table-responsive toggle-medium" data-filter-timeout="100" data-filter-text-only="true" data-filter-minimum="3">
                       <?php

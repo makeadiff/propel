@@ -74,7 +74,7 @@
             </div>
 
             <div class="col-md-3 col-sm-6 text-center">
-                 <a href="{{{URL::to('reports/child-report')}}}" class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/kids.png')}}"><br><br>Child Data</a>
+                 <a href="{{{URL::to('reports/child-report')}}}" class=' btn btn-primary btn-dash transparent'><img src="{{URL::to('/img/kids.png')}}"><br><br>Youth Data</a>
             </div>
             <br><br>
         </div>

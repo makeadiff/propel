@@ -41,7 +41,7 @@
                             <?php
                                 $type = $entry->type;
                                 if($type=="child_feedback"){
-                                    echo "Child Feedback";
+                                    echo "Youth Feedback";
                                 }
                                 else if($type=="module_feedback"){
                                     echo "Module Feedback";

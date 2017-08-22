@@ -10,7 +10,7 @@
         <br>
 
         <div class="centered" style="text-align:center">
-            <select id="moduleId" class="form-control" placeholder="Student" name="student" style="width: auto; margin:auto" onchange="toggleDisplay();"> 
+            <select id="moduleId" class="form-control" placeholder="Student" name="student" style="width: auto; margin:auto" onchange="toggleDisplay();">
                 <option value="A" selected="selected">-- Select Module --</option>
             @foreach($modules as $module)
                 <option value="{{$module->id}}">{{$module->name}}</option>
@@ -21,7 +21,7 @@
 
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
-                
+
             @if(count($entries)!=0)
             <table class="table table-bordered table-responsive white footable">
                 <thead>
@@ -63,7 +63,7 @@
             </table>
             <br>
             @else
-            <p style="text-align:center; color:#FFF">No feedback entry for the selected child.</p>
+            <p style="text-align:center; color:#FFF">No feedback entry for the selected youth.</p>
             @endif
             </div>
         <br>

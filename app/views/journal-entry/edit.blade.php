@@ -17,7 +17,7 @@
                 <form id="journal-entry" role="form" method="post" enctype="multipart/form-data" action="{{URL::to('/journal-entry/' . $journal_entry->id)}}">
                     <input type="hidden" name="_method" value="PUT" />
 
-                    <h4 class="sub-title">Student </h4>
+                    <h4 class="sub-title">Youth </h4>
                     <div class="form-group">
                         <select id="student" class="form-control" placeholder="Student" name="student" style="width: 25%">
                             @foreach($students as $student)
@@ -26,10 +26,10 @@
                         </select>
                     </div>
 
-                    <h4 class="sub-title">Type: 
+                    <h4 class="sub-title">Type:
                     <?php
                         if($journal_entry->type=="child_feedback"){
-                            echo "Child Feedback";
+                            echo "Youth Feedback";
                         }
                         else if($journal_entry->type=="module_feedback"){
                             echo "Module Feedback";
@@ -51,7 +51,7 @@
 
                     <div class="form-group" >
                         <?php
-                            if($journal_entry->type=="child_feedback"){    
+                            if($journal_entry->type=="child_feedback"){
                                 echo '<input type="text" class="form-control" name="title" id="title" value="'.$journal_entry->title.'" placeholder="Title" required>';
                             }
                             else if($journal_entry->type=="module_feedback"){

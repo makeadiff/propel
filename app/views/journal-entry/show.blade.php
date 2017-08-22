@@ -18,7 +18,7 @@
             <h4 class="sub-title">Type:
             <?php
                 if($journal_entry->type=="child_feedback"){
-                    echo "Child Feedback";
+                    echo "Youth Feedback";
                 }
                 else if($journal_entry->type=="module_feedback"){
                     echo "Module Feedback (".$journal_entry->title.")";
@@ -30,7 +30,7 @@
             </h4><br/>
 
 
-            <h4 class="sub-title">Student: {{$journal_entry->student()->first()->name}}</h4><br>
+            <h4 class="sub-title">Youth: {{$journal_entry->student()->first()->name}}</h4><br>
 
             <h4 class="sub-title">Date: {{$journal_entry->on_date}}</h4><br><br>
 
