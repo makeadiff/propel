@@ -114,5 +114,29 @@ class HomeController extends BaseController
         return $start_year;
     }
 
+    public static function getOriginalGroup()
+    {
+        $user_id = $_SESSION['original_id'];
+
+        $user = Volunteer::find($user_id);
+        $groups = $user->group()->get();
+        $director = false;
+
+        foreach($groups as $group) {
+            if($group->id == '212' || $group->id == '1'){
+                $director = true;
+            }
+        }
+
+        if($director==true){
+          return "director";
+        }
+        else{
+          return "other";
+        }
+
+
+    }
+
 
 }

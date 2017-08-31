@@ -92,7 +92,8 @@ class CalendarController extends BaseController
                                      'V.id as module_id',
                                      'W.id as subject_id',
                                      'V.name as module_name',
-                                     'W.name as subject_name')
+                                     'W.name as subject_name',
+                                     'S.other_subject as other_subject')
                             ->where('student_id','=',$student_id)->get();
 
         foreach ($calendarEvents as $calendarEvent) {
@@ -101,6 +102,9 @@ class CalendarController extends BaseController
             $calendarEvent->title = ucwords($calendarEvent->title);
             $calendarEvent->reason = str_replace('_', ' ',$calendarEvent->reason);
             $calendarEvent->reason = ucwords($calendarEvent->reason);
+            if($calendarEvent->subject_name=="Others" && $calendarEvent->other_subject!=NULL){
+              $calendarEvent->subject_name = $calendarEvent->other_subject;
+            } //Replacing the Subject name of Other with the Other Subject Name collected in the input field.
 
         }
 
@@ -238,6 +242,9 @@ class CalendarController extends BaseController
                     $vt = new VolunteerTime;
                     $vt->volunteer_id = Input::get('volunteer_id');
                     $vt->subject_id = Input::get('subject');
+                    if($vt->subject_id == 73){
+                      $vt->other_subject = Input::get('other-subject');
+                    }
                     $vt->calendar_event_id = $ce->id;
                     $vt->save();
 
@@ -320,6 +327,9 @@ class CalendarController extends BaseController
                 $vt = new VolunteerTime;
                 $vt->volunteer_id = Input::get('edit_volunteer');
                 $vt->subject_id = Input::get('edit_subject');
+                if($vt->subject_id == 73){
+                  $vt->other_subject = Input::get('other-subject');
+                }
                 $vt->calendar_event_id = $existing_ce->id;
                 $vt->save();
 

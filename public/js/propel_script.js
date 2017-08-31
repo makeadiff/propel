@@ -28,11 +28,11 @@ function validate_data(){
         $('html,body').animate({ scrollTop: 0 },1000);
         return false;
     }
-	else{	
+	else{
 		$('#errorMessage').fadeOut('slow');
 	}
 
-	
+
 }
 
 function validate_calendar_approval(){
@@ -62,12 +62,12 @@ function select_all(){
 		for (var i=0;i<checkboxes.length;i++){
 			checkboxes.item(i).checked=true;
 		}
-	}	
+	}
 	else{
 		for (var i=0;i<checkboxes.length;i++){
 			checkboxes.item(i).checked=false;
 		}
-	}	
+	}
 }
 
 function toggleDisplay(){
@@ -79,5 +79,5 @@ function toggleDisplay(){
 		$('.tableRows').hide();
 		$('.'+id).show();
 	}
-		
+
 }

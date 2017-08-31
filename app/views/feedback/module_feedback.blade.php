@@ -10,7 +10,7 @@
         <br>
 
         <div class="centered" style="text-align:center">
-            <select id="moduleId" class="form-control" placeholder="Student" name="student" style="width: auto; margin:auto" onchange="toggleDisplay();">
+            <select id="moduleId" class="form-control" placeholder="Youth" name="student" style="width: auto; margin:auto" onchange="toggleDisplay();">
                 <option value="A" selected="selected">-- Select Module --</option>
             @foreach($modules as $module)
                 <option value="{{$module->id}}">{{$module->name}}</option>

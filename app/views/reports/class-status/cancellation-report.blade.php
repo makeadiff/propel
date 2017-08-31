@@ -66,8 +66,11 @@
                 </button>
             </div>
             <div style="padding:10px" class="col-md-4 col-sm-12">
+                @if(count($total_classes)!=0)
                 <h2 class="center white">{{round((count($cancelled_classes)/count($total_classes))*100,2)}}%</h2>
                 <p class="center white">Classes Cancelled</p>
+                @endif
+
             </div>
             <div style="padding:10px" class="col-md-4 col-sm-12">
                 <img  src="{{URL::to('/img/calendar.png')}}"><br/><br/>
@@ -89,15 +92,15 @@
         <div class="row">
             <div class="center">
 
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-10 col-md-offset-1 col-sm-12">
                     <form class="form-inline text-center">
-                        <label for="filter">Filter :&nbsp;</label>
+                        <label for="filter white">Filter :&nbsp;</label>
                         <input type="text" id="filter" data-filter=#filter class="form-control input-sm">
                         <a href="#clear" class="clear-filter" title="clear filter" id="filter-clear">[clear]</a>
                     </form>
                 </div>
 
-
+          <div class="col-md-10 col-md-offset-1 col-sm-12 center">
             <div class="col-md-4 col-sm-12 center">
                 <form class="search_parameters text-center" method="post" action="{{{URL::to('/reports/class-cancelled-report')}}}">
                     <select name="reason" class="form-control">
@@ -172,13 +175,13 @@
                     <br/>
 
             </div>
-
-            <div class="col-md-12 col-sm-12">
+          </div>
+            <div class="col-md-10 col-md-offset-1 col-sm-12">
                     <input type="submit" value="Filter Results" />
                 </form>
             <br><br/><br/>
                 @if(!empty($cancelled_classes))
-                <table data-filter="#filter" class="white footable table table-bordered table-responsive toggle-medium" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
+                <table data-filter="#filter" class="white footable table table-bordered table-responsive toggle-medium"  data-paging="true" data-page-size="12" data-filter-timeout="500" data-filter-text-only="true" data-filter-minimum="3">
                     <thead >
                     <tr>
                         <th style="text-decoration:underline">Student Name</th>
@@ -195,12 +198,12 @@
                         $i=1;
                         foreach ($cancelled_classes as $class) {
                             echo '<tr>'.
-                            '<td>'.$class->student_name.'</td>'.
+                            '<td>'.ucwords(strtolower($class->student_name)).'</td>'.
                             '<td>'.ucwords(str_replace('_',' ',$class->event_type)).'</td>'.
                             '<td>'.$class->center_name.'</td>'.
                             '<td>'.$class->city_name.'</td>'.
-                            '<td>'.$class->start_time.'</td>'.
-                            '<td>'.$class->cancelled_time.'</td>'.
+                            '<td>'.date_format(date_create($class->start_time),'D, jS M Y').'</td>'.
+                            '<td>'.date_format(date_create($class->cancelled_time),'D, jS M Y').'</td>'.
                             '<td>'.ucfirst(str_replace('_', ' ', $class->reason)).', '.$class->comment.'</td>'.
                             '</tr>';
                             $i++;
@@ -209,6 +212,15 @@
 
 
                     </tbody>
+                    <tfoot>
+                    <tr class="hide-if-no-paging">
+                        <td colspan="7">
+                            <div class="text-center">
+                                <ul class="pagination pagination-centered"></ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tfoot>
                 </table>
                 @else
                 <div class="alert alert-warning" role="alert">No Class Cancelled for Selected Filters</div>

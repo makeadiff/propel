@@ -3,11 +3,11 @@
 Route::filter('login_check',function()
 {
     session_start();
-    // $_SESSION['user_id']= 57184; //26956; //57184;//62841;//78268;//105354;//36327;//11752; //66804; //48032 //47642 //22730 //50671 //48286 //85896//57184
+    // $_SESSION['user_id']= 57184; //124520; //57184; //26956; //62841;//78268;//105354;//36327;//11752; //66804; //48032 //47642 //22730 //50671 //48286 //85896//57184
 
     if(empty($_SESSION['user_id'])){
        if(App::environment('local'))
-            return Redirect::to('http://localhost/makeadiff.in/home/makeadiff/public_html/madapp/index.php/auth/login/' . base64_encode(Request::url()));
+            return Redirect::to('http://127.0.0.1/makeadiff/madapp/index.php/auth/login/' . base64_encode(Request::url()));
         else
             return Redirect::to('http://makeadiff.in/madapp/index.php/auth/login/' . base64_encode(Request::url()));
 
@@ -63,9 +63,9 @@ Route::group(array('before'=>'login_check|propel_check'),function()
 
     Route::get('/attendance/select-profile','AttendanceController@selectProfile');
     Route::get('/attendance/select-wingman','AttendanceController@selectWingman');
-    Route::get('/attendance/asv/','AttendanceController@selectASV');
-    Route::get('/attendance/wingmen/','AttendanceController@selectWingmen');
-    Route::get('/attendance/wingman/{wingman_id}/{timeline?}','AttendanceController@showAttendanceToFellow');
+    Route::get('/attendance/asv/{timeline?}','AttendanceController@selectASV');
+    // Route::get('/attendance/wingmen/{timeline?}','AttendanceController@selectWingmen');
+    Route::get('/attendance/wingman/{timeline?}','AttendanceController@showAttendanceToFellow');
     Route::get('/attendance/{user_id}','AttendanceController@showAttendanceToWingman');
     Route::post('/attendance/{user_id}','AttendanceController@save');
     Route::post('/attendance/wingman/{user_id}','AttendanceController@save');

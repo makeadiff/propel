@@ -104,8 +104,31 @@
         </div>
         @else
         <p style="text-align:center; color:#FFF">No attendance entries to mark</p><br/><br/>
-        <!-- <a href="{{{URL::to('attendance/asv/previous')}}}"><button type="button" class="btn btn-default" data-dismiss="modal">Mark Attendance for events before {{$date}}</button></a> -->
         @endif
+        @if($timeline==null)
+          <?php
+            if(isset($_SESSION['original_id'])){
+              $user = new HomeController;
+              $usergroup = $user->getOriginalGroup();
+              // echo $usergroup;
+              if($usergroup=="director"){
+                echo '<a href="'.(URL::to('attendance/asv/previous')).'"><button type="button" class="btn btn-default" data-dismiss="modal">Mark Attendance for events before '.$date.'</button></a>';
+              }
+            }
+          ?>
+        @elseif($timeline=="previous")
+          <?php
+            if(isset($_SESSION['original_id'])){
+              $user = new HomeController;
+              $usergroup = $user->getOriginalGroup();
+              // echo $usergroup;
+              if($usergroup=="director"){
+                echo '<a href="'.(URL::to('attendance/asv/')).'"><button type="button" class="btn btn-default" data-dismiss="modal">View Less</button></a>';
+              }
+            }
+          ?>
+        @endif
+
     </div>
 </div>
 

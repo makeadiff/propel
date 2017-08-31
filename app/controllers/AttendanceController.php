@@ -16,37 +16,42 @@ class AttendanceController extends BaseController
         foreach($wingmans_kids as $wk)
             $student_ids[] = $wk->id;
 
+        $previousMonth = date("Y-m-d h:i:s", strtotime("-1 months"));
+        $previousDate = date("M Y ", strtotime("-1 months"));
+
         $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where('type','<>','wingman_time')->where(function($query){
-                $query->where('status','approved')->orWhere('status','attended');})->get();
+                $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$previousMonth)->orderBy('start_time','DESC')->get();
         //return $attended;
         return View::make('attendance.attended-list')->with('attended',$attended);
     }
 
-    public function showAttendanceToFellow($wingman_id,$timeline = null)
+    public function showAttendanceToFellow($timeline = null)
     {
-
-        $wingmans_kids = Wingman::find($wingman_id)->student()->get();
-
-        if(empty($wingmans_kids[0]))
-            return Redirect::to('error')->with('message','There are no students assigned to the wingman');
+        $user_id = $_SESSION['user_id'];
+        $wingmen = Fellow::find($user_id)->wingman()->get();
 
         $student_ids = array();
-        foreach($wingmans_kids as $wk)
-            $student_ids[] = $wk->id;
+        foreach($wingmen as $wingman){
+          $wingmans_kids = Wingman::find($wingman->id)->student()->get();
+          foreach($wingmans_kids as $wk)
+              $student_ids[] = $wk->id;
+        }
 
         $previousMonth = date("Y-m-d h:i:s", strtotime("-1 months"));
         $previousDate = date("M Y ", strtotime("-1 months"));
 
-        // if($timeline == null){
-        //   $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
-        //           $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$previousMonth)->orderBy('start_time','DESC')->get();
-        // }
-        // elseif($timeline == 'previous'){
+        // return $previousMonth;
+
+        if($timeline == 'previous'){
           $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
                   $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$this->year_time)->orderBy('start_time','DESC')->get();
-        // }
+        }
+        else{
+          $attended = CalendarEvent::whereIn('student_id', $student_ids)->where('type','<>','child_busy')->where(function($query){
+                  $query->where('status','approved')->orWhere('status','attended');})->where('start_time','>=',$previousMonth)->orderBy('start_time','DESC')->get();
+        }
 
-        return View::make('attendance.attended-list')->with('attended',$attended)->with('timeline',$timeline)->with('wingman_id',$wingman_id)->with('date',$previousDate);
+        return View::make('attendance.wingman-attendance')->with('attended',$attended)->with('timeline',$timeline)->with('date',$previousDate);
     }
 
     public function save($user_id)
@@ -86,7 +91,7 @@ class AttendanceController extends BaseController
         }
 
         if($segment == 'wingman') {
-            return Redirect::to(URL::to('/') . "/attendance/wingman/" . $user_id)->with('success', 'Attendence Saved.');
+            return Redirect::to(URL::to('/') . "/attendance/wingman/")->with('success', 'Attendence Saved.');
         }
         if($segment == 'asv') {
             return Redirect::to(URL::to('/') . "/attendance/asv")->with('success', 'Attendence Saved.');
@@ -104,15 +109,6 @@ class AttendanceController extends BaseController
         return View::make('attendance.select-profile');
     }
 
-    public function selectWingman()
-    {
-        $user_id = $_SESSION['user_id'];
-        $fellow = Fellow::find($user_id);
-
-        $wingmen = $fellow->wingman()->get();
-
-        return View::make('attendance.select-wingman')->with('wingmen',$wingmen);
-    }
 
     public function selectWingmen()
     {
@@ -166,7 +162,7 @@ class AttendanceController extends BaseController
 
     }
 
-    public function selectAsv()
+    public function selectAsv($timeline = null)
     {
 
         $user_id = $_SESSION['user_id'];
@@ -188,11 +184,18 @@ class AttendanceController extends BaseController
                       ->join('propel_volunteerTimes as B','A.id','=','B.calendar_event_id')
                       ->select('A.id','A.type as type','B.volunteer_id as volunteer_id','A.start_time as start_time')
                       ->whereIn('B.volunteer_id', $asv_ids)
-                      ->where(function($query){ $query->where('status','approved')->orWhere('status','attended');})
-                      ->where('start_time','>=',$this->year_time)
-                      ->orderBy('start_time','DESC')
-                      ->orderBy('B.volunteer_id','ASC')->get();
+                      ->where(function($query){ $query->where('status','approved')->orWhere('status','attended');});
 
+        if($timeline=="previous"){
+          $attended = $attended->where('start_time','>=',$this->year_time)
+                    ->orderBy('start_time','DESC')
+                    ->orderBy('B.volunteer_id','ASC')->get();
+        }
+        else{
+          $attended = $attended->where('start_time','>=',$previousMonth)
+                    ->orderBy('start_time','DESC')
+                    ->orderBy('B.volunteer_id','ASC')->get();
+        }
         $start_time = 0;
         $volunteer_id = 0;
         $id = 0;
@@ -214,7 +217,7 @@ class AttendanceController extends BaseController
 
         // return $attended;
 
-        return View::make('attendance.asv-attendance')->with('attended',$attended)->with('wingman_id',$user_id)->with('date',$previousDate);
+        return View::make('attendance.asv-attendance')->with('attended',$attended)->with('wingman_id',$user_id)->with('date',$previousDate)->with('timeline',$timeline);
 
     }
 

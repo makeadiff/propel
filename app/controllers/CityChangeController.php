@@ -2,6 +2,9 @@
 
 Class CityChangeController extends BaseController
 {
+
+
+
     public function showCitySelect() {
         $cities = City::orderBy('name','asc')->where('id','<=','26')->get();
         return View::make('city.city-select')->with('cities',$cities);
@@ -27,4 +30,5 @@ Class CityChangeController extends BaseController
         $_SESSION['user_id'] = $_SESSION['original_id'];
         return Redirect::to('/');
     }
+
 }

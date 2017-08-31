@@ -286,6 +286,11 @@
                         </select>
                     </div>
 
+                    <div class="form-group optional subject-other" style="display:none">
+                        <label for="subject" class="control-label">Other Subject</label>
+                        <input class="form-control" id="other_subject" name="other-subject"/>
+                    </div>
+
                     <div class="form-group optional wingman-time" style="display:none">
                         <label for="wingman_module" class="control-label">Wingman Module : </label>
                         <select class="form-control" id="wingman_module" name="wingman_module">
@@ -361,6 +366,11 @@
                                 <option value="{{$subject->id}}">{{$subject->name}}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="form-group optional subject-other" style="display:none">
+                        <label for="subject" class="control-label">Other Subject</label>
+                        <input class="form-control" id="other_subject" name="other-subject"/>
                     </div>
 
                     <div class="form-group optional wingman-time" style="display:none">
@@ -686,6 +696,30 @@
                     $('.volunteer-time').css('display','block');
                 } else if($(this).val() == "wingman_time") {
                     $('.wingman-time').css('display','block');
+                }
+            });
+        });
+
+        //Showing Option to Add Other Subject in case the subject selected is Other.
+
+        $("#subject").change(function () {
+            $("#subject option:selected").each(function () {
+                if($(this).val() == "73") {
+                    $('.subject-other').css('display','block');
+                }
+                else{
+                    $('.subject-other').css('display','none');
+                }
+            });
+        });
+
+        $("#edit_subject").change(function () {
+            $("#edit_subject option:selected").each(function () {
+                if($(this).val() == "73") {
+                    $('.subject-other').css('display','block');
+                }
+                else{
+                    $('.subject-other').css('display','none');
                 }
             });
         });
