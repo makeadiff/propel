@@ -11,6 +11,9 @@ class JournalEntryController extends \BaseController {
 	public function create() //$wingman_id
 	{
         $_user_id = $_SESSION['user_id'];
+				if(isset($_SESSION['original_id'])){
+					$_user_id = $_SESSION['original_id'];
+				}
         $students = Wingman::find($_user_id)->student()->get();
         $moduleList = WingmanModule::all();
 
