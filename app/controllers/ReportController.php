@@ -874,6 +874,8 @@ class ReportController extends BaseController
 
     public function showChildReport(){
 
+        $total_count = 0;
+
         $city_data = Student::leftjoin('StudentLevel as SL','Student.id','=','SL.student_id')
                             ->leftjoin('Level as L','L.id','=','SL.level_id')
                             ->join('Center as D','D.id','=','Student.center_id')
