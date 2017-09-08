@@ -60,10 +60,14 @@ class HomeController extends BaseController
                 $wingman = true;
             elseif($group->id == '349')
                 $asv = true;
-            elseif($group->id == '359')
+            elseif($group->id == '359'){
                 $strat = true;
-            elseif($group->id == '')
+                $_SESSION['original_id'] = $_SESSION['user_id'];
+            }
+            elseif($group->id == ''){
                 $strat = true;
+                $_SESSION['original_id'] = $_SESSION['user_id'];
+            }
             elseif($group->id == '365')
                 $after_care_wingman = true;
             elseif($group->type == 'fellow'){
