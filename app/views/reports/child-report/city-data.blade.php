@@ -17,7 +17,7 @@
         <div class="row center">
         	<button class="btn btn-primary" type="button">
         	<!-- <a href="{{URL::to('/report/child-report/national')}}"> -->
-			  National <span class="badge">{{$total_classes}}</span>
+			  National <span class="badge">{{$total_count}}</span>
 			</button>
         </div>
 

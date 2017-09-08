@@ -873,42 +873,31 @@ class ReportController extends BaseController
     }
 
     public function showChildReport(){
-        //echo $cities;
-        $child_data = Student::join('Center as D','D.id','=','Student.center_id')
-                             ->join('City as E','E.id','=','D.city_id')
-                             ->join('StudentLevel as SL','Student.id','=','SL.student_id')
-                             ->join('Level as L','L.id','=','SL.level_id')
-                             ->select(
-                              'Student.name as name',
-                              'D.id as center_id',
-                              'D.name as center_name',
-                              'E.name as city_name',
-                              'E.id as city_id',
-                              'L.grade as Level')
-                             ->where('E.id','<=','25')
-                             ->where('Student.status','=',1)
-                             ->where('L.grade','>=',11)->get();
-                             
-        // return $child_data;
-        $total_classes=count($child_data);
 
-        $city_data = Student::join('StudentLevel as SL','Student.id','=','SL.student_id')
-                            ->join('Level as L','L.id','=','SL.level_id')
+        $city_data = Student::leftjoin('StudentLevel as SL','Student.id','=','SL.student_id')
+                            ->leftjoin('Level as L','L.id','=','SL.level_id')
                             ->join('Center as D','D.id','=','Student.center_id')
                             ->join('City as E','E.id','=','D.city_id')
+                            ->join('propel_student_wingman as SW','SW.student_id','=','Student.id')
+                            ->join('User as C','C.id','=','SW.wingman_id')
                             ->select(
                               'E.name as city_name',
                               'E.id as city_id',
-                              DB::raw('count(Student.id) as Count' ))
+                              DB::raw('count(DISTINCT Student.id) as Count'))
+                              // ,'Student.name as StudentName')
                             ->distinct()
+                            // ->groupby('Student.id')
                             ->groupby('E.id')
                             ->where('E.id','<=','25')
-                            ->where('L.grade','>=',11)
-                            ->where('Student.status','=',1)
+                            ->where('Student.status','=','1')
+                            ->where('C.user_type','=','volunteer')
                             ->orderby('E.name','ASC')->get();
 
+        foreach ($city_data as $city) {
+          $total_count += $city->Count;
+        }
 
-        return View::make('reports.child-report.city-data')->with('city_data',$city_data)->with('total_classes',$total_classes);
+        return View::make('reports.child-report.city-data')->with('city_data',$city_data)->with('total_count',$total_count);
 
     }
 
@@ -917,9 +906,29 @@ class ReportController extends BaseController
         $cities = City::where('id','<=','25')->orderby('name','ASC')->get();
         $centers = Center::where('city_id','=',$city_id)->where('status','=',1)->orderby('name','ASC')->get();
 
-        $tables = DB::table('Student')->join('propel_student_wingman as B','Student.id','=','B.student_id')->join('User as C','C.id','=','B.wingman_id')->join('Center as D','D.id','=','Student.center_id')->join('City as E','E.id','=','D.city_id');
+        $tables = DB::table('Student')
+                  ->join('propel_student_wingman as B','Student.id','=','B.student_id')
+                  ->join('User as C','C.id','=','B.wingman_id')
+                  ->join('Center as D','D.id','=','Student.center_id')
+                  ->join('City as E','E.id','=','D.city_id');
 
-        $child_data = $tables->select('Student.id as id','Student.name as name','C.name as wingman_name','D.id as center_id','D.name as center_name','E.name as city_name','E.id as city_id')->distinct()->where('E.id','=',$city_id)->where('C.user_type','=','volunteer')->where('C.status','=','1')->orderby('D.name','ASC')->get();
+        $child_data = $tables->select(
+                    'Student.id as id',
+                    'Student.name as name',
+                    DB::Raw('GROUP_CONCAT(C.name SEPARATOR ", ") as wingman_name'),
+                    'D.id as center_id',
+                    'D.name as center_name',
+                    'E.name as city_name',
+                    'E.id as city_id')
+                  ->distinct()
+                  ->where('E.id','=',$city_id)
+                  ->where('C.user_type','=','volunteer')
+                  ->where('Student.status','=','1')
+                  ->groupby('Student.id')
+                  ->orderby('D.name','ASC')
+                  ->get();
+
+        // return $child_data;
 
         $child_data = (array) $child_data;
         $total = array();
