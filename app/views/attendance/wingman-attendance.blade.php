@@ -22,7 +22,7 @@
         @if(count($attended)!=0)
         <div class="row">
             <div class="col-md-offset-3 col-md-6">
-            <form action="" method="post">
+            <form action="{{{URL::to('attendance/wingman')}}}" method="post">
               <label for="filter" class="white">FILTER&nbsp;</label>
               <input type="text" id="filter" data-filter=#filter class="form-control input-sm" placeholder="Start Typing Name/Date">
               <br/>
@@ -123,7 +123,7 @@
               $usergroup = $user->getOriginalGroup();
               // echo $usergroup;
               if($usergroup=="director"){
-                echo '<a href="'.(URL::to('./attendance/wingman/')).'"><button type="button" class="btn btn-default" data-dismiss="modal">View Less</button></a>';
+                echo '<a href="'.(URL::to('attendance/wingman/')).'"><button type="button" class="btn btn-default" data-dismiss="modal">View Less</button></a>';
               }
             }
           ?>
