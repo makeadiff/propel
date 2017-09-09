@@ -91,16 +91,16 @@ class AttendanceController extends BaseController
         }
 
         if($segment == 'wingman') {
-            return Redirect::to(URL::to('/') . "/attendance/wingman/")->with('success', 'Attendence Saved.');
+            return Redirect::to(URL::to('attendance/wingman/'))->with('success', 'Attendence Saved.');
         }
         if($segment == 'asv') {
-            return Redirect::to(URL::to('/') . "/attendance/asv")->with('success', 'Attendence Saved.');
+            return Redirect::to(URL::to('attendance/asv'))->with('success', 'Attendence Saved.');
         }
         else {
-            return Redirect::to(URL::to('/') . "/attendance/" . $user_id)->with('success', 'Attendence Saved.');
+            return Redirect::to(URL::to('attendance/' . $user_id))->with('success', 'Attendence Saved.');
         }
 
-        return Redirect::to(URL::to('/') . "/attendance/" . $user_id)->with('success', 'Attendence Saved.');
+        return Redirect::to(URL::to('attendance/' . $user_id))->with('success', 'Attendence Saved.');
     }
 
     public function selectProfile()
