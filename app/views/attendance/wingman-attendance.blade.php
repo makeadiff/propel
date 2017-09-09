@@ -123,7 +123,7 @@
               $usergroup = $user->getOriginalGroup();
               // echo $usergroup;
               if($usergroup=="director"){
-                echo '<a href="'.(URL::to('attendance/wingman/')).'"><button type="button" class="btn btn-default" data-dismiss="modal">View Less</button></a>';
+                echo '<a href="'.(URL::to('./attendance/wingman/')).'"><button type="button" class="btn btn-default" data-dismiss="modal">View Less</button></a>';
               }
             }
           ?>

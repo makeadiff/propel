@@ -109,8 +109,6 @@
         @else
           <p style="text-align:center; color:#FFF">No attendance entries to mark</p><br/><br/>
         @endif
-        @if()
-          <a href="{{{URL::to('attendance/wingman/previous')}}}"><button type="button" class="btn btn-default" data-dismiss="modal">Mark Attendance for events before {{$date}}</button></a>
     </div>
 </div>
 
