@@ -636,11 +636,32 @@ class CalendarController extends BaseController
 
         if($city_id == 'null' || !isset($city_id)){
 
-            $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','A.student_id')->join('User as F','F.id','=','E.wingman_id');
+            $query = DB::table('propel_calendarEvents as A')
+                      ->join('Student as B','B.id','=','A.student_id')
+                      ->join('Center as C','C.id','=','B.center_id')
+                      ->join('City as D','D.id','=','C.city_id')
+                      ->join('propel_student_wingman as E','E.student_id','=','A.student_id')
+                      ->join('User as F','F.id','=','E.wingman_id');
 
             $month = Date('m');
 
-            $fetchQuery = $query->select('A.id','D.name','D.id as cityId','A.status',DB::raw('MONTH(A.start_time) as month'),DB::raw('count(D.id)'),DB::raw('count(A.start_time) as event_count'),'A.student_id')->groupby('A.student_id')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('D.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','<',26)->where('F.user_type','=','volunteer')->where('F.status','=',1);
+            $fetchQuery = $query->select(
+                                  'A.id',
+                                  'D.name',
+                                  'D.id as cityId',
+                                  'A.status',
+                                  DB::raw('MONTH(A.start_time) as month'),
+                                  DB::raw('count(D.id)'),
+                                  DB::raw('count(A.start_time) as event_count'),
+                                  'A.student_id')
+                                ->groupby('A.student_id')
+                                ->groupby(DB::raw('MONTH(A.start_time)'))
+                                ->groupby('D.id')
+                                ->groupby('A.status')
+                                ->where('A.status','<>','cancelled')
+                                ->where('D.id','<',26)
+                                ->where('F.user_type','=','volunteer')
+                                ->where('F.status','=',1);
 
             if($start_date!= 'null' && isset($start_date)){
                 $start = date('Y-m-d 00:00:00',strtotime($start_date));
@@ -732,10 +753,10 @@ class CalendarController extends BaseController
             }
 
             $citydetails_table = DB::table('Student as A')
-                              ->join('propel_student_wingman as B','B.student_id','=','A.id')
-                              ->join('User as E','E.id','=','B.wingman_id')
-                              ->join('Center as C','C.id','=','A.center_id')
-                              ->join('City as D','D.id','=','C.city_id');
+                                  ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                  ->join('User as E','E.id','=','B.wingman_id')
+                                  ->join('Center as C','C.id','=','A.center_id')
+                                  ->join('City as D','D.id','=','C.city_id');
 
             $citydetails = $citydetails_table->select('D.id','D.name')->distinct()->where('D.id','<>',26)->orderBy('D.name','ASC')->get();
 
@@ -767,10 +788,38 @@ class CalendarController extends BaseController
         }
         else {
 
-            $query = DB::table('propel_calendarEvents as A')->join('Student as B','B.id','=','A.student_id')->join('Center as C','C.id','=','B.center_id')->join('City as D','D.id','=','C.city_id')->join('propel_student_wingman as E','E.student_id','=','B.id')->join('User as F','F.id','=','E.wingman_id')->join('UserGroup as G','G.user_id','=','E.wingman_id')->join('Group as H','H.id','=','G.group_id');
+            $query = DB::table('propel_calendarEvents as A')
+                      ->join('Student as B','B.id','=','A.student_id')
+                      ->join('Center as C','C.id','=','B.center_id')
+                      ->join('City as D','D.id','=','C.city_id')
+                      ->join('propel_student_wingman as E','E.student_id','=','B.id')
+                      ->join('User as F','F.id','=','E.wingman_id')
+                      ->join('UserGroup as G','G.user_id','=','E.wingman_id')
+                      ->join('Group as H','H.id','=','G.group_id');
 
 
-            $fetchQuery = $query->select('A.id','D.name as city_name','D.id as city_id','F.id as wingman_id','B.id as student_id','F.name as wingman_name','B.name as student_name','A.status',DB::raw('count(A.status) as event_count'),DB::raw('count(D.id)'),DB::raw('MONTH(A.start_time) as month'),'A.start_time')->groupby(DB::raw('MONTH(A.start_time)'))->groupby('B.id')->groupby('A.status')->where('A.status','<>','cancelled')->where('D.id','=',$city_id)->where('F.status','=','1')->where('F.user_type','=','volunteer')->whereIn('H.id',['348','365'])->orderBy('B.id','ASC');
+            $fetchQuery = $query->select(
+                              'A.id',
+                              'D.name as city_name',
+                              'D.id as city_id',
+                              'F.id as wingman_id',
+                              'B.id as student_id',
+                              'F.name as wingman_name',
+                              'B.name as student_name',
+                              'A.status',
+                              DB::raw('count(A.status) as event_count'),
+                              DB::raw('count(D.id)'),
+                              DB::raw('MONTH(A.start_time) as month'),
+                              'A.start_time')
+                            ->groupby(DB::raw('MONTH(A.start_time)'))
+                            ->groupby('B.id')
+                            ->groupby('A.status')
+                            ->where('A.status','<>','cancelled')
+                            ->where('D.id','=',$city_id)
+                            ->where('F.status','=','1')
+                            ->where('F.user_type','=','volunteer')
+                            ->whereIn('H.id',['348','365'])
+                            ->orderBy('B.id','ASC');
 
 
             if($start_date!= 'null' && isset($start_date)){
@@ -846,20 +895,26 @@ class CalendarController extends BaseController
             }
 
             $wingmandetails_table = DB::table('Student as A')
-                              ->join('propel_student_wingman as B','B.student_id','=','A.id')
-                              ->join('User as E','E.id','=','B.wingman_id')
-                              ->join('Center as C','C.id','=','A.center_id')
-                              ->join('City as D','D.id','=','C.city_id');
+                                  ->join('propel_student_wingman as B','B.student_id','=','A.id')
+                                  ->join('User as E','E.id','=','B.wingman_id')
+                                  ->join('Center as C','C.id','=','A.center_id')
+                                  ->join('City as D','D.id','=','C.city_id');
 
-            $wingmandetails = $wingmandetails_table->select('E.id as wingman_id','E.name as wingman_name','A.id as student_id','A.name as student_name')
+            $wingmandetails = $wingmandetails_table->select(
+                                                    // 'E.id as wingman_id',
+                                                    DB::RAW('GROUP_CONCAT(E.name) as wingman_name'),
+                                                    'A.id as student_id',
+                                                    'A.name as student_name')
+                                ->groupby('A.id')
                                 ->where('E.status','=','1')
+                                ->where('A.status','=','1')
                                 ->where('E.user_type','=','volunteer')
                                 ->where('D.id','=',$city_id)
                                 ->orderBy('D.name','ASC')->get();
 
             foreach ($wingmandetails as $wingman){
               $id = $wingman->student_id;;
-              $datas[$id]['wingman_id'] = $wingman->wingman_id;
+              // $datas[$id]['wingman_id'] = $wingman->wingman_id;
               $datas[$id]['wingman_name'] = $wingman->wingman_name;
               $datas[$id]['student_id'] = $wingman->student_id;
               $datas[$id]['student_name'] = $wingman->student_name;
@@ -875,6 +930,7 @@ class CalendarController extends BaseController
               $child = $wingmandetails->select('A.id','A.name')
                         ->where('E.id','=',$id)
                         ->where('E.status','=','1')
+                        ->where('A.status','=','1')
                         ->where('D.id','=',$city_id)
                         ->where('E.user_type','=','volunteer')->get();
 
@@ -885,7 +941,7 @@ class CalendarController extends BaseController
             $home = new HomeController;
             $home->setGroup();
 
-            //return $datas;
+            // return $datas;
 
             return View::make('reports.city-calendar-approval')->with('datas',$datas)->with('cities',$cities)->with('city_id',$city_id)->with('start_date',$start_date)->with('end_date',$end_date);
         }
